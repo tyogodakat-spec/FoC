@@ -7325,7 +7325,7 @@ async function renderGacha() {
 
   <div class="banner-switch" id="bsw-row">
     <button class="bsw on" onclick="switchBannerType('char')">👤 Personagens</button>
-    <button class="bsw" onclick="switchBannerType('weapon')">⚔ Armas</button>
+    <button class="bsw" onclick="switchBannerType('weap')">⚔ Armas</button>
   </div>
   <div id="banner-area">Carregando banners...</div>`;
   await loadBanners();
@@ -7333,6 +7333,8 @@ async function renderGacha() {
 let BANNERS_CHAR=[], BANNERS_WEAP=[];
 async function loadBanners() {
   const now = Date.now();
+  // Pre-cache artifact sets so computeEffective can apply 2pc/4pc bonuses
+  getAdminData("artifact_sets").then(sets => { window._cachedArtSetDefs = sets; }).catch(()=>{});
   const allChar = await getAdminData("banners_char");
   const allWeap = await getAdminData("banners_weap");
   BANNERS_CHAR = allChar.filter(b => b.active && (!b.endsAt || b.endsAt > now));
@@ -7459,6 +7461,7 @@ async function doPull(count, bannerId) {
   // Deduct FoC
   STATE.profile.foc -= cost;
   STATE.profile.pulls = (STATE.profile.pulls||0) + count;
+  trackMissionProgress('pull', count).catch(()=>{});
 
   // Generate results
   const results = [];
@@ -7475,6 +7478,20 @@ async function doPull(count, bannerId) {
       if (!STATE.profile.weapons) STATE.profile.weapons=[];
       STATE.profile.weapons.push({...item, level:1, refine:1});
     }
+  }
+
+  // Grant pull XP items if banner has them configured
+  if (banner.pullXp) {
+    if (!STATE.profile.artXpItems)  STATE.profile.artXpItems  = {axp3:0,axp4:0,axp5:0};
+    if (!STATE.profile.weapXpItems) STATE.profile.weapXpItems = {wxp3:0,wxp4:0,wxp5:0};
+    const px = banner.pullXp;
+    // Multiply by count (each pull gives the configured amount)
+    if (px.axp3) STATE.profile.artXpItems.axp3  = (STATE.profile.artXpItems.axp3||0)  + px.axp3*count;
+    if (px.axp4) STATE.profile.artXpItems.axp4  = (STATE.profile.artXpItems.axp4||0)  + px.axp4*count;
+    if (px.axp5) STATE.profile.artXpItems.axp5  = (STATE.profile.artXpItems.axp5||0)  + px.axp5*count;
+    if (px.wxp3) STATE.profile.weapXpItems.wxp3 = (STATE.profile.weapXpItems.wxp3||0) + px.wxp3*count;
+    if (px.wxp4) STATE.profile.weapXpItems.wxp4 = (STATE.profile.weapXpItems.wxp4||0) + px.wxp4*count;
+    if (px.wxp5) STATE.profile.weapXpItems.wxp5 = (STATE.profile.weapXpItems.wxp5||0) + px.wxp5*count;
   }
 
   // Save to Firebase
@@ -8545,16 +8562,38 @@ function buildFighter(ch, profile) {
     if (con.type === 'er_up')     scaledBase.energyRecharge += v;
     if (con.type === 'em_up')     scaledBase.elementalMastery += v;
     // DOT
-    if (con.type === 'dot_dmg')       scaledBase._dotDmgBonus  = (scaledBase._dotDmgBonus  || 0) + v;
-    if (con.type === 'dot_duration')  scaledBase._dotDurBonus  = (scaledBase._dotDurBonus  || 0) + v;
-    // Skill/Ult multiplier bonus
-    if (con.type === 'skill_up')  scaledBase._skillMult  = (scaledBase._skillMult  || 0) + v;
-    if (con.type === 'ult_up')    scaledBase._ultMult    = (scaledBase._ultMult    || 0) + v;
+    // DOT
+    if (con.type === 'dot_dmg' || con.type === 'dot_dmg_up') scaledBase._dotDmgBonus = (scaledBase._dotDmgBonus || 0) + v;
+    if (con.type === 'dot_duration')  scaledBase._dotDurBonus  = Math.min(3, (scaledBase._dotDurBonus  || 0) + v);
+    // Aliases para tipos alternativos usados nos presets
+    if (con.type === 'crit_rate_up')  scaledBase.critRate = Math.min(100, scaledBase.critRate + v);
+    if (con.type === 'crit_dmg_up')   scaledBase.critDmg  += v;
+    if (con.type === 'break_up')      scaledBase.breakEffect += v;
+    // Elemental DMG bonus (armazenado em elementBonus para uso na batalha)
+    const elemDmgTypes = {
+      fire_dmg_up:'fire', ice_dmg_up:'ice', lightning_dmg:'lightning',
+      wind_dmg_up:'wind', water_dmg_up:'water', earth_dmg_up:'earth',
+      dark_dmg_up:'dark', holy_dmg_up:'holy', chaos_dmg_up:'chaos',
+      nature_dmg_up:'nature', quantum_dmg_up:'quantum', elemental_up:null
+    };
+    if (elemDmgTypes.hasOwnProperty(con.type)) {
+      scaledBase.elementBonus = scaledBase.elementBonus || {};
+      if (elemDmgTypes[con.type]) {
+        scaledBase.elementBonus[elemDmgTypes[con.type]] = (scaledBase.elementBonus[elemDmgTypes[con.type]] || 0) + v;
+      } else {
+        // elemental_up: aplica a todos
+        Object.keys(scaledBase.elementBonus).forEach(e => { scaledBase.elementBonus[e] = (scaledBase.elementBonus[e]||0)+v; });
+        scaledBase._allElemBonus = (scaledBase._allElemBonus||0)+v;
+      }
+    }
+    // Skill/Ult multiplier bonus — todos os aliases
+    if (con.type === 'skill_up' || con.type === 'skill_mult_up')  scaledBase._skillMult  = (scaledBase._skillMult  || 0) + v;
+    if (con.type === 'ult_up'   || con.type === 'ult_mult_up')    scaledBase._ultMult    = (scaledBase._ultMult    || 0) + v;
     if (con.type === 'basic_up')  scaledBase._basicMult  = (scaledBase._basicMult  || 0) + v;
-    // Heal bonus
-    if (con.type === 'heal_up')   scaledBase._healBonus  = (scaledBase._healBonus  || 0) + v;
-    // Shield bonus
+    // Heal / Shield / Support
+    if (con.type === 'heal_up' || con.type === 'heal_bonus_up') scaledBase._healBonus = (scaledBase._healBonus || 0) + v;
     if (con.type === 'shield_up') scaledBase._shieldBonus = (scaledBase._shieldBonus || 0) + v;
+    if (con.type === 'atk_buff_team') scaledBase._teamAtkBuff = (scaledBase._teamAtkBuff||0)+v;
     // Flat stats
     if (con.type === 'flat_atk')  scaledBase.atk += v;
     if (con.type === 'flat_hp')   scaledBase.hp  += v;
@@ -8615,7 +8654,7 @@ function buildFighter(ch, profile) {
       mult: skillMult('basic') * rolePen * _basicBonus,
       element:     ch.element,
       dotApply:    skills.basic?.dotApply    || null,
-      dotDuration: (skills.basic?.dotDuration || 1) + (scaledBase._dotDurBonus || 0),
+      dotDuration: Math.min(5, (skills.basic?.dotDuration || 1) + (scaledBase._dotDurBonus || 0)),
       spGen: 1,   // SP gerado
     },
     charged: {
@@ -8623,7 +8662,7 @@ function buildFighter(ch, profile) {
       mult: skillMult('charged') * rolePen * _skillBonus,
       element:     ch.element,
       dotApply:    skills.charged?.dotApply    || null,
-      dotDuration: (skills.charged?.dotDuration || 2) + (scaledBase._dotDurBonus || 0),
+      dotDuration: Math.min(5, (skills.charged?.dotDuration || 2) + (scaledBase._dotDurBonus || 0)),
       spCost: 1,  // SP gasto
     },
     ult: {
@@ -8631,7 +8670,7 @@ function buildFighter(ch, profile) {
       mult: skillMult('ult') * rolePen * _ultBonus,
       element:     ch.element,
       dotApply:    skills.ult?.dotApply    || null,
-      dotDuration: (skills.ult?.dotDuration || 2) + (scaledBase._dotDurBonus || 0),
+      dotDuration: Math.min(5, (skills.ult?.dotDuration || 2) + (scaledBase._dotDurBonus || 0)),
       energyCost: 100,
     },
   };
@@ -10259,10 +10298,15 @@ async function runDungeon(did, diff) {
     STATE.profile.foc = (STATE.profile.foc||0) + {easy:10,normal:25,hard:50}[diff];
 
     // XP items
-    if (!STATE.profile.artXpItems) STATE.profile.artXpItems = {axp3:0,axp4:0,axp5:0};
+    if (!STATE.profile.artXpItems)  STATE.profile.artXpItems  = {axp3:0,axp4:0,axp5:0};
+    if (!STATE.profile.weapXpItems) STATE.profile.weapXpItems = {wxp3:0,wxp4:0,wxp5:0};
     const xpDropTable = d.xpDrops || { easy:{axp3:3,axp4:1,axp5:0}, normal:{axp3:2,axp4:2,axp5:0}, hard:{axp3:1,axp4:2,axp5:1} };
     const xpDrop = xpDropTable[diff] || xpDropTable.normal;
     Object.entries(xpDrop).forEach(([k,v]) => { STATE.profile.artXpItems[k] = (STATE.profile.artXpItems[k]||0) + (v||0); });
+    // Weapon XP drops
+    const weapXpDropTable = d.weapXpDrops || { easy:{wxp3:2,wxp4:0,wxp5:0}, normal:{wxp3:1,wxp4:1,wxp5:0}, hard:{wxp3:1,wxp4:1,wxp5:0} };
+    const weapXpDrop = weapXpDropTable[diff] || weapXpDropTable.normal;
+    Object.entries(weapXpDrop).forEach(([k,v]) => { STATE.profile.weapXpItems[k] = (STATE.profile.weapXpItems[k]||0) + (v||0); });
     // Skill mats
     if (!STATE.profile.skillMats) STATE.profile.skillMats = {basic:0,advanced:0,legendary:0};
     const dungTier2 = d.tier || 3;
@@ -10285,6 +10329,7 @@ async function runDungeon(did, diff) {
     });
     updateFocDisplay();
     await givePartyXp(XP_DUNGEON[diff] || 80, "dungeon");
+    trackMissionProgress('dungeon', 1).catch(()=>{});
 
     const tierLabel = rarity===5?"🌟 T5 — Lendário!":rarity===4?"💜 T4 — Épico":"💙 T3 — Raro";
     const diffLabel = {easy:"🟢 Fácil",normal:"🟡 Normal",hard:"🔴 Difícil"}[diff];
@@ -10450,6 +10495,7 @@ async function fightFloor(fid, floorNum, focReward) {
     const newFloor = Math.max(STATE.profile.towerFloor||0, parseInt(floorNum));
     const alreadyCleared = (STATE.profile.towerFloor||0) >= parseInt(floorNum);
     STATE.profile.towerFloor = newFloor;
+    trackMissionProgress('tower', 1).catch(()=>{});
     STATE.profile.foc = (STATE.profile.foc||0) + (alreadyCleared ? Math.floor(focReward/2) : focReward);
     const fn = parseInt(floorNum)||1;
     const jcPerFloor = Math.round(fn * 2.5 + 10);
@@ -10626,6 +10672,7 @@ function pickStoryChoice(idx) {
     STATE.storyScene = choice.gotoScene;
   } else {
     STATE.storyScene++;
+  trackMissionProgress('story', 1).catch(()=>{});
   }
   if (STATE.storyScene >= STATE.storyChapter.scenes.length) endChapter();
   else playScene();
@@ -11435,19 +11482,57 @@ function admOpenCharForm(existing={}) {
           <div class="field"><label>Nome</label><input id="ac-con-${ci}-name" value="${con.name||''}"></div>
           <div class="field"><label>Tipo de Buff</label><select id="ac-con-${ci}-type">
             <option value="">— Nenhum —</option>
-            <option value="dmg_up"       ${con.type==="dmg_up"?"selected":""}>⚔ +% Dano Geral</option>
-            <option value="dot_dmg"      ${con.type==="dot_dmg"?"selected":""}>☠ +% Dano DOT</option>
-            <option value="dot_duration" ${con.type==="dot_duration"?"selected":""}>⏱ +Turnos DOT</option>
-            <option value="dot_unlock"   ${con.type==="dot_unlock"?"selected":""}>🔓 Desbloqueia DOT</option>
-            <option value="cr_up"        ${con.type==="cr_up"?"selected":""}>🎯 +% Crit Rate</option>
-            <option value="cd_up"        ${con.type==="cd_up"?"selected":""}>💥 +% Crit DMG</option>
-            <option value="atk_up"       ${con.type==="atk_up"?"selected":""}>⚔ +% ATK</option>
-            <option value="hp_up"        ${con.type==="hp_up"?"selected":""}>❤ +% HP</option>
-            <option value="buff_elemental"${con.type==="buff_elemental"?"selected":""}>🌟 +% DMG Elemental</option>
-            <option value="skill_enhance"${con.type==="skill_enhance"?"selected":""}>⚡ Melhora Skill</option>
-            <option value="extra_hit"    ${con.type==="extra_hit"?"selected":""}>🎯 Hit Extra na Skill</option>
-            <option value="energy_reduce"${con.type==="energy_reduce"?"selected":""}>🔋 Reduz custo energia</option>
-            <option value="passive_new"  ${con.type==="passive_new"?"selected":""}>✨ Nova Passiva</option>
+            <optgroup label="⚔ Dano">
+            <option value="dmg_up"        ${con.type==="dmg_up"?"selected":""}>⚔ +% Dano Geral</option>
+            <option value="basic_up"      ${con.type==="basic_up"?"selected":""}>⚔ +% Dano Ataque Básico</option>
+            <option value="skill_mult_up" ${con.type==="skill_mult_up"?"selected":""}>💢 +% Dano Skill Carregada</option>
+            <option value="ult_mult_up"   ${con.type==="ult_mult_up"?"selected":""}>💥 +% Dano Ultimate</option>
+            <option value="fire_dmg_up"   ${con.type==="fire_dmg_up"?"selected":""}>🔥 +% DMG Fogo</option>
+            <option value="ice_dmg_up"    ${con.type==="ice_dmg_up"?"selected":""}>❄ +% DMG Gelo</option>
+            <option value="lightning_dmg" ${con.type==="lightning_dmg"?"selected":""}>⚡ +% DMG Raio</option>
+            <option value="wind_dmg_up"   ${con.type==="wind_dmg_up"?"selected":""}>🌀 +% DMG Vento</option>
+            <option value="water_dmg_up"  ${con.type==="water_dmg_up"?"selected":""}>💧 +% DMG Água</option>
+            <option value="earth_dmg_up"  ${con.type==="earth_dmg_up"?"selected":""}>🌿 +% DMG Terra</option>
+            <option value="dark_dmg_up"   ${con.type==="dark_dmg_up"?"selected":""}>🌑 +% DMG Trevas</option>
+            <option value="holy_dmg_up"   ${con.type==="holy_dmg_up"?"selected":""}>✨ +% DMG Sagrado</option>
+            <option value="chaos_dmg_up"  ${con.type==="chaos_dmg_up"?"selected":""}>💜 +% DMG Caos</option>
+            <option value="nature_dmg_up" ${con.type==="nature_dmg_up"?"selected":""}>🍃 +% DMG Natureza</option>
+            <option value="quantum_dmg_up" ${con.type==="quantum_dmg_up"?"selected":""}>🔮 +% DMG Quântico</option>
+            <option value="elemental_up"  ${con.type==="elemental_up"?"selected":""}>🌟 +% DMG Elemental Geral</option>
+            </optgroup>
+            <optgroup label="📊 Stats">
+            <option value="cr_up"         ${con.type==="cr_up"?"selected":""}>🎯 +% Crit Rate</option>
+            <option value="crit_rate_up"  ${con.type==="crit_rate_up"?"selected":""}>🎯 +% Crit Rate (alt)</option>
+            <option value="cd_up"         ${con.type==="cd_up"?"selected":""}>💥 +% Crit DMG</option>
+            <option value="crit_dmg_up"   ${con.type==="crit_dmg_up"?"selected":""}>💥 +% Crit DMG (alt)</option>
+            <option value="atk_up"        ${con.type==="atk_up"?"selected":""}>⚔ +% ATK</option>
+            <option value="hp_up"         ${con.type==="hp_up"?"selected":""}>❤ +% HP</option>
+            <option value="def_up"        ${con.type==="def_up"?"selected":""}>🛡 +% DEF</option>
+            <option value="spd_up"        ${con.type==="spd_up"?"selected":""}>💨 +% SPD</option>
+            <option value="em_up"         ${con.type==="em_up"?"selected":""}>🌟 + Elem. Mastery</option>
+            <option value="er_up"         ${con.type==="er_up"?"selected":""}>🔋 +% Energy Recharge</option>
+            <option value="break_up"      ${con.type==="break_up"?"selected":""}>💔 +% Break Effect</option>
+            </optgroup>
+            <optgroup label="☠ DOT">
+            <option value="dot_dmg"       ${con.type==="dot_dmg"?"selected":""}>☠ +% Dano DOT</option>
+            <option value="dot_dmg_up"    ${con.type==="dot_dmg_up"?"selected":""}>☠ +% Dano DOT (alt)</option>
+            <option value="dot_duration"  ${con.type==="dot_duration"?"selected":""}>⏱ +Turnos DOT</option>
+            <option value="dot_unlock"    ${con.type==="dot_unlock"?"selected":""}>🔓 Desbloqueia DOT</option>
+            </optgroup>
+            <optgroup label="🌿 Suporte">
+            <option value="heal_up"       ${con.type==="heal_up"?"selected":""}>💚 +% Cura</option>
+            <option value="heal_bonus_up" ${con.type==="heal_bonus_up"?"selected":""}>💚 +% Bônus de Cura</option>
+            <option value="shield_up"     ${con.type==="shield_up"?"selected":""}>🛡 +% Escudo</option>
+            <option value="taunt_up"      ${con.type==="taunt_up"?"selected":""}>😤 +% Provocação</option>
+            <option value="atk_buff_team" ${con.type==="atk_buff_team"?"selected":""}>👥 Buff ATK do Time</option>
+            <option value="buff_elemental" ${con.type==="buff_elemental"?"selected":""}>🌟 Buff Elemental Time</option>
+            </optgroup>
+            <optgroup label="⚡ Skill">
+            <option value="skill_enhance" ${con.type==="skill_enhance"?"selected":""}>⚡ Melhora Skill</option>
+            <option value="extra_hit"     ${con.type==="extra_hit"?"selected":""}>🎯 Hit Extra na Skill</option>
+            <option value="energy_reduce" ${con.type==="energy_reduce"?"selected":""}>🔋 Reduz custo energia</option>
+            <option value="passive_new"   ${con.type==="passive_new"?"selected":""}>✨ Nova Passiva</option>
+            </optgroup>
           </select></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
@@ -11754,12 +11839,30 @@ async function admOpenBannerForm(type, existing={}) {
   <div style="font-family:'Cinzel',serif;color:var(--gold2);margin:12px 0 8px">⭐⭐⭐ Pool 3★</div>
   <div id="ab-pool3-list">${charCheckboxes(star3,"ab3",existing.pool3||[])}</div>
 
+  <!-- DROPS DE XP DE RELÍQUIA E ARMA (banner T3 garante esses itens ao puxar) -->
+  <div class="card" style="padding:12px;margin:12px 0;border-color:rgba(100,200,255,.2);background:rgba(80,180,255,.03)">
+    <div style="font-family:'Cinzel',serif;color:#88ccff;font-size:.85rem;margin-bottom:4px">🎁 Drops Garantidos por Pull (XP Items)</div>
+    <div style="font-size:.72rem;color:var(--txt3);margin-bottom:10px">Cada pull neste banner também concede esses itens de XP ao jogador. Ideal para banners T3.</div>
+    <div style="font-family:'Cinzel',serif;color:var(--gold2);font-size:.78rem;margin-bottom:6px">🔹 XP de Relíquia</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
+      <div class="field"><label style="font-size:.68rem">Cristal T3 🔹</label><input id="ab-axp3" type="number" min="0" value="\${existing.pullXp?.axp3??0}" placeholder="0"></div>
+      <div class="field"><label style="font-size:.68rem">Cristal T4 🔷</label><input id="ab-axp4" type="number" min="0" value="\${existing.pullXp?.axp4??0}" placeholder="0"></div>
+      <div class="field"><label style="font-size:.68rem">Cristal T5 💎</label><input id="ab-axp5" type="number" min="0" value="\${existing.pullXp?.axp5??0}" placeholder="0"></div>
+    </div>
+    <div style="font-family:'Cinzel',serif;color:var(--gold2);font-size:.78rem;margin-bottom:6px">🔶 XP de Arma</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div class="field"><label style="font-size:.68rem">Pedra T3 🔶</label><input id="ab-wxp3" type="number" min="0" value="\${existing.pullXp?.wxp3??0}" placeholder="0"></div>
+      <div class="field"><label style="font-size:.68rem">Pedra T4 🔷</label><input id="ab-wxp4" type="number" min="0" value="\${existing.pullXp?.wxp4??0}" placeholder="0"></div>
+      <div class="field"><label style="font-size:.68rem">Pedra T5 💠</label><input id="ab-wxp5" type="number" min="0" value="\${existing.pullXp?.wxp5??0}" placeholder="0"></div>
+    </div>
+  </div>
+
   <div class="field" style="margin-top:12px"><label>Status</label><select id="ab-active">
-    <option value="true" ${existing.active!==false?"selected":""}>✅ Ativo</option>
-    <option value="false" ${existing.active===false?"selected":""}>⏸ Pausado</option>
+    <option value="true" \${existing.active!==false?"selected":""}>✅ Ativo</option>
+    <option value="false" \${existing.active===false?"selected":""}>⏸ Pausado</option>
   </select></div>
   <div id="ab-msg"></div>
-  <button class="btn btn-gold btn-full" style="margin-top:12px" onclick="admSaveBanner('${type}','${existing.id||""}')">💾 Salvar Banner</button>
+  <button class="btn btn-gold btn-full" style="margin-top:12px" onclick="admSaveBanner('\${type}','\${existing.id||""}')">💾 Salvar Banner</button>
   `);
   // Store catalog ids for save
   window._bannerCatalog5  = star5;
@@ -11791,7 +11894,15 @@ async function admSaveBanner(type, existingId) {
   const endsAt = days>0 ? Date.now()+days*86400000 : null;
   const col = type==="char"?"banners_char":"banners_weap";
   const id = existingId || "banner_"+Date.now();
-  await setAdminDoc(col, id, {id, name, element, active, imageUrl, charImageUrl, featured, pool50, pool4, pool3, endsAt});
+  const pullXp = {
+    axp3: parseInt(document.getElementById("ab-axp3")?.value)||0,
+    axp4: parseInt(document.getElementById("ab-axp4")?.value)||0,
+    axp5: parseInt(document.getElementById("ab-axp5")?.value)||0,
+    wxp3: parseInt(document.getElementById("ab-wxp3")?.value)||0,
+    wxp4: parseInt(document.getElementById("ab-wxp4")?.value)||0,
+    wxp5: parseInt(document.getElementById("ab-wxp5")?.value)||0,
+  };
+  await setAdminDoc(col, id, {id, name, element, active, imageUrl, charImageUrl, featured, pool50, pool4, pool3, endsAt, pullXp});
   closeModal(); admRenderBanners(); loadBanners();
   toast("✔ Banner salvo!");
 }
@@ -12319,27 +12430,52 @@ async function admOpenDungeonForm(existing={}) {
       </div>`}
   </div>
 
-  <!-- DROPS DE ITENS DE XP -->
+  <!-- DROPS DE ITENS DE XP DE RELÍQUIA -->
   <div class="card" style="padding:12px;margin-bottom:10px;border-color:rgba(100,200,255,.2);background:rgba(80,180,255,.03)">
-    <div style="font-family:'Cinzel',serif;color:#88ccff;font-size:.88rem;margin-bottom:8px">📦 Drops de Itens de XP de Relíquia por Dificuldade</div>
+    <div style="font-family:'Cinzel',serif;color:#88ccff;font-size:.88rem;margin-bottom:8px">🔹 Drops de XP de Relíquia por Dificuldade</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       <div style="text-align:center">
         <div style="font-size:.72rem;color:#88ff88;font-family:'Cinzel',serif;margin-bottom:6px">🟢 Fácil</div>
-        <div class="field"><label style="font-size:.68rem">XP T3</label><input id="ad-xp-e3" type="number" value="${existing.xpDrops?.easy?.axp3??3}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T4</label><input id="ad-xp-e4" type="number" value="${existing.xpDrops?.easy?.axp4??1}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T5</label><input id="ad-xp-e5" type="number" value="${existing.xpDrops?.easy?.axp5??0}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T3</label><input id="ad-xp-e3" type="number" value="${existing.xpDrops?.easy?.axp3??3}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T4</label><input id="ad-xp-e4" type="number" value="${existing.xpDrops?.easy?.axp4??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T5</label><input id="ad-xp-e5" type="number" value="${existing.xpDrops?.easy?.axp5??0}" min="0"></div>
       </div>
       <div style="text-align:center">
         <div style="font-size:.72rem;color:var(--gold);font-family:'Cinzel',serif;margin-bottom:6px">🟡 Normal</div>
-        <div class="field"><label style="font-size:.68rem">XP T3</label><input id="ad-xp-n3" type="number" value="${existing.xpDrops?.normal?.axp3??2}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T4</label><input id="ad-xp-n4" type="number" value="${existing.xpDrops?.normal?.axp4??2}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T5</label><input id="ad-xp-n5" type="number" value="${existing.xpDrops?.normal?.axp5??0}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T3</label><input id="ad-xp-n3" type="number" value="${existing.xpDrops?.normal?.axp3??2}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T4</label><input id="ad-xp-n4" type="number" value="${existing.xpDrops?.normal?.axp4??2}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T5</label><input id="ad-xp-n5" type="number" value="${existing.xpDrops?.normal?.axp5??0}" min="0"></div>
       </div>
       <div style="text-align:center">
         <div style="font-size:.72rem;color:#ff8080;font-family:'Cinzel',serif;margin-bottom:6px">🔴 Difícil</div>
-        <div class="field"><label style="font-size:.68rem">XP T3</label><input id="ad-xp-h3" type="number" value="${existing.xpDrops?.hard?.axp3??1}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T4</label><input id="ad-xp-h4" type="number" value="${existing.xpDrops?.hard?.axp4??2}" min="0"></div>
-        <div class="field"><label style="font-size:.68rem">XP T5</label><input id="ad-xp-h5" type="number" value="${existing.xpDrops?.hard?.axp5??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T3</label><input id="ad-xp-h3" type="number" value="${existing.xpDrops?.hard?.axp3??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T4</label><input id="ad-xp-h4" type="number" value="${existing.xpDrops?.hard?.axp4??2}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Cristal T5</label><input id="ad-xp-h5" type="number" value="${existing.xpDrops?.hard?.axp5??1}" min="0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DROPS DE ITENS DE XP DE ARMA -->
+  <div class="card" style="padding:12px;margin-bottom:10px;border-color:rgba(255,180,60,.2);background:rgba(255,160,40,.03)">
+    <div style="font-family:'Cinzel',serif;color:#ffcc66;font-size:.88rem;margin-bottom:8px">🔶 Drops de XP de Arma por Dificuldade</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div style="text-align:center">
+        <div style="font-size:.72rem;color:#88ff88;font-family:'Cinzel',serif;margin-bottom:6px">🟢 Fácil</div>
+        <div class="field"><label style="font-size:.68rem">Pedra T3</label><input id="ad-wxp-e3" type="number" value="${existing.weapXpDrops?.easy?.wxp3??2}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T4</label><input id="ad-wxp-e4" type="number" value="${existing.weapXpDrops?.easy?.wxp4??0}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T5</label><input id="ad-wxp-e5" type="number" value="${existing.weapXpDrops?.easy?.wxp5??0}" min="0"></div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:.72rem;color:var(--gold);font-family:'Cinzel',serif;margin-bottom:6px">🟡 Normal</div>
+        <div class="field"><label style="font-size:.68rem">Pedra T3</label><input id="ad-wxp-n3" type="number" value="${existing.weapXpDrops?.normal?.wxp3??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T4</label><input id="ad-wxp-n4" type="number" value="${existing.weapXpDrops?.normal?.wxp4??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T5</label><input id="ad-wxp-n5" type="number" value="${existing.weapXpDrops?.normal?.wxp5??0}" min="0"></div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:.72rem;color:#ff8080;font-family:'Cinzel',serif;margin-bottom:6px">🔴 Difícil</div>
+        <div class="field"><label style="font-size:.68rem">Pedra T3</label><input id="ad-wxp-h3" type="number" value="${existing.weapXpDrops?.hard?.wxp3??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T4</label><input id="ad-wxp-h4" type="number" value="${existing.weapXpDrops?.hard?.wxp4??1}" min="0"></div>
+        <div class="field"><label style="font-size:.68rem">Pedra T5</label><input id="ad-wxp-h5" type="number" value="${existing.weapXpDrops?.hard?.wxp5??0}" min="0"></div>
       </div>
     </div>
   </div>
@@ -12475,6 +12611,11 @@ async function admSaveDungeon(eid) {
     normal: { axp3:parseInt(document.getElementById("ad-xp-n3")?.value)||2, axp4:parseInt(document.getElementById("ad-xp-n4")?.value)||2, axp5:parseInt(document.getElementById("ad-xp-n5")?.value)||0 },
     hard:   { axp3:parseInt(document.getElementById("ad-xp-h3")?.value)||1, axp4:parseInt(document.getElementById("ad-xp-h4")?.value)||2, axp5:parseInt(document.getElementById("ad-xp-h5")?.value)||1 },
   };
+  const weapXpDrops = {
+    easy:   { wxp3:parseInt(document.getElementById("ad-wxp-e3")?.value)||2, wxp4:parseInt(document.getElementById("ad-wxp-e4")?.value)||0, wxp5:parseInt(document.getElementById("ad-wxp-e5")?.value)||0 },
+    normal: { wxp3:parseInt(document.getElementById("ad-wxp-n3")?.value)||1, wxp4:parseInt(document.getElementById("ad-wxp-n4")?.value)||1, wxp5:parseInt(document.getElementById("ad-wxp-n5")?.value)||0 },
+    hard:   { wxp3:parseInt(document.getElementById("ad-wxp-h3")?.value)||1, wxp4:parseInt(document.getElementById("ad-wxp-h4")?.value)||1, wxp5:parseInt(document.getElementById("ad-wxp-h5")?.value)||0 },
+  };
 
   // Monta objeto — remove todos os undefined/null que quebram o Firestore
   const payload = {
@@ -12500,6 +12641,7 @@ async function admSaveDungeon(eid) {
     artifactSetIds,
     artifactSets,
     xpDrops,
+    weapXpDrops,
   };
 
   setMsg("⏳ Salvando no Firebase...","ok");
@@ -14885,6 +15027,28 @@ async function checkDailyMissions() {
     await saveProfile(STATE.user.uid, {dailyMissions: profile.dailyMissions});
   }
 }
+// Incrementa o progresso de qualquer missao diaria pelo tipo
+async function trackMissionProgress(type, amount) {
+  if (!STATE.profile || !STATE.user) return;
+  amount = amount || 1;
+  await checkDailyMissions();
+  const dm = STATE.profile.dailyMissions;
+  let changed = false;
+  DAILY_MISSIONS.forEach(function(m) {
+    if (m.type === type && !dm.completed[m.id]) {
+      const cur = dm.progress[m.id] || 0;
+      if (cur < m.required) {
+        dm.progress[m.id] = Math.min(m.required, cur + amount);
+        changed = true;
+      }
+    }
+  });
+  if (changed) {
+    STATE.profile.dailyMissions = dm;
+    await saveProfile(STATE.user.uid, {dailyMissions: dm});
+  }
+}
+window.trackMissionProgress = trackMissionProgress;
 async function claimDailyMission(missionId) {
   const mission = DAILY_MISSIONS.find(m=>m.id===missionId);
   if (!mission) return;
@@ -16336,6 +16500,56 @@ function computeEffective(base, weap, arts) {
     if ((art.mainStat||'').toLowerCase().includes('heal')) hb += art.mainStatVal || 0;
   }
 
+  // ── Artifact SET BONUSES (2pc / 4pc) ──
+  // Conta peças por set
+  const artSetCount = {};
+  for (const art of (arts || [])) {
+    const sn = art.set || art.setName || "";
+    if (sn) artSetCount[sn] = (artSetCount[sn] || 0) + 1;
+  }
+  // Busca definição de bônus do set (Firebase ou ARTIFACT_SET_PRESETS hardcoded)
+  const _allSetDefs = (window._cachedArtSetDefs || window.ARTIFACT_SET_PRESETS || []);
+  function getSetDef(name) {
+    return _allSetDefs.find(s => s.name === name) || null;
+  }
+  // Parser de string de bônus: "ATK +18%" / "Crit Rate +8%" / "DMG Ice +14%" etc.
+  function parseSetBonus(bonusStr, pieces) {
+    if (!bonusStr) return;
+    const s = bonusStr.toLowerCase();
+    const numM = bonusStr.match(/[+-]?[\d.]+/);
+    const v = numM ? parseFloat(numM[0]) : 0;
+    if (!v) return;
+    if (s.includes("atk") && s.includes("%") && !s.includes("crit") && !s.includes("dmg")) atkPct += v;
+    else if (s.includes("atk") && !s.includes("%") && !s.includes("dmg")) atk += v;
+    else if (s.includes("hp") && s.includes("%")) hpPct += v;
+    else if (s.includes("hp") && !s.includes("%")) hp += v;
+    else if (s.includes("def") && s.includes("%")) defPct += v;
+    else if (s.includes("def") && !s.includes("%")) def += v;
+    else if (s.includes("crit rate") || (s.includes("crit") && s.includes("rate"))) cr += v;
+    else if (s.includes("crit dmg") || (s.includes("crit") && s.includes("dmg"))) cd += v;
+    else if (s.includes("energy") || s.includes("recharge") || s.includes("er +")) er += v;
+    else if (s.includes("break")) be += v;
+    else if (s.includes("mastery") || s.includes("em +")) em += v;
+    else if (s.includes("spd") || s.includes("speed")) spd += v;
+    else if (s.includes("heal")) hb += v;
+    // 2pc element dmg bonus — stored for battle use
+    // We flag it on the return object later
+  }
+  const _set2pcActive = [];
+  const _set4pcActive = [];
+  for (const [setName, count] of Object.entries(artSetCount)) {
+    const def = getSetDef(setName);
+    if (!def) continue;
+    if (count >= 2) {
+      parseSetBonus(def.bonus2pc || def.effect2pc || "", 2);
+      _set2pcActive.push(setName);
+    }
+    if (count >= 4) {
+      parseSetBonus(def.bonus4pc || def.effect4pc || "", 4);
+      _set4pcActive.push(setName);
+    }
+  }
+
   // Apply % bonuses
   atk = Math.round(atk * (1 + atkPct/100));
   hp  = Math.round(hp  * (1 + hpPct/100));
@@ -16352,6 +16566,8 @@ function computeEffective(base, weap, arts) {
     em:  Math.round(em),
     be:  Math.round(be*10)/10,
     healBonus: Math.round(hb*10)/10,
+    set2pc: _set2pcActive,
+    set4pc: _set4pcActive,
   };
 }
 window.computeEffective = computeEffective;
