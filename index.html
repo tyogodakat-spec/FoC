@@ -876,6 +876,47 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   to   { transform: scale(1) rotate(0deg); }
 }
 
+/* ── Buff badge pulse animation ── */
+@keyframes buffPulse {
+  0%, 100% { opacity: 1;    box-shadow: 0 0 5px currentColor; }
+  50%       { opacity: .75; box-shadow: 0 0 10px currentColor; }
+}
+
+/* ── Buff banner flutuante que aparece quando um buff é aplicado ── */
+#buff-banner-container {
+  position: fixed;
+  top: 80px;
+  right: 12px;
+  z-index: 7000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-end;
+}
+.buff-banner-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.82);
+  border-left: 3px solid currentColor;
+  font-size: .72rem;
+  font-family: 'Cinzel', serif;
+  animation: buffBannerIn .35s cubic-bezier(.34,1.56,.64,1) forwards, buffBannerOut .4s ease-in .25s forwards;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+@keyframes buffBannerIn {
+  from { transform: translateX(60px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes buffBannerOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; transform: translateX(30px); }
+}
+
 /* ── Efeito de Phase 2 ── */
 @keyframes phase2Transition {
   0%   { filter: brightness(1) hue-rotate(0deg); }
@@ -1671,6 +1712,8 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 <div id="boss-impact-overlay"></div>
 <div id="crit-impact-overlay"></div>
 <div id="combat-vignette"></div>
+<!-- Buff banner flutuante: aparece no canto superior direito quando buffs são aplicados -->
+<div id="buff-banner-container"></div>
 
 <!-- ══ WUTHERING WAVES BANNER ANIMATION ══ -->
 <div id="wuwa-banner-anim">
@@ -6286,15 +6329,28 @@ function renderEndgame() {
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
     ${WEEKLY_HUNT_PRESETS.map(wh => {
-      const prog = weeklyProgress[wh.id] || { attempts:0, defeated:false };
-      const attLeft = wh.maxAttempts - (prog.attempts||0);
+      const prog = weeklyProgress[wh.id] || { attempts:0, defeated:false, lastHuntTime:0 };
+      const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+      const nowMs = Date.now();
+      const lastHuntMs = prog.lastHuntTime || 0;
+      const elapsed = nowMs - lastHuntMs;
+      const onCooldown = lastHuntMs > 0 && elapsed < THREE_DAYS_MS;
+      let cooldownLabel = '';
+      if (onCooldown) {
+        const hoursLeft = Math.ceil((THREE_DAYS_MS - elapsed) / (1000 * 60 * 60));
+        const daysLeft  = Math.floor(hoursLeft / 24);
+        const hRem      = hoursLeft % 24;
+        cooldownLabel   = daysLeft > 0 ? `${daysLeft}d ${hRem}h` : `${hoursLeft}h`;
+      }
       const defeated = prog.defeated||false;
-      return `<div class="card" style="border-color:rgba(255,${defeated?'180':80},${defeated?'80':80},.${defeated?'5':'2'});position:relative">
-        ${defeated?`<div style="position:absolute;top:10px;right:10px;background:rgba(42,153,72,.25);border:1px solid #2a9948;color:#80ff90;padding:2px 8px;border-radius:12px;font-size:.65rem;font-family:'Cinzel',serif">DERROTADO ✓</div>`:""}
+      const statusColor = onCooldown ? '255,200,0' : (defeated ? '180,255,80' : '255,80,80');
+      return `<div class="card" style="border-color:rgba(${statusColor},.${onCooldown||defeated?'5':'2'});position:relative">
+        ${defeated&&!onCooldown?`<div style="position:absolute;top:10px;right:10px;background:rgba(42,153,72,.25);border:1px solid #2a9948;color:#80ff90;padding:2px 8px;border-radius:12px;font-size:.65rem;font-family:'Cinzel',serif">DERROTADO ✓</div>`:""}
+        ${onCooldown?`<div style="position:absolute;top:10px;right:10px;background:rgba(180,120,0,.25);border:1px solid #c8a000;color:#ffd055;padding:2px 8px;border-radius:12px;font-size:.65rem;font-family:'Cinzel',serif">⏳ ${cooldownLabel}</div>`:""}
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
           <div style="font-size:2.2rem">${wh.icon}</div>
           <div>
-            <div style="font-family:'Cinzel',serif;color:${defeated?'#80ff90':'#ff8080'};font-size:.9rem">${wh.name}</div>
+            <div style="font-family:'Cinzel',serif;color:${defeated&&!onCooldown?'#80ff90':onCooldown?'#ffd055':'#ff8080'};font-size:.9rem">${wh.name}</div>
             <div style="font-size:.7rem;color:var(--txt3)">Req: Lv${wh.requiredLevel}+ • ${wh.bossHp.toLocaleString()} HP</div>
           </div>
         </div>
@@ -6309,8 +6365,8 @@ function renderEndgame() {
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div style="font-size:.72rem;color:var(--txt3)">🔵 ${wh.blonsReward} Blons • ✨ ${wh.focReward} FoC</div>
           <div style="display:flex;gap:6px;align-items:center">
-            <span style="font-size:.72rem;color:${attLeft>0?'#ffcc44':'#ff6666'}">${attLeft}/${wh.maxAttempts} tent.</span>
-            <button class="btn btn-red btn-sm" onclick="runWeeklyHunt('${wh.id}')" ${attLeft<=0||defeated?"disabled":""}>⚔ Caçar</button>
+            <span style="font-size:.72rem;color:${onCooldown?'#ffd055':'#ffcc44'}">⏳ Cooldown: 3 dias</span>
+            <button class="btn btn-red btn-sm" onclick="runWeeklyHunt('${wh.id}')" ${onCooldown?"disabled":""}>⚔ Caçar</button>
           </div>
         </div>
       </div>`;
@@ -6554,8 +6610,21 @@ async function runWeeklyHunt(id) {
   if (!wh) return;
   const profile = STATE.profile;
   if (!profile.weeklyHuntProgress) profile.weeklyHuntProgress = {};
-  const prog = profile.weeklyHuntProgress[id] || { attempts:0, defeated:false };
-  if (prog.attempts >= wh.maxAttempts || prog.defeated) { toast("Sem tentativas restantes!","err"); return; }
+  const prog = profile.weeklyHuntProgress[id] || { attempts:0, defeated:false, lastHuntTime:0 };
+
+  // ── Cooldown de 3 dias por caça ───────────────────────────────────────────
+  const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const lastHunt = prog.lastHuntTime || 0;
+  const elapsed  = now - lastHunt;
+  if (lastHunt > 0 && elapsed < THREE_DAYS_MS) {
+    const hoursLeft = Math.ceil((THREE_DAYS_MS - elapsed) / (1000 * 60 * 60));
+    const daysLeft  = Math.floor(hoursLeft / 24);
+    const hRem      = hoursLeft % 24;
+    const label     = daysLeft > 0 ? `${daysLeft}d ${hRem}h` : `${hoursLeft}h`;
+    toast(`⏳ Cooldown ativo! Próxima caça em: ${label}`, "err");
+    return;
+  }
   const teamIds = profile.team||[];
   const chars = profile.characters||[];
   const team = teamIds.map(id=>chars.find(c=>c.id===id)).filter(Boolean);
@@ -6565,6 +6634,10 @@ async function runWeeklyHunt(id) {
   toast(`⚔ Caçando ${wh.name}...`,"warn");
   await sleep(2000);
   prog.attempts = (prog.attempts||0)+1;
+  // Registra o momento desta caça para o cooldown de 3 dias
+  prog.lastHuntTime = now;
+  prog.defeated = false; // reset para permitir re-caça após cooldown
+
   const winChance = Math.min(0.92, 0.15 + (avgLv/50)*0.6 + (team.length/4)*0.17);
   const won = Math.random() < winChance;
   if (won) {
@@ -6589,16 +6662,18 @@ async function runWeeklyHunt(id) {
         <span style="color:#66ccff;font-family:'Cinzel',serif">🔵 +${wh.blonsReward}</span>
         <span style="color:var(--gold);font-family:'Cinzel',serif">✨ +${wh.focReward} FoC</span>
       </div>
+      <div style="margin-top:10px;font-size:.75rem;color:var(--txt3)">⏳ Próxima caça disponível em 3 dias</div>
       <button class="btn btn-gold" style="margin-top:16px" onclick="closeModal();renderEndgame()">OK</button>
     </div>`);
   } else {
     profile.weeklyHuntProgress[id] = prog;
     await saveProfile(STATE.user.uid, { weeklyHuntProgress:profile.weeklyHuntProgress });
-    openModal(`💀 Derrota — ${prog.attempts}/${wh.maxAttempts} tentativas`,`
+    openModal(`💀 Derrota — ${wh.name}`,`
     <div style="text-align:center;padding:20px">
       <div style="font-size:3rem;margin-bottom:12px">💀</div>
       <div style="color:#ff8080;font-family:'Cinzel',serif;margin-bottom:8px">Equipe derrotada!</div>
-      <div style="color:var(--txt3);font-size:.82rem">Fortaleça seus heróis. ${wh.maxAttempts-(prog.attempts)} tentativas restantes.</div>
+      <div style="color:var(--txt3);font-size:.82rem">Fortaleça seus heróis e retorne em 3 dias.</div>
+      <div style="margin-top:8px;font-size:.75rem;color:var(--txt3)">⏳ Cooldown de 3 dias ativado</div>
       <button class="btn btn-gold" style="margin-top:16px" onclick="closeModal();renderEndgame()">OK</button>
     </div>`);
   }
@@ -7315,7 +7390,7 @@ function renderNav() {
     {id:"inventory",label:"🎒 Inventário"}, {id:"dungeon",label:"⚔ Dungeon"},
     {id:"tower",label:"🏰 Torre"},
     {id:"endgame",label:"✦ End-Game"},
-    {id:"guild",label:"🛡 Guilda"}, {id:"shop",label:"🛒 Loja"},
+    {id:"guild",label:"🛡 Guilda"},
   ];
   if (STATE.adminMode) tabs.push({id:"admin",label:"👑 Admin"});
   $("nav-tabs").innerHTML = tabs.map(t=>
@@ -7486,9 +7561,23 @@ async function doPull(count, bannerId) {
       const existing = STATE.profile.characters.find(c=>c.id===item.id);
       if (existing) existing.dupes=(existing.dupes||0)+1;
       else STATE.profile.characters.push({...item, level:1, dupes:0, equippedWeapon:null, artifacts:{}});
+    } else if (item._noWeapon) {
+      // Compensação: nenhuma arma neste pull, mas ganha pedras de XP de arma
+      if (!STATE.profile.weapXpItems) STATE.profile.weapXpItems = {wxp3:0, wxp4:0, wxp5:0};
+      // Dá 2 pedras T3 e 1 pedra T4 como compensação pelo slot vazio
+      STATE.profile.weapXpItems.wxp3 = (STATE.profile.weapXpItems.wxp3 || 0) + 2;
+      STATE.profile.weapXpItems.wxp4 = (STATE.profile.weapXpItems.wxp4 || 0) + 1;
     } else {
       if (!STATE.profile.weapons) STATE.profile.weapons=[];
-      STATE.profile.weapons.push({...item, level:1, refine:1});
+      // Verifica se já existe uma cópia desta arma (pelo weaponId ou name)
+      const existingWeapon = STATE.profile.weapons.find(w => w.name === item.name && w.rarity === item.rarity);
+      if (existingWeapon) {
+        // Já tem essa arma: incrementa dupes para refinamento
+        existingWeapon.dupes = (existingWeapon.dupes || 0) + 1;
+      } else {
+        // Primeira cópia: adiciona ao inventário
+        STATE.profile.weapons.push({...item, level:1, refine:1, refinement:1, dupes:0});
+      }
     }
   }
 
@@ -7596,13 +7685,17 @@ function generatePull(banner, isChar, profile, pk5, pk4, gk) {
 
   // 3★ — armas T3 foram removidas do jogo.
   // Personagens 3★ ainda podem existir (banneres de personagem podem ter pool3).
-  // Armas: se cair aqui, promove para 4★ aleatório do pool4.
+  // Armas no banner de armas: 30% promove para T4, 70% retorna "nada" (compensado em FoC).
   const pool3 = banner.pool3 || [];
   if (!isChar) {
-    // Arma: promove para 4★
-    const pool4fb = banner.pool4 || banner.featured || [];
-    const nameFb  = pool4fb.length ? pool4fb[Math.floor(Math.random() * pool4fb.length)] : null;
-    if (nameFb) return buildItem(nameFb, 4, false, banner);
+    // 30% chance de T4, 70% retorna null (sem arma — o chamador trata como compensação)
+    if (Math.random() < 0.30) {
+      const pool4fb = banner.pool4 || banner.featured || [];
+      const nameFb  = pool4fb.length ? pool4fb[Math.floor(Math.random() * pool4fb.length)] : null;
+      if (nameFb) return buildItem(nameFb, 4, false, banner);
+    }
+    // "Nada" — retorna objeto especial que será tratado como compensação de FoC
+    return { _noWeapon: true, type: 'weapon', rarity: 0, name: 'Sem arma', focCompensation: 5 };
   }
   const name = pool3.length ? pool3[Math.floor(Math.random() * pool3.length)] : "Item Comum";
   return buildItem(name, 3, isChar, banner);
@@ -7616,21 +7709,54 @@ function buildItem(name, rarity, isChar, banner) {
   const catalogItems = catalog[catalogKey] || [];
   const found = catalogItems.find(x => x.name === name);
   if (found) {
-    // Use full catalog data
+    // Para armas: garante que presetKey está presente para que a passiva funcione
+    // Procura no WEAPON_PRESETS pelo nome (case-insensitive) se não vier no catalog
+    let weapPresetKey = found.presetKey || found.presetId || '';
+    if (!isChar && !weapPresetKey) {
+      const wpEntries = Object.entries(window.WEAPON_PRESETS || {});
+      const wpMatch = wpEntries.find(([k, v]) => v.label && v.label.includes(name));
+      if (wpMatch) weapPresetKey = wpMatch[0];
+    }
     return {
       ...found,
+      presetKey: weapPresetKey || found.id || '',
       type: isChar ? "character" : "weapon",
       level: 1, energy: 0,
-      // Preserve stats and ultimate from catalog
       stats: found.stats || {hp:1000,atk:100,def:80,critRate:10,critDmg:50,energyRecharge:100,spd:100,elementalMastery:0,breakEffect:0,elementBonus:{}},
       ultimate: found.ultimate || {name:name+" Ult",dmgMultiplier:200,scale:"atk",energyCost:100,hits:1},
     };
   }
-  // Fallback if not in catalog
+  // Fallback: não está no catalog — tenta achar no WEAPON_PRESETS pelo nome
+  let fallbackPresetKey = '';
+  if (!isChar) {
+    const wpEntries = Object.entries(window.WEAPON_PRESETS || {});
+    const wpMatch = wpEntries.find(([k, v]) =>
+      v.label && v.label.toLowerCase().includes(name.toLowerCase())
+    );
+    if (wpMatch) {
+      fallbackPresetKey = wpMatch[0];
+      const wp = wpMatch[1];
+      // Usa os stats do WEAPON_PRESETS diretamente se disponível
+      return {
+        id: fallbackPresetKey + '_' + Date.now(),
+        name, rarity,
+        presetKey: fallbackPresetKey,
+        weaponType: wp.weaponType || '',
+        element: banner.element || els[Math.floor(Math.random()*els.length)],
+        icon: "⚔",
+        type: "weapon",
+        imageUrl: wp.imageUrl || banner.charImageUrl || '',
+        level: 1, energy: 0,
+        stats: wp.stats || {},
+        passive: wp.passive || null,
+      };
+    }
+  }
   const elem = banner.element || els[Math.floor(Math.random()*els.length)];
   const id = name.toLowerCase().replace(/\s+/g,"_")+"_"+rarity;
   return {
     id, name, rarity, element: elem,
+    presetKey: fallbackPresetKey || id,
     icon: isChar ? (ELEMENTS[elem]||"🌟") : "⚔",
     type: isChar ? "character" : "weapon",
     imageUrl: banner.charImageUrl||"",
@@ -7669,6 +7795,21 @@ function showPullOverlay(results, isChar) {
   sorted.forEach((item,i)=>{
     setTimeout(()=>{
       const div = document.createElement("div");
+      // Slot vazio (_noWeapon): card cinza com ícone de XP
+      if (item._noWeapon) {
+        div.className = 'pc';
+        div.style.animationDelay = i*0.08+"s";
+        div.style.background = 'linear-gradient(135deg,#0a0f1a,#111a28)';
+        div.style.border = '2px dashed rgba(150,150,150,.3)';
+        div.innerHTML = `<div class="pc-inner">
+          <div class="pc-icon" style="font-size:2rem;opacity:.6">🔶</div>
+          <div class="pc-name" style="color:#aaa">Sem Arma</div>
+          <div class="pc-type" style="color:#666">+2 Pedra T3</div>
+          <div class="pc-type" style="color:#666">+1 Pedra T4</div>
+        </div>`;
+        row.appendChild(div);
+        return;
+      }
       div.className = `pc r${item.rarity}`;
       div.style.animationDelay = i*0.08+"s";
       div.innerHTML = `<div class="pc-inner">
@@ -7886,7 +8027,18 @@ function renderInvWeapons() {
   $("inv-content").innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px">
   ${weapons.map((w,i)=>{
     const equippedBy = chars.find(ch=>(ch.equippedWeapon||null)===w.id);
-    const st = w.stats || {};
+    const st = w.stats || (window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||""]?.stats || {};
+    // ATK atual escalado
+    const MAX_WEAP_MULT = {5:2.00,4:1.85,3:1.65,2:1.45,1:1.30};
+    const wRar = Math.min(5,Math.max(1,w.rarity||3));
+    const wLvl = Math.min(20,Math.max(1,w.level||1));
+    const curMult = wLvl===1?1.0:1+(MAX_WEAP_MULT[wRar]-1)*Math.log(wLvl)/Math.log(20);
+    const curAtk = st.baseAtk ? Math.round(st.baseAtk*curMult) : (st.atk||0);
+    const sstLabel = {critRate:'CR',critDmg:'CDMG',energyRecharge:'ER',elementalMastery:'EM',
+                      breakEffect:'BE',spd:'SPD',atkPct:'ATK%',hpPct:'HP%',defPct:'DEF%',hp:'HP',def:'DEF'};
+    const subStr = (st.substatType&&st.substatVal)
+      ? `${sstLabel[st.substatType]||st.substatType} +${st.substatVal}${['critRate','critDmg','energyRecharge','breakEffect','atkPct','hpPct','defPct'].includes(st.substatType)?'%':''}`
+      : '';
     return `<div class="ccard border-r${w.rarity}" style="border:1px solid rgba(212,168,67,.2)">
       <div style="display:flex;gap:8px;align-items:flex-start">
         ${w.imageUrl?`<img src="${w.imageUrl}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0" onerror="this.style.display='none'">`:`<span style="font-size:2rem">⚔</span>`}
@@ -7896,18 +8048,20 @@ function renderInvWeapons() {
         </div>
       </div>
       <div style="font-size:.72rem;color:var(--txt3);margin:6px 0 4px">
-        ${st.mainStatType?`${st.mainStatType.toUpperCase()} +${st.mainStatVal||0}`:""}
-        ${st.critRate?` • CR +${st.critRate}%`:""}
-        ${st.critDmg?` • CDMG +${st.critDmg}%`:""}
+        ${curAtk?`<span style="color:var(--gold)">ATK Lv${wLvl}: ${curAtk}</span>`:""} ${subStr?`<span style="color:#88aaff">• ${subStr}</span>`:""}
       </div>
-      ${w.passive&&w.passive.name?`<div style="font-size:.68rem;color:#88aaff;margin-bottom:6px">✨ ${w.passive.name}</div>`:""}
-      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px">
-        ${equippedBy?
-          `<div style="font-size:.65rem;color:var(--gold3);width:100%;margin-bottom:3px">⚔ ${equippedBy.name}</div>
-           <button class="btn btn-ghost btn-xs" style="flex:1" onclick="unequipWeapon('${w.id}')">Desequipar</button>`:
-          `<button class="btn btn-blue btn-xs" style="flex:1" onclick="openEquipWeapon('${w.id}')">Equipar</button>`
-        }
-        <button class="btn btn-xs" style="flex:1;background:rgba(255,170,0,.15);color:#ffcc44;border:1px solid rgba(255,170,0,.25)" onclick="openUpgradeWeaponPanel('${w.id}')">⬆ Lv.${w.level||1}</button>
+      ${w.passive&&w.passive.name?`<div style="font-size:.68rem;color:#88aaff;margin-bottom:4px">✨ ${w.passive.name}</div>`:""}
+      ${equippedBy
+        ? `<div style="font-size:.68rem;background:rgba(212,168,67,.12);border:1px solid rgba(212,168,67,.3);border-radius:6px;padding:3px 7px;margin-bottom:5px;color:var(--gold2);display:flex;align-items:center;gap:5px">
+             ${equippedBy.imageUrl?`<img src="${equippedBy.imageUrl}" style="width:16px;height:16px;border-radius:3px;object-fit:cover" onerror="this.style.display='none'">`:``}
+             ⚔ ${equippedBy.name}
+           </div>`
+        : ``}
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">
+        ${equippedBy
+          ? `<button class="btn btn-ghost btn-xs" style="flex:1" onclick="unequipWeapon('${w.id}')">Desequipar</button>`
+          : `<button class="btn btn-blue btn-xs" style="flex:1" onclick="openEquipWeapon('${w.id}')">Equipar</button>`}
+        <button class="btn btn-xs" style="flex:1;background:rgba(255,170,0,.15);color:#ffcc44;border:1px solid rgba(255,170,0,.25)" onclick="openUpgradeWeaponPanel('${w.id}')">⬆ Lv.${wLvl}</button>
         <button class="btn btn-xs" style="flex:1;background:rgba(100,180,255,.1);color:#88aaff;border:1px solid rgba(100,180,255,.2)" onclick="refineWeapon('${w.id}')" title="Refinar (requer 1 cópia duplicada)">✨ R${w.refinement||w.refine||1}${(w.dupes||0)>0?' 🔁'+w.dupes:''}</button>
       </div>
     </div>`;
@@ -7980,7 +8134,12 @@ function renderInvArtifacts() {
       <div style="font-size:.68rem;color:var(--txt3)">${a.set||""}</div>
       <div class="r${a.rarity||3}" style="font-size:.7rem;margin:3px 0">${"★".repeat(a.rarity||3)}</div>
       <div style="font-size:.72rem;color:var(--gold);margin-bottom:4px">${a.mainStat||""}</div>
-      ${equippedBy?`<div style="font-size:.65rem;color:var(--gold3)">📌 ${equippedBy.name}</div>`:""}
+      ${equippedBy
+        ? `<div style="font-size:.62rem;background:rgba(212,168,67,.14);border:1px solid rgba(212,168,67,.35);border-radius:5px;padding:2px 5px;color:var(--gold2);display:flex;align-items:center;gap:4px;margin-top:2px">
+             ${equippedBy.imageUrl?`<img src="${equippedBy.imageUrl}" style="width:13px;height:13px;border-radius:2px;object-fit:cover" onerror="this.style.display='none'">`:``}
+             📌 ${equippedBy.name}
+           </div>`
+        : ``}
     </div>`;
   }).join("")}
   </div>`;
@@ -8586,12 +8745,37 @@ function buildFighter(ch, profile) {
   const arts    = Object.values(artIds).map(id => (profile.artifacts || []).find(a => a.id === id)).filter(Boolean);
 
   // Weapon preset passiva
-  const wp          = weap ? (window.WEAPON_PRESETS?.[weap.presetKey] || {}) : {};
-  const wPassive    = wp.passive || weap?.passive || null;
-  const charPId     = ch.presetKey || ch.presetId || ch.id || '';
-  const passiveOk   = !wPassive?.passiveCondition ||
+  // Se a arma não tem presetKey (armas antigas salvas antes do fix), tenta resolver pelo nome
+  if (weap && !weap.presetKey) {
+    const wpEntries = Object.entries(window.WEAPON_PRESETS || {});
+    const wpMatch   = wpEntries.find(([k, v]) =>
+      v.label && weap.name && v.label.includes(weap.name.split(' ')[0])
+    );
+    if (wpMatch) weap.presetKey = wpMatch[0];
+  }
+  const wp       = weap ? (window.WEAPON_PRESETS?.[weap.presetKey] || {}) : {};
+  const wPassive = wp.passive || weap?.passive || null;
+
+  // Normaliza o presetKey do personagem da mesma forma que fighterPresetKey():
+  // remove sufixo numérico de timestamp e mapeia versões limitadas (_t5l) ao base.
+  const _rawPId = ch.presetKey || ch.presetId || ch.id || '';
+  const _noTs   = _rawPId.replace(/_\d+$/, '');
+  const _limitedMap = {
+    'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5',
+    'goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5',
+    'yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5',
+    'kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5',
+    'yuji_t5l':'yuji_t5','alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5',
+    'shinji_t5l':'shinji_t5','kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5',
+  };
+  const charPId = _limitedMap[_noTs] || _noTs;
+
+  const passiveOk = !wPassive?.passiveCondition ||
     charPId === wPassive.passiveCondition ||
-    (wp.charAffinity && charPId === wp.charAffinity);
+    charPId === wp.charAffinity ||
+    // fallback: testa também o ID sem normalização para armas equipadas manualmente
+    _rawPId === wPassive.passiveCondition ||
+    _rawPId === wp.charAffinity;
   const pa = (passiveOk && wPassive) ? wPassive : {};
   if (pa.atkPct)           scaledBase.atk = Math.round(scaledBase.atk * (1 + (pa.atkPct||0)/100));
   if (pa.critRate)         scaledBase.critRate += pa.critRate;
@@ -8600,6 +8784,19 @@ function buildFighter(ch, profile) {
   if (pa.breakEffect)      scaledBase.breakEffect    += pa.breakEffect;
   if (pa.spd)              scaledBase.spd            += pa.spd;
   if (pa.elementalMastery) scaledBase.elementalMastery += pa.elementalMastery;
+  // elementalDmg na passiva: adiciona ao elementBonus do elemento do personagem
+  // (ex: Rukia com Sode no Shirayuki ganha +28% DMG Gelo da passiva)
+  if (pa.elementalDmg && pa.elementalDmg > 0) {
+    const charElem = ch.element || '';
+    if (charElem) {
+      scaledBase.elementBonus = scaledBase.elementBonus || {};
+      scaledBase.elementBonus[charElem] = (scaledBase.elementBonus[charElem] || 0) + pa.elementalDmg;
+    }
+  }
+  // EM direto nos stats da arma (campo legado sem substatType — ex: sode_no_shirayuki tem elementalMastery:110 nos stats)
+  if (wp.stats && wp.stats.elementalMastery && !wp.stats.substatType) {
+    scaledBase.elementalMastery += wp.stats.elementalMastery;
+  }
 
   // computeEffective aplica weapon stats + artifact substats
   const eff = computeEffective(scaledBase, weap, arts);
@@ -8650,6 +8847,19 @@ function buildFighter(ch, profile) {
     },
   };
 
+    // Mescla elementBonus do scaledBase (constelações) com o da arma/relíquias (eff)
+    const _mergedElem = Object.assign({}, scaledBase.elementBonus || {}, eff.elementBonus || {});
+    // _weaponElemDmg é um campo especial deixado por computeEffective quando a passiva
+    // da arma tem elementalDmg mas computeEffective não sabe o elemento do personagem.
+    // Resolvemos aqui, onde temos ch.element disponível.
+    if (_mergedElem._weaponElemDmg) {
+      const _charElem = ch.element || '';
+      if (_charElem) {
+        _mergedElem[_charElem] = (_mergedElem[_charElem] || 0) + _mergedElem._weaponElemDmg;
+      }
+      delete _mergedElem._weaponElemDmg;
+    }
+
   return {
     id:      ch.id,
     presetKey: ch.presetKey || ch.id,
@@ -8665,7 +8875,7 @@ function buildFighter(ch, profile) {
     er:  eff.er  || 100,
     em:  eff.em  || 0,
     be:  eff.be  || 0,
-    elementBonus: Object.assign({}, scaledBase.elementBonus || {}, eff.elementBonus || {}),
+    elementBonus: _mergedElem,
     dotDmgBonus:  scaledBase._dotDmgBonus || 0,
     healBonus:    (eff.healBonus || 0) + (scaledBase._healBonus || 0),
     baseHealBonus:(eff.healBonus || 0) + (scaledBase._healBonus || 0),
@@ -8725,10 +8935,17 @@ function calcDmg(attacker, defender, skillMult, isCrit) {
     : 1.0;
   const critMult = isCrit ? (1 + (attacker.cd || 50) / 100) : 1.0;
   // Element bonus from relics/weapons (e.g. DMG fire% 38.8)
-  const elemBonus = 1 + ((attacker.elementBonus || {})[attacker.element] || 0) / 100;
-  // Elemental Mastery bonus (diminishing returns, like HSR)
+  const elemBonusBase = ((attacker.elementBonus || {})[attacker.element] || 0);
+  // Elemental Mastery bonus ao dano elemental — fórmula estilo Genshin:
+  // EM contribui como bônus de DMG elemental com retornos decrescentes.
+  // Fórmula: emDmgBonus% = EM * 0.25 / (EM + 1400) * 100
+  // Isso dá ~4% em 50 EM, ~9% em 100 EM, ~17% em 200 EM, ~24% em 300 EM, ~30% em 500 EM
+  // Máximo teórico ~25% — não quebra o jogo nem fica irrelevante.
   const emTotal = (attacker.em || 0) + (getBuff(attacker, "em") || 0);
-  const emBonus = 1 + Math.min(0.35, emTotal * 0.0015);
+  const emDmgBonusPct = emTotal > 0 ? (emTotal * 25) / (emTotal + 1400) : 0;
+  // Aplica EM bonus apenas quando o personagem usa seu próprio elemento
+  // (EM é irrelevante em dano físico ou de elemento errado)
+  const elemBonus = 1 + (elemBonusBase + emDmgBonusPct) / 100;
   // Debuff modifiers on defender
   const cursed    = defender.dots?.some(d => d.key === "curse");
   const shattered = defender.dots?.some(d => d.key === "shatter");
@@ -8741,7 +8958,7 @@ function calcDmg(attacker, defender, skillMult, isCrit) {
   const undeadMod = undead    ? 1.10 : 1.0;
   // Variance (0.92~1.08)
   const variance = 0.92 + Math.random() * 0.16;
-  return Math.max(1, Math.round(rawAtk * defMod * elemMod * critMult * elemBonus * emBonus * undeadMod * variance));
+  return Math.max(1, Math.round(rawAtk * defMod * elemMod * critMult * elemBonus * undeadMod * variance));
 }
 
 function rollCrit(fighter) {
@@ -8836,17 +9053,23 @@ function openCombatModal(boss, fighters) {
     return s + '</div>';
   }
 
-  var BUFF_ICONS  = {atkPct:'⚔+',critRate:'🎯+',critDmg:'💥+',spd:'💨+',em:'🌿+',er:'⚡+',be:'💔+',dmgBonus:'✨+',dotDmg:'☠+',dmgReduce:'🛡',healBonus:'💚+',flatAtk:'⚔',defPct:'🛡+'};
+  var BUFF_ICONS  = {atkPct:'⚔',critRate:'🎯',critDmg:'💥',spd:'💨',em:'🌿',er:'⚡',be:'💔',dmgBonus:'✨',dotDmg:'☠',dmgReduce:'🛡',healBonus:'💚',flatAtk:'⚔',defPct:'🛡',er:'⚡'};
+  var BUFF_LABELS = {atkPct:'ATK',critRate:'CR',critDmg:'CDMG',spd:'SPD',em:'EM',er:'ER',be:'BE',dmgBonus:'DMG',dotDmg:'DOT',dmgReduce:'RES',healBonus:'HEAL',flatAtk:'ATK+',defPct:'DEF'};
   var BUFF_COLORS = {atkPct:'#ffaa44',critRate:'#ff6644',critDmg:'#ff8844',spd:'#44ffcc',em:'#88ff44',er:'#cc88ff',be:'#ff6666',dmgBonus:'#ffdd00',dotDmg:'#ff44aa',dmgReduce:'#44aaff',healBonus:'#44ff88',flatAtk:'#ffaa44',defPct:'#44aaff'};
   function buffBadges(fighter) {
     var buffs = fighter._buffs || {};
     var keys = Object.keys(buffs).filter(function(k){ return buffs[k] && buffs[k].turns > 0; });
     if (!keys.length) return '';
-    var s = '<div style="display:flex;gap:2px;flex-wrap:wrap;margin-top:2px">';
+    var s = '<div style="display:flex;gap:2px;flex-wrap:wrap;margin-top:3px">';
     keys.forEach(function(k) {
-      var b = buffs[k]; var icon = BUFF_ICONS[k]||'✨'; var col = BUFF_COLORS[k]||'#aaffaa';
-      var lbl = icon+b.value+(k.includes('Pct')||k.includes('Rate')||k.includes('Dmg')||k.includes('Bonus')||k.includes('dmg')||k==='er'||k==='spd'||k==='em'||k==='be'||k==='defPct'?'%':'');
-      s += '<span style="font-size:.52rem;padding:1px 4px;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid '+col+'44;color:'+col+'">'+lbl+' '+b.turns+'t</span>';
+      var b = buffs[k];
+      var icon  = BUFF_ICONS[k]  || '✨';
+      var label = BUFF_LABELS[k] || k;
+      var col   = BUFF_COLORS[k] || '#aaffaa';
+      var isPct = ['atkPct','critRate','critDmg','er','be','dmgBonus','dotDmg','dmgReduce','healBonus','defPct','spd','em'].includes(k);
+      var valStr = (b.value > 0 ? '+' : '') + b.value + (isPct ? '%' : '');
+      s += '<span style="font-size:.52rem;padding:2px 5px;border-radius:6px;background:rgba(0,0,0,.55);border:1px solid '+col+'55;color:'+col+';display:inline-flex;align-items:center;gap:2px" title="'+label+' '+valStr+' por '+b.turns+' turnos">'
+        + icon + ' <b>' + valStr + '</b> <span style="color:'+col+'88;font-size:.48rem">'+b.turns+'t</span></span>';
     });
     return s + '</div>';
   }
@@ -8995,7 +9218,39 @@ function openCombatModal(boss, fighters) {
       s += '<div style="width:'+ep+'%;height:100%;background:linear-gradient(90deg,#cc44ff,#ff88ff);transition:width .35s;border-radius:2px"></div></div>';
       s += '<div style="font-size:.5rem;color:#cc88ff;text-align:right;margin-top:1px">⚡'+Math.round(f.energy||0)+'/'+Math.round(f.maxEnergy||100)+'</div>';
       s += dotBadges(f.dots);
-      s += buffBadges(f);
+      // ── BUFF INDICATORS ─────────────────────────────────────────────────────
+      // Mostra buffs ativos de forma destacada abaixo do HP/energia
+      var fbuffs = f._buffs || {};
+      var fkeys  = Object.keys(fbuffs).filter(function(k){ return fbuffs[k] && fbuffs[k].turns > 0; });
+      if (fkeys.length) {
+        s += '<div style="margin-top:4px;display:flex;flex-direction:column;gap:2px">';
+        // Linha de ícones coloridos compactos
+        s += '<div style="display:flex;gap:2px;flex-wrap:wrap">';
+        fkeys.forEach(function(k) {
+          var b   = fbuffs[k];
+          var col = BUFF_COLORS[k] || '#aaffaa';
+          var icon= BUFF_ICONS[k]  || '✨';
+          var lbl = BUFF_LABELS[k] || k;
+          var isPct = ['atkPct','critRate','critDmg','er','be','dmgBonus','dotDmg','dmgReduce','healBonus','defPct','spd','em'].includes(k);
+          var val = (b.value > 0 ? '+' : '') + b.value + (isPct ? '%' : '');
+          // Badge com borda colorida e brilho sutil
+          s += '<div style="'
+            + 'background:rgba(0,0,0,.6);'
+            + 'border:1px solid '+col+';'
+            + 'border-radius:5px;'
+            + 'padding:1px 4px;'
+            + 'display:inline-flex;align-items:center;gap:2px;'
+            + 'box-shadow:0 0 5px '+col+'44;'
+            + 'animation:buffPulse 2s ease-in-out infinite;'
+            + '">'
+            + '<span style="font-size:.55rem">' + icon + '</span>'
+            + '<span style="font-size:.5rem;color:' + col + ';font-weight:bold;line-height:1">' + val + '</span>'
+            + '<span style="font-size:.44rem;color:' + col + '88;line-height:1">' + b.turns + 't</span>'
+            + '</div>';
+        });
+        s += '</div>';
+        s += '</div>';
+      }
       s += '</div>';
     });
     return s + '</div>';
@@ -9296,6 +9551,10 @@ function addBuff(target, key, value, turns) {
   const cur = target._buffs[key];
   if (!cur || cur.turns <= 0 || value > cur.value) {
     target._buffs[key] = { value, turns };
+    // Dispara o banner flutuante para notificar o jogador visualmente
+    if (typeof window.showBuffBanner === 'function' && target.name) {
+      window.showBuffBanner(target.name, key, value, turns);
+    }
   } else {
     // Estende duração se valor igual
     if (value === cur.value && turns > cur.turns) cur.turns = turns;
@@ -9360,7 +9619,27 @@ function resolveHealTarget(cs) {
 function isInTeam(cs, charId) {
   return cs.fighters.some(f => f.alive && (f.id === charId || f.presetKey === charId));
 }
-function fighterPresetKey(f) { return f.presetKey || f.id || ''; }
+function fighterPresetKey(f) {
+  const raw = f.presetKey || f.id || '';
+  // IDs gerados pelo gacha têm formato "presetKey_timestamp" (ex: "shoko_t5_1748293847")
+  // Normaliza removendo o sufixo numérico para sempre bater com os branches do mechPostDamage
+  const noTimestamp = raw.replace(/_\d+$/, '');
+  // Versões limitadas (_t5l, _t4l) são mapeadas para o presetKey base da mecânica
+  // para que Shoko limitada caia no branch shoko_t5, Sakura limitada em sakura_t5, etc.
+  const limitedMap = {
+    'shoko_t5l':  'shoko_t5',
+    'sakura_t5l': 'sakura_t5',
+    'naruto_t5l': 'naruto_t5',
+    'goku_t5l':   'goku_ssj_t5',
+    'sukuna_t5l': 'sukuna_t5',
+    'rukia_t5l':  'rukia_t5',
+    'yuji_t5l':   'yuji_t5',
+    'luffy_t5l':  'luffy_g5_t5',
+    'zoro_t5l':   'zoro_t5',
+    'kashimo_t5l':'kashimo_t5',
+  };
+  return limitedMap[noTimestamp] || noTimestamp;
+}
 function cLevel(f)           { return f._constellationLevel || 0; }
 
 // ── Avança ação do fighter (HSR: Action Forward / Action Delay) ────────────
@@ -9780,9 +10059,10 @@ async function doPlayerAction(f, cs, type) {
   const immune = elemM === 0;
   const weak   = elemM >= 1.5;
 
+  const _fpk = fighterPresetKey(f);
   const isHealerBasic = (f.charRole === 'healer' || f.charRole === 'support')
     && type === 'basic'
-    && ['shoko_t5','sakura_t5','uraume_t4'].includes(fighterPresetKey(f));
+    && ['shoko_t5','sakura_t5','uraume_t4'].includes(_fpk);
 
   let actualDmg = 0;
   if (!immune && !isHealerBasic) {
@@ -9796,22 +10076,51 @@ async function doPlayerAction(f, cs, type) {
     actualDmg = boss.broken ? Math.round(withBonus * 1.5) : withBonus;
     boss.hp   = Math.max(0, boss.hp - actualDmg);
 
-    // ── Dano elemental extra (ignora DEF) ─────────────────────────────────
-    // Todo personagem aplica dano do seu elemento proporcional ao elementBonus%.
-    // main_dps com elementBonus no preset = aplicador focado (fator 1.0).
-    // Outros roles ou sem elementBonus no preset = aplicador fraco (fator 0.4).
+    // ── Dano Elemental Extra ──────────────────────────────────────────────────
+    // Personagem FOCADO em elemento (main_dps com elementBonus no preset):
+    //   Recebe um hit elemental adicional completo — passa pela DEF, pelo crítico,
+    //   pela fraqueza e pelo elemBonus. Multiplicador base = elementBonus% do personagem.
+    //   O propósito é que o dano elemental SUPERE o dano bruto quando bem buildado,
+    //   pois esse é o foco do personagem.
+    //
+    // Personagem NÃO focado (support, sub_dps, tank, flex sem elementBonus no preset):
+    //   Recebe apenas 20% do dano bruto como bônus elemental flat (sem DEF, sem crít).
+    //   É um incremento pequeno, não o núcleo do dano.
     const _eb = (f.elementBonus || {})[f.element] || 0;
-    if (_eb > 0) {
-      const _presetEb = (window.CHAR_PRESETS?.[f.presetKey || f.id]?.stats?.elementBonus || {})[f.element] || 0;
-      const _isFocused = (f.charRole === 'main_dps') && _presetEb > 0;
-      const _focusFactor = _isFocused ? 1.0 : 0.4;
-      const _elemDmgExtra = Math.round(f.atk * (_eb / 100) * (skill.mult || 1.0) * _focusFactor);
-      if (_elemDmgExtra > 0) {
-        boss.hp = Math.max(0, boss.hp - _elemDmgExtra);
-        f._lastElemDmgExtra = _elemDmgExtra; // guarda para usar no log
+    // "focado" = main_dps E tem elementBonus no preset base (não só em relíquias)
+    const _presetEb = (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0;
+    const _isFocused = (f.charRole === 'main_dps') && _presetEb > 0;
+
+    if (_isFocused && _eb > 0) {
+      // Hit elemental completo: usa calcDmg com skillMult = elementBonus%/100
+      // Assim, com 46.6% DMG Gelo, o "hit elemental" tem mult = 0.466 × skillMult da skill,
+      // passa pela DEF e pelo multiplicador de fraqueza — pode critar também.
+      const savedAtk2 = f.atk, savedCd2 = f.cd;
+      f.atk = Math.round((f.atk + bonuses.flatAtk) * bonuses.atkMult);
+      f.cd  = f.cd + bonuses.cdBonus;
+      // Mult elemental: percentual do elementBonus aplicado sobre o skillMult
+      // (equivale a "o elementBonus% do personagem dispara um hit extra dessa proporção")
+      const _elemMult = (skill.mult || 1.0) * (_eb / 100);
+      const _elemCrit = rollCrit(f); // pode critar independente do hit principal
+      const _elemRaw  = calcDmg(f, boss, _elemMult, _elemCrit);
+      f.atk = savedAtk2; f.cd = savedCd2;
+      const _elemDmgFocused = Math.round(_elemRaw * bonuses.dmgBonus);
+      if (_elemDmgFocused > 0) {
+        boss.hp = Math.max(0, boss.hp - _elemDmgFocused);
+        f._lastElemDmgExtra = _elemDmgFocused;
+        f._lastElemDmgCrit  = _elemCrit;
+      }
+    } else if (_eb > 0) {
+      // Não focado: bônus flat de 20% do dano bruto já causado
+      const _elemDmgFlat = Math.round(actualDmg * 0.20);
+      if (_elemDmgFlat > 0) {
+        boss.hp = Math.max(0, boss.hp - _elemDmgFlat);
+        f._lastElemDmgExtra = _elemDmgFlat;
+        f._lastElemDmgCrit  = false;
       }
     } else {
       f._lastElemDmgExtra = 0;
+      f._lastElemDmgCrit  = false;
     }
   }
 
@@ -9836,8 +10145,16 @@ async function doPlayerAction(f, cs, type) {
       if (isCrit) { triggerHitFlash('gold'); if (typeof triggerCritImpact === 'function') triggerCritImpact(); triggerScreenShake(1); }
       else triggerHitFlash(f.element === 'fire' ? 'red' : f.element === 'ice' ? 'blue' : f.element === 'dark' ? 'purple' : 'red');
     }
-    // Damage float
+    // Damage float — principal
     showDamageFloat(actualDmg, center.x + (Math.random()-.5)*80, center.y - 80, isCrit ? 'crit' : 'normal', f.element);
+    // Damage float elemental extra (só se relevante)
+    if ((f._lastElemDmgExtra || 0) > 0) {
+      const _isFocVfx = (f.charRole === 'main_dps') && ((window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0) > 0;
+      if (_isFocVfx) {
+        // Float elemental maior, deslocado, com cor do elemento
+        setTimeout(() => showDamageFloat(f._lastElemDmgExtra, center.x + (Math.random()-.5)*60, center.y - 110, f._lastElemDmgCrit ? 'crit' : 'normal', f.element), 120);
+      }
+    }
     if (isCrit) triggerScreenShake(1);
     if (boss.broken) triggerScreenShake(2);
   } else if (immune) {
@@ -9860,19 +10177,21 @@ async function doPlayerAction(f, cs, type) {
     await combatLog(
       icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags, 0
     );
-    // ── Log de dano elemental extra (sem DEF) ──────────────────────────────
+    // ── Log de dano elemental extra ────────────────────────────────────────
     const _ede = f._lastElemDmgExtra || 0;
     if (_ede > 0) {
-      const _elIcon = (window.ELEMENTS || {})[f.element] || '✨';
+      const _elIcon  = (window.ELEMENTS || {})[f.element] || '✨';
       const _elColor = (window.EL_COLORS || {})[f.element] || '#ffee44';
       const _elName  = f.element ? (f.element.charAt(0).toUpperCase() + f.element.slice(1)) : 'Elemental';
-      const _presetEb2 = (window.CHAR_PRESETS?.[f.presetKey || f.id]?.stats?.elementBonus || {})[f.element] || 0;
-      const _isFoc = (f.charRole === 'main_dps') && _presetEb2 > 0;
-      const _tip = _isFoc
-        ? `<span style="font-size:.7rem;color:rgba(255,255,255,.4)"> (aplicador focado)</span>`
-        : `<span style="font-size:.7rem;color:rgba(255,255,255,.3)"> (aplicador secundário)</span>`;
+      const _isFoc2  = (f.charRole === 'main_dps') && ((window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0) > 0;
+      const _elemCritTag = (f._lastElemDmgCrit)
+        ? `<span style="color:#ffcc00;font-weight:bold"> CRÍTICO!</span>`
+        : '';
+      const _tip = _isFoc2
+        ? `<span style="font-size:.68rem;color:rgba(255,255,255,.38)"> (hit elemental focado)</span>`
+        : `<span style="font-size:.68rem;color:rgba(255,255,255,.28)"> (+20% elemental)</span>`;
       await combatLog(
-        `&nbsp;&nbsp;<span style="color:${_elColor}">${_elIcon} DMG ${_elName}: +<b>${fmtNum(_ede)}</b></span><span style="font-size:.72rem;color:rgba(255,255,255,.45)"> (ignora DEF)</span>${_tip}`,
+        `&nbsp;&nbsp;<span style="color:${_elColor}">${_elIcon} <b>${_elName}: +${fmtNum(_ede)}</b></span>${_elemCritTag}${_tip}`,
         0
       );
     }
@@ -9897,6 +10216,10 @@ async function doPlayerAction(f, cs, type) {
   }
 
   await mechPostDamage(f, cs, type, isCrit, actualDmg);
+
+  // Atualiza UI imediatamente após mecânicas (curas, buffs, escudos)
+  // para que os valores de HP e badges de buff apareçam sem esperar o fim do turno
+  window._refreshCombatUI();
 
   // ── Energia do fighter ────────────────────────────────────────────────────
   const energyGain = type === 'basic' ? 20 : type === 'charged' ? 30 : 0;
@@ -15192,11 +15515,24 @@ function openUpgradeWeaponPanel(weapId) {
   const xpLvlNd  = xpNeeded - xpPrev;
   const xpPct    = level >= MAX_WEAP_LEVEL ? 100 : Math.round((xpInLvl / Math.max(1, xpLvlNd)) * 100);
   const canLevel = level < MAX_WEAP_LEVEL && xp >= xpNeeded;
-  const ws = weap.stats || {};
-  const bAtk = ws.baseAtk || 0;
+  const ws = (weap.stats && weap.stats.baseAtk) ? weap.stats
+             : ((window.WEAPON_PRESETS||{})[weap.presetKey||weap.presetId||""]?.stats || weap.stats || {});
+  const bAtk = ws.baseAtk || ws.atk || 0;
   const wRar = Math.min(5, Math.max(1, weap.rarity || 3));
-  const scaleMax = ({5:"2.00",4:"1.85",3:"1.65",2:"1.45",1:"1.30"})[wRar];
+  const MAX_WEAP_MULT = {5:2.00,4:1.85,3:1.65,2:1.45,1:1.30};
+  const maxMult = MAX_WEAP_MULT[wRar];
+  // ATK atual escalado com o nível — só o stat principal (baseAtk) sobe
+  const curMult = level === 1 ? 1.0 : 1 + (maxMult - 1) * Math.log(level) / Math.log(20);
+  const curAtk  = ws.baseAtk ? Math.round(ws.baseAtk * curMult) : bAtk;
+  const maxAtk  = ws.baseAtk ? Math.round(ws.baseAtk * maxMult) : bAtk;
+  const scaleMax = maxMult.toFixed(2);
   const refBonus = [0,0,8,14,20,28][Math.min(5, weap.refinement || weap.refine || 1)];
+  // Substat fixo — exibe para o jogador saber que não muda
+  const sstLabel = {critRate:'Crit Rate',critDmg:'Crit DMG',energyRecharge:'ER',elementalMastery:'EM',
+                    breakEffect:'Break',spd:'SPD',atkPct:'ATK%',hpPct:'HP%',defPct:'DEF%',hp:'HP',def:'DEF'};
+  const subDisplay = (ws.substatType && ws.substatVal)
+    ? `&nbsp;|&nbsp; <span style="color:#88aaff">${sstLabel[ws.substatType]||ws.substatType}: ${ws.substatVal}${ws.substatType.includes('Pct')||ws.substatType==='critRate'||ws.substatType==='critDmg'||ws.substatType==='energyRecharge'||ws.substatType==='breakEffect'||ws.substatType==='atkPct'||ws.substatType==='hpPct'||ws.substatType==='defPct'?'%':''} (fixo)</span>`
+    : '';
   if (!profile.weapXpItems) profile.weapXpItems = {wxp3:0,wxp4:0,wxp5:0};
   const inv = profile.weapXpItems;
   openModal(`⚔ Upar Arma — ${weap.name}`, `
@@ -15210,8 +15546,10 @@ function openUpgradeWeaponPanel(weapId) {
         <div style="width:${xpPct}%;height:100%;background:linear-gradient(90deg,#ffaa22,#ffee88);border-radius:5px"></div>
       </div>
       <div style="font-size:.72rem;color:var(--txt3)">
-        ATK Base: <span style="color:var(--gold)">${bAtk}</span> → Lv20: <span style="color:#ffaa44">${Math.round(bAtk*parseFloat(scaleMax))}</span>
-        &nbsp;|&nbsp; Escala ×${scaleMax} &nbsp;|&nbsp; Refine R${weap.refinement||weap.refine||1} +${refBonus}% ATK
+        ATK Lv${level}: <span style="color:var(--gold);font-weight:bold">${curAtk}</span>
+        &nbsp;→&nbsp; Lv20: <span style="color:#ffaa44">${maxAtk}</span>
+        &nbsp;|&nbsp; Refine R${weap.refinement||weap.refine||1} +${refBonus}% ATK
+        ${subDisplay}
       </div>
     </div>
     <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:12px;margin-bottom:12px">
@@ -15661,7 +15999,6 @@ var MOB_TABS = [
   { id:'tower',     icon:'🏰',  label:'Torre'    },
   { id:'endgame',   icon:'✦',   label:'End-Game' },
   { id:'guild',     icon:'🛡',  label:'Guilda'   },
-  { id:'shop',      icon:'🛒',  label:'Loja'     },
 ];
 
 // Listas de atalhos fixados nos potinhos laterais (índices em MOB_TABS)
@@ -16292,64 +16629,85 @@ function computeEffective(base, weap, arts) {
     // IMPORTANTE: armas puxadas no gacha só têm presetKey no perfil.
     // Os stats reais ficam em WEAPON_PRESETS[presetKey]. Resolvemos aqui.
     const _wpreset = (window.WEAPON_PRESETS || {})[weap.presetKey || weap.presetId || ""] || {};
-    const ws = (weap.stats && (weap.stats.baseAtk || weap.stats.critRate || weap.stats.atk))
+    // Resolve a fonte de stats: prefere weap.stats se tiver baseAtk, senão usa o preset
+    const ws = (weap.stats && weap.stats.baseAtk)
                ? weap.stats
-               : (_wpreset.stats || weap.mainStats || {});
-    // baseAtk escala com nível; substats são fixos
+               : (_wpreset.stats || weap.mainStats || weap.stats || {});
+
+    // ── STAT PRINCIPAL: apenas o ATK base escala com o nível da arma ──────────
+    // Fórmula: baseAtk × weapLevelMult (logarítmica Lv1→Lv20)
+    // Se a arma não tem baseAtk (formato legado com campo "atk" flat), não escala.
     const rawBaseAtk = ws.baseAtk || 0;
-    if (rawBaseAtk) atk += Math.round(rawBaseAtk * weapLevelMult);
-    else { atk += ws.atk || ws.flatAtk || 0; }
-    // HP / DEF base também escalam quando presentes como stat principal
+    if (rawBaseAtk > 0) {
+      atk += Math.round(rawBaseAtk * weapLevelMult);
+    } else {
+      // Arma sem baseAtk definido: soma o ATK flat diretamente, sem escala de nível
+      atk += ws.atk || ws.flatAtk || 0;
+    }
+    // HP e DEF base também escalam se forem o stat principal da arma (ex: cajado de HP)
     const rawBaseHp  = ws.baseHp  || 0;
     const rawBaseDef = ws.baseDef || 0;
-    if (rawBaseHp)  hp  += Math.round(rawBaseHp  * weapLevelMult);
-    else { hp  += ws.hp  || ws.flatHp  || 0; }
-    if (rawBaseDef) def += Math.round(rawBaseDef * weapLevelMult);
-    else { def += ws.def || ws.flatDef || 0; }
-    // Substat fixo (não escala)
-    const sst = ws.substatType || ws.mainStatType || "";
-    const ssv = ws.substatVal   || 0;
-    if (sst === "critRate"         || sst === "crit_rate")    cr  += ssv;
-    if (sst === "critDmg"          || sst === "crit_dmg")     cd  += ssv;
-    if (sst === "energyRecharge"   || sst === "er")           er  += ssv;
-    if (sst === "elementalMastery" || sst === "em")           em  += ssv;
-    if (sst === "breakEffect"      || sst === "be")           be  += ssv;
-    if (sst === "spd")                                        spd += ssv;
-    if (sst === "atkPct"           || sst === "atk_pct")   atkPct += ssv;
-    if (sst === "hpPct"            || sst === "hp_pct")    hpPct  += ssv;
-    // Stats auxiliares explícitos (fixos)
-    cr  += ws.critRate        || 0;
-    cd  += ws.critDmg         || 0;
-    er  += ws.energyRecharge  || 0;
-    spd += ws.spd             || 0;
-    em  += ws.elementalMastery|| 0;
-    be  += ws.breakEffect     || 0;
-    atkPct += ws.atkPct || ws.atk_pct || 0;
-    hpPct  += ws.hpPct  || ws.hp_pct  || 0;
-    // Also check passive bonus stats
+    if (rawBaseHp  > 0) hp  += Math.round(rawBaseHp  * weapLevelMult);
+    if (rawBaseDef > 0) def += Math.round(rawBaseDef * weapLevelMult);
+
+    // ── SUBSTAT FIXO: não escala com nível, aplicado UMA única vez ────────────
+    // Usa substatType/substatVal (formato padrão dos presets T4/T5).
+    // Se não existir, aplica os campos diretos do ws (formato legado).
+    // Em nenhum caso os dois são somados juntos para evitar dupla contagem.
+    const sst = ws.substatType || "";
+    const ssv = ws.substatVal  || 0;
+    if (sst && ssv > 0) {
+      // Formato padrão dos presets — aplica pelo tipo
+      if (sst === "critRate"         || sst === "crit_rate")    cr     += ssv;
+      else if (sst === "critDmg"     || sst === "crit_dmg")     cd     += ssv;
+      else if (sst === "energyRecharge"|| sst === "er")         er     += ssv;
+      else if (sst === "elementalMastery"|| sst === "em")       em     += ssv;
+      else if (sst === "breakEffect" || sst === "be")           be     += ssv;
+      else if (sst === "spd")                                   spd    += ssv;
+      else if (sst === "atkPct"      || sst === "atk_pct")      atkPct += ssv;
+      else if (sst === "hpPct"       || sst === "hp_pct")       hpPct  += ssv;
+      else if (sst === "defPct"      || sst === "def_pct")      defPct += ssv;
+      else if (sst === "hp")                                    hp     += ssv;
+      else if (sst === "def")                                   def    += ssv;
+    } else {
+      // Formato legado: usa campos diretos do ws (sem substatType)
+      cr     += ws.critRate         || 0;
+      cd     += ws.critDmg          || 0;
+      er     += ws.energyRecharge   || 0;
+      spd    += ws.spd              || 0;
+      em     += ws.elementalMastery || 0;
+      be     += ws.breakEffect      || 0;
+      atkPct += ws.atkPct || ws.atk_pct || 0;
+      hpPct  += ws.hpPct  || ws.hp_pct  || 0;
+    }
+
+    // ── PASSIVA DA ARMA: bônus fixos da passiva (não escala com nível) ────────
     const pa = weap.passive || _wpreset.passive || {};
-    if (pa.atkPct)        atkPct += pa.atkPct;
-    if (pa.critRate)      cr     += pa.critRate;
-    if (pa.critDmg)       cd     += pa.critDmg;
-    if (pa.energyRecharge)er     += pa.energyRecharge;
-    if (pa.breakEffect)   be     += pa.breakEffect;
-    if (pa.spd)           spd    += pa.spd;
-    if (pa.elementalMastery) em  += pa.elementalMastery;
-    // mainStat style: { mainStatType:"atk_pct", mainStatVal:43.2 }
-    const mst = ws.mainStatType || "";
-    const msv = ws.mainStatVal  || 0;
-    if (mst==="atk_pct"||mst==="atk%")  atkPct += msv;
-    if (mst==="hp_pct" ||mst==="hp%")   hpPct  += msv;
-    if (mst==="def_pct"||mst==="def%")  defPct += msv;
-    if (mst==="crit_rate"||mst==="critrate") cr += msv;
-    if (mst==="crit_dmg" ||mst==="critdmg")  cd += msv;
-    if (mst==="energy_recharge"||mst==="er") er += msv;
-    if (mst==="break_effect")  be  += msv;
-    if (mst==="elem_mastery"||mst==="em") em += msv;
-    if (mst==="spd")           spd += msv;
-    if (mst==="flat_atk"||mst==="atk")  atk += msv;
-    if (mst==="flat_hp" ||mst==="hp")   hp  += msv;
-  }
+    if (pa.atkPct)            atkPct += pa.atkPct;
+    if (pa.critRate)          cr     += pa.critRate;
+    if (pa.critDmg)           cd     += pa.critDmg;
+    if (pa.energyRecharge)    er     += pa.energyRecharge;
+    if (pa.breakEffect)       be     += pa.breakEffect;
+    if (pa.spd)               spd    += pa.spd;
+    if (pa.elementalMastery)  em     += pa.elementalMastery;
+    if (pa.hp)                hp     += pa.hp;
+    if (pa.hpPct)             hpPct  += pa.hpPct;
+    // elementalDmg na passiva → acumula no elementBonus do elemento do personagem
+    // (ex: passiva da Sode no Shirayuki dá +28% DMG Gelo para a Rukia)
+    if (pa.elementalDmg && pa.elementalDmg > 0) {
+      // Tenta descobrir o elemento do personagem a partir das relíquias ou do contexto.
+      // No computeEffective não temos ch.element diretamente, então guardamos num campo
+      // especial _pendingElemDmg para ser resolvido pelo chamador via elementBonus.
+      // Como workaround: aplica em _elemBonus de todos os elementos conhecidos — o
+      // buildFighter/ficha do personagem já resolve pelo elemento certo.
+      if (!_elemBonus._weaponElemDmg) _elemBonus._weaponElemDmg = pa.elementalDmg;
+    }
+    // EM direto nos stats da arma sem substatType (formato legado de algumas armas T5)
+    const _wpStats = (window.WEAPON_PRESETS || {})[weap.presetKey || weap.presetId || ""]?.stats || {};
+    if (_wpStats.elementalMastery && !_wpStats.substatType) {
+      em += _wpStats.elementalMastery;
+    }
+  } // fim if (weap)
 
   // ── Artifact bonus ──
   // Estrutura real dos artefatos gerados pelo jogo:
@@ -17392,6 +17750,32 @@ window.activateSukunaTurn = function() {
 window.deactivateSukunaTurn = function() {
   const overlay = document.getElementById('sukuna-turn-overlay');
   if (overlay) overlay.classList.remove('active');
+};
+
+// ── Banner flutuante de buff: aparece no canto superior direito ──────────────
+// Chamado automaticamente toda vez que addBuff é executado durante o combate.
+window.showBuffBanner = function(targetName, key, value, turns) {
+  var container = document.getElementById('buff-banner-container');
+  if (!container) return;
+  var BUFF_ICONS_G  = {atkPct:'⚔',critRate:'🎯',critDmg:'💥',spd:'💨',em:'🌿',er:'⚡',be:'💔',dmgBonus:'✨',dotDmg:'☠',dmgReduce:'🛡',healBonus:'💚',flatAtk:'⚔',defPct:'🛡'};
+  var BUFF_LABELS_G = {atkPct:'ATK',critRate:'Crit Rate',critDmg:'Crit DMG',spd:'SPD',em:'Maestria Elem.',er:'ER',be:'Break Effect',dmgBonus:'DMG Bônus',dotDmg:'DOT DMG',dmgReduce:'Redução DMG',healBonus:'Cura Bônus',flatAtk:'ATK Flat',defPct:'DEF'};
+  var BUFF_COLORS_G = {atkPct:'#ffaa44',critRate:'#ff6644',critDmg:'#ff8844',spd:'#44ffcc',em:'#88ff44',er:'#cc88ff',be:'#ff6666',dmgBonus:'#ffdd00',dotDmg:'#ff44aa',dmgReduce:'#44aaff',healBonus:'#44ff88',flatAtk:'#ffbb44',defPct:'#44aaff'};
+  var icon  = BUFF_ICONS_G[key]  || '✨';
+  var label = BUFF_LABELS_G[key] || key;
+  var col   = BUFF_COLORS_G[key] || '#aaffaa';
+  var isPct = ['atkPct','critRate','critDmg','er','be','dmgBonus','dotDmg','dmgReduce','healBonus','defPct','spd','em'].includes(key);
+  var valStr = (value > 0 ? '+' : '') + value + (isPct ? '%' : '');
+  var el = document.createElement('div');
+  el.className = 'buff-banner-item';
+  el.style.color = col;
+  el.style.borderLeftColor = col;
+  el.innerHTML = '<span style="font-size:.9rem">' + icon + '</span>'
+    + '<span style="color:var(--gold2)">' + targetName + '</span>'
+    + '<span style="color:' + col + ';font-weight:bold">' + valStr + ' ' + label + '</span>'
+    + '<span style="color:rgba(255,255,255,.4);font-size:.6rem">' + turns + 't</span>';
+  container.appendChild(el);
+  // Remove após a animação (In 0.35s + Out começa em 0.25s + dura 0.4s = ~0.65s total → usa 700ms)
+  setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 700);
 };
 
 // Fechar banner WuWa
