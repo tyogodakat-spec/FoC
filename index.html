@@ -581,23 +581,23 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #combat-hit-flash.flash-red {
   background: radial-gradient(ellipse at center, transparent 40%, rgba(255,30,30,.35) 100%);
-  animation: hitFlash .35s ease-out;
+  animation: hitFlash .35s ease-out forwards;
 }
 #combat-hit-flash.flash-gold {
   background: radial-gradient(ellipse at center, rgba(255,220,0,.25) 0%, transparent 70%);
-  animation: hitFlash .4s ease-out;
+  animation: hitFlash .4s ease-out forwards;
 }
 #combat-hit-flash.flash-blue {
   background: radial-gradient(ellipse at center, rgba(80,150,255,.2) 0%, transparent 70%);
-  animation: hitFlash .3s ease-out;
+  animation: hitFlash .3s ease-out forwards;
 }
 #combat-hit-flash.flash-purple {
   background: radial-gradient(ellipse at center, rgba(180,80,255,.22) 0%, transparent 70%);
-  animation: hitFlash .35s ease-out;
+  animation: hitFlash .35s ease-out forwards;
 }
 #combat-hit-flash.flash-green {
   background: radial-gradient(ellipse at center, rgba(50,220,100,.2) 0%, transparent 70%);
-  animation: hitFlash .3s ease-out;
+  animation: hitFlash .3s ease-out forwards;
 }
 @keyframes hitFlash {
   0%   { opacity: 1; }
@@ -660,7 +660,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #ult-overlay.active {
   display: block;
-  animation: ultAura 1.2s ease-out;
+  animation: ultAura 1.2s ease-out forwards;
 }
 @keyframes ultAura {
   0%   { opacity: 0; transform: scale(.8); }
@@ -1025,11 +1025,9 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 9200;
   pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(80,0,0,.0) 0%, rgba(180,0,0,.25) 50%, rgba(0,0,0,.7) 100%);
+  animation: sukDomainIn 1.2s ease-out forwards;
 }
-#sukuna-domain-overlay.active {
-  display: block;
-  animation: sukDomainIn 1.2s ease-out;
-}
+#sukuna-domain-overlay.active { display: block; }
 @keyframes sukDomainIn {
   0%   { opacity: 0; }
   20%  { opacity: 1; }
@@ -1045,7 +1043,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   font-size: 1.5rem;
   color: rgba(200,0,0,.8);
   text-shadow: 0 0 10px rgba(255,0,0,.9);
-  animation: sukunaRuneFly var(--dur, 1s) ease-out;
+  animation: sukunaRuneFly var(--dur, 1s) ease-out forwards;
   filter: drop-shadow(0 0 6px rgba(255,0,0,.8));
 }
 @keyframes sukunaRuneFly {
@@ -1062,11 +1060,9 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 9100;
   pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(255,0,0,.4) 0%, rgba(100,0,0,.6) 40%, rgba(0,0,0,.8) 100%);
+  animation: sukunaUltFlash .8s ease-out forwards;
 }
-#sukuna-ult-flash.active {
-  display: block;
-  animation: sukunaUltFlash .8s ease-out;
-}
+#sukuna-ult-flash.active { display: block; }
 @keyframes sukunaUltFlash {
   0%   { opacity: 0; }
   10%  { opacity: 1; }
@@ -1099,8 +1095,9 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 8500;
   opacity: 0;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.5) 100%);
+  transition: opacity .3s;
 }
-/* .active handled by the second block below via animation */
+#combat-vignette.active { opacity: 1; }
 
 /* Efeito de impacto de boss */
 #boss-impact-overlay {
@@ -1112,7 +1109,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #boss-impact-overlay.active {
   display: block;
-  animation: bossImpact .5s ease-out;
+  animation: bossImpact .5s ease-out forwards;
 }
 @keyframes bossImpact {
   0%   { background: radial-gradient(ellipse at center, rgba(255,60,60,.35) 0%, transparent 60%); opacity: 1; }
@@ -1129,7 +1126,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #crit-impact-overlay.active {
   display: block;
-  animation: critImpact .45s ease-out;
+  animation: critImpact .45s ease-out forwards;
 }
 @keyframes critImpact {
   0%   { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.3) 0%, transparent 55%); opacity: 1; }
@@ -1632,7 +1629,6 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   font-size: 3.2rem !important;
   font-weight: 900;
   color: #ffff00 !important;
-  text-shadow: 0 0 10px rgba(255,255,0,.8), 0 0 20px rgba(255,200,0,.6), 0 0 40px rgba(255,100,0,.4) !important;
   animation: critBounce 1.2s ease-out !important;
 }
 
@@ -1725,7 +1721,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
     <div class="nav-tabs" id="nav-tabs"></div>
     <div class="nav-right">
       <div class="foc-disp">💎 <span id="nav-foc">0</span></div>
-      <div class="blons-disp" id="blons-disp" title="Blons — regenera 1 por minuto">🔵 <span id="nav-blons">700</span>/<span id="nav-blons-max">700</span></div>
+      <div class="blons-disp" id="blons-disp" title="Blons — regenera 1 por minuto">🔵 <span id="nav-blons">160</span>/<span id="nav-blons-max">160</span></div>
       <span class="usr-name" id="nav-username"></span>
       <button class="logout-x" onclick="doLogout()">Sair</button>
     </div>
@@ -3804,8 +3800,8 @@ const DUNGEON_PRESETS = {
       "Chama do Inferno":{ "2pc":"DMG Fogo +15%", "4pc":"Burn aplicado aumenta ATK em 18% por 2 turnos." },
       "Coração do Vulcão":{ "2pc":"ATK +18%", "4pc":"Ao usar Ult, Burn em todos inimigos por 2 turnos." }
     },
-    bossHp:{ easy:140000, normal:320000, hard:780000 },
-    bossAtk:{ easy:1800, normal:4200, hard:10500 },
+    bossHp:{ easy:140000, normal:248000, hard:355000 },
+    bossAtk:{ easy:1800, normal:3200, hard:5500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   void_citadel: {
@@ -3823,8 +3819,8 @@ const DUNGEON_PRESETS = {
       "Vazio Eterno":{ "2pc":"DMG Dark/Chaos +18%", "4pc":"Void Mark aplicado explode em 2 turnos a menos." },
       "Sombra Absoluta":{ "2pc":"Crit DMG +20%", "4pc":"Ataques críticos aplicam Void Mark (30% chance)." }
     },
-    bossHp:{ easy:140000, normal:320000, hard:780000 },
-    bossAtk:{ easy:1800, normal:4200, hard:10500 },
+    bossHp:{ easy:140000, normal:248000, hard:355000 },
+    bossAtk:{ easy:1800, normal:3200, hard:5500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   thunder_peak: {
@@ -3842,8 +3838,8 @@ const DUNGEON_PRESETS = {
       "Coroa do Trovão":{ "2pc":"DMG Lightning +18%", "4pc":"Electrify aplicado propaga para alvo adj. (Chain Lightning)." },
       "Tempestade Perpétua":{ "2pc":"Energy Recharge +20%", "4pc":"Ult custa 15% menos energia. +25% DMG após usar Ult." }
     },
-    bossHp:{ easy:140000, normal:320000, hard:780000 },
-    bossAtk:{ easy:1800, normal:4200, hard:10500 },
+    bossHp:{ easy:140000, normal:248000, hard:355000 },
+    bossAtk:{ easy:1800, normal:3200, hard:5500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   abyssal_ocean: {
@@ -3861,8 +3857,8 @@ const DUNGEON_PRESETS = {
       "Profundeza Eterna":{ "2pc":"HP +20%", "4pc":"Ao curar aliados, aumenta ATK do curado em 15% por 2 turnos." },
       "Maré das Almas":{ "2pc":"DMG Water/Ice +16%", "4pc":"Freeze aplicado aumenta dano de todos em 22% por duração." }
     },
-    bossHp:{ easy:140000, normal:320000, hard:780000 },
-    bossAtk:{ easy:1800, normal:4200, hard:10500 },
+    bossHp:{ easy:140000, normal:248000, hard:355000 },
+    bossAtk:{ easy:1800, normal:3200, hard:5500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   // ── T4 DUNGEONS ──
@@ -3988,8 +3984,8 @@ const DUNGEON_PRESETS = {
       "Presas da Maldição":{ "2pc":"ATK +20%", "4pc":"Ao usar Ult, Crit Rate +15% e Crit DMG +20% por 2 turnos." },
       "Sello do Rei":{ "2pc":"DMG Chaos +22%", "4pc":"Curse aplicado causa explosão de dano = 50% ATK ao expirar." }
     },
-    bossHp:{ easy:155000, normal:340000, hard:860000 },
-    bossAtk:{ easy:2000, normal:4500, hard:11500 },
+    bossHp:{ easy:155000, normal:270000, hard:390000 },
+    bossAtk:{ easy:2000, normal:3500, hard:6000 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:40,
     bossSpecial:"Domínio Ativo: no turno 1, todos os ataques do boss acertam garantidamente. Destrói escudos no 1° turno. Sukuna regenera 5% HP ao usar Ult.",
@@ -4019,8 +4015,8 @@ const DUNGEON_PRESETS = {
       "Alma do Shinigami":{ "2pc":"DMG Holy +18%", "4pc":"Ao aplicar Cleanse, ATK do time +15% por 2 turnos." },
       "Escudo do Soul Society":{ "2pc":"DEF +22%", "4pc":"Ao ser atingido abaixo de 50% HP, escudo automático de 25% HP (1x/batalha)." }
     },
-    bossHp:{ easy:145000, normal:330000, hard:820000 },
-    bossAtk:{ easy:1900, normal:4300, hard:11000 },
+    bossHp:{ easy:145000, normal:255000, hard:370000 },
+    bossAtk:{ easy:1900, normal:3300, hard:5700 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:38,
     bossSpecial:"Bankai de Morte: a cada 3 turnos, o boss ativa uma história que aplica aleatoriamente: Bleed, Freeze ou Curse em todo o time.",
@@ -4050,8 +4046,8 @@ const DUNGEON_PRESETS = {
       "Respiração das Chamas":{ "2pc":"DMG Fire +18%", "4pc":"Ataques físicos têm 20% de chance de aplicar Burn (2 turnos)." },
       "Marca do Demonslayer":{ "2pc":"ATK +18%", "4pc":"Ao eliminar um inimigo, ATK +10% por 3 turnos (acumula até 3x)." }
     },
-    bossHp:{ easy:140000, normal:320000, hard:800000 },
-    bossAtk:{ easy:1850, normal:4200, hard:10800 },
+    bossHp:{ easy:140000, normal:248000, hard:360000 },
+    bossAtk:{ easy:1850, normal:3200, hard:5500 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:36,
     bossSpecial:"Sonho Profundo: a cada 2 turnos, aplica Sleep em 1 aliado aleatório (perde próximo turno). Cleanse remove Sleep."
@@ -4347,14 +4343,10 @@ const TOWER_FLOOR_PRESETS = (() => {
     const focReward = Math.floor(30 + floor * 1.7 + (floor > 50 ? floor * 0.8 : 0));
     // Blons escalados — total = 25.000
     const blonsReward = Math.round(rawBlons[i] * blonsScale);
-    // Boss HP — curva suave até andar 14, depois escala agressivamente a partir do 15
-    // Andar 1=5k, 14=8.5k, 15=14k, 30=80k, 50=380k, 75=2.2M, 100=10M
-    const _hpBase = 5000 * Math.pow(1.045, floor - 1);
-    const bossHp  = Math.round(floor < 15 ? _hpBase : _hpBase * Math.pow(1.12, floor - 14));
-    // Boss ATK — mesma lógica: suave até 14, depois dobra o crescimento
-    // Andar 1=300, 14=510, 15=700, 30=3200, 50=12000, 100=90000
-    const _atkBase = 300 * Math.pow(1.04, floor - 1);
-    const bossAtk = Math.round(floor < 15 ? _atkBase : _atkBase * Math.pow(1.10, floor - 14));
+    // Boss HP cresce exponencialmente: andar 1 = 5k, andar 50 = 43k, andar 100 = 390k
+    const bossHp  = Math.round(5000  * Math.pow(1.045, floor - 1));
+    // Boss ATK cresce junto — andar 1 = 300, andar 100 = ~14500
+    const bossAtk = Math.round(300   * Math.pow(1.04,  floor - 1));
     floors.push({
       floor, name: floorNames[i] || `Andar ${floor}`,
       bossName: boss.n, bossIcon: boss.i, bossDescription: boss.d,
@@ -5204,50 +5196,50 @@ const ABYSS_PRESETS = {
     { id:"c7", order:7, name:"Câmara do Caos", icon:"🔴",
       mechanic:{ name:"Entropia Caótica", desc:"A cada turno, um efeito aleatório: +20% ATK do time, -15% DEF dos inimigos, ou DOT de Corrupção em todos.", chaosRandom:true },
       phases:[
-        { phase:1, enemies:[{name:"Demônio do Caos",icon:"🔴",hp:160000,atk:3500,element:"chaos",weakness:["holy","quantum"],immunity:["chaos","corruption"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Avatar do Caos",icon:"🌀",hp:230000,atk:4600,element:"chaos",weakness:["holy"],immunity:["chaos","corruption","nightmare"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Caos Encarnado",icon:"🔴",hp:380000,atk:6500,element:"chaos",weakness:["holy","quantum","ice"],immunity:["chaos","corruption","nightmare","curse"],minions:[{name:"Fragmento de Caos",icon:"🔴",hp:70000,atk:2200,element:"chaos"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Demônio do Caos",icon:"🔴",hp:88000,atk:2200,element:"chaos",weakness:["holy","quantum"],immunity:["chaos","corruption"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Avatar do Caos",icon:"🌀",hp:130000,atk:2900,element:"chaos",weakness:["holy"],immunity:["chaos","corruption","nightmare"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Caos Encarnado",icon:"🔴",hp:200000,atk:4000,element:"chaos",weakness:["holy","quantum","ice"],immunity:["chaos","corruption","nightmare","curse"],minions:[{name:"Fragmento de Caos",icon:"🔴",hp:40000,atk:1400,element:"chaos"}]}], timeLimit:90 },
       ]
     },
     { id:"c8", order:8, name:"Câmara da Alma",icon:"👻",
       mechanic:{ name:"Drenar Vital", desc:"Soul Drain ativo em todos os inimigos permanentemente. Curas recebidas -30% para o time.", permanentDot:"soul_drain", healDebuff:30 },
       phases:[
-        { phase:1, enemies:[{name:"Espectro Ancião",icon:"👻",hp:170000,atk:3800,element:"dark",weakness:["holy","fire"],immunity:["soul_drain","undead"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Fantasma do Herói",icon:"🫥",hp:250000,atk:5000,element:"dark",weakness:["holy","chaos"],immunity:["soul_drain","undead","curse"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Lorde das Almas",icon:"☠",hp:420000,atk:7200,element:"dark",weakness:["holy","quantum"],immunity:["soul_drain","undead","curse","nightmare"],minions:[{name:"Alma Presa",icon:"👻",hp:80000,atk:2500,element:"dark"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Espectro Ancião",icon:"👻",hp:95000,atk:2400,element:"dark",weakness:["holy","fire"],immunity:["soul_drain","undead"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Fantasma do Herói",icon:"🫥",hp:140000,atk:3100,element:"dark",weakness:["holy","chaos"],immunity:["soul_drain","undead","curse"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Lorde das Almas",icon:"☠",hp:220000,atk:4500,element:"dark",weakness:["holy","quantum"],immunity:["soul_drain","undead","curse","nightmare"],minions:[{name:"Alma Presa",icon:"👻",hp:45000,atk:1600,element:"dark"}]}], timeLimit:90 },
       ]
     },
     { id:"c9", order:9, name:"Câmara do Tempo", icon:"⏳",
       mechanic:{ name:"Paradoxo Temporal", desc:"Lacre Temporal ativo no time durante 3 turnos no início de cada fase. Prioridade: limpe com Caos ou aguarde.", startDebuff:"time_seal", startDebuffDuration:3 },
       phases:[
-        { phase:1, enemies:[{name:"Guardião do Tempo",icon:"⏳",hp:190000,atk:4200,element:"quantum",weakness:["chaos","dark"],immunity:["time_seal","stun"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Arauto da Eternidade",icon:"♾",hp:280000,atk:5400,element:"quantum",weakness:["chaos"],immunity:["time_seal","stun","petrify"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Dragão do Tempo",icon:"⏰",hp:460000,atk:8000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["time_seal","stun","petrify","freeze"],minions:[{name:"Eco Temporal",icon:"⏳",hp:100000,atk:2800,element:"quantum"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Guardião do Tempo",icon:"⏳",hp:105000,atk:2600,element:"quantum",weakness:["chaos","dark"],immunity:["time_seal","stun"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Arauto da Eternidade",icon:"♾",hp:155000,atk:3400,element:"quantum",weakness:["chaos"],immunity:["time_seal","stun","petrify"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Dragão do Tempo",icon:"⏰",hp:240000,atk:5000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["time_seal","stun","petrify","freeze"],minions:[{name:"Eco Temporal",icon:"⏳",hp:55000,atk:1800,element:"quantum"}]}], timeLimit:90 },
       ]
     },
     // ── CÂMARAS 10-12 (Endgame Absoluto) ──
     { id:"c10", order:10, name:"Câmara da Extinção", icon:"💀",
       mechanic:{ name:"Contagem Regressiva", desc:"A cada 3 turnos sem matar inimigo, todos recebem +1 stack de Corrupção. Máx 5 stacks = derrota.", rampingDebuff:"corruption", rampInterval:3, rampMaxStacks:5 },
       phases:[
-        { phase:1, enemies:[{name:"Titan da Extinção",icon:"💥",hp:450000,atk:8000,element:"dark",weakness:["chaos","holy"],immunity:["corruption","curse","undead"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Arauto do Fim",icon:"☠",hp:620000,atk:10500,element:"chaos",weakness:["holy","quantum"],immunity:["corruption","nightmare","time_seal"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Primordial da Extinção",icon:"💀",hp:870000,atk:13000,element:"dark",weakness:["holy","chaos","quantum"],immunity:["corruption","nightmare","time_seal","soul_drain"],minions:[{name:"Sombra da Extinção",icon:"💀",hp:160000,atk:4400,element:"dark"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Titan da Extinção",icon:"💥",hp:180000,atk:4000,element:"dark",weakness:["chaos","holy"],immunity:["corruption","curse","undead"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Arauto do Fim",icon:"☠",hp:250000,atk:5200,element:"chaos",weakness:["holy","quantum"],immunity:["corruption","nightmare","time_seal"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Primordial da Extinção",icon:"💀",hp:350000,atk:6500,element:"dark",weakness:["holy","chaos","quantum"],immunity:["corruption","nightmare","time_seal","soul_drain"],minions:[{name:"Sombra da Extinção",icon:"💀",hp:65000,atk:2200,element:"dark"}]}], timeLimit:90 },
       ]
     },
     { id:"c11", order:11, name:"Câmara do Criador", icon:"✦",
       mechanic:{ name:"Energia da Criação", desc:"Todos os ataques têm multiplicador elemental dobrado. Imunidades dos inimigos ignoram 50% dos bônus elemental.", doubleElemMult:true, enemyImmuneReduction:0.5 },
       phases:[
-        { phase:1, enemies:[{name:"Archon Supremo",icon:"👑",hp:520000,atk:9600,element:"quantum",weakness:["physical","chaos"],immunity:["void_mark","time_seal","corruption","nightmare"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Deus Primordial",icon:"👑",hp:750000,atk:12000,element:"holy",weakness:["chaos","dark"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"O Criador",icon:"✦",hp:1050000,atk:15000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain","bleed"],minions:[{name:"Fragmento da Criação",icon:"✦",hp:200000,atk:5600,element:"holy"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Archon Supremo",icon:"👑",hp:210000,atk:4800,element:"quantum",weakness:["physical","chaos"],immunity:["void_mark","time_seal","corruption","nightmare"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Deus Primordial",icon:"👑",hp:300000,atk:6000,element:"holy",weakness:["chaos","dark"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"O Criador",icon:"✦",hp:420000,atk:7500,element:"quantum",weakness:["chaos","dark","physical"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain","bleed"],minions:[{name:"Fragmento da Criação",icon:"✦",hp:80000,atk:2800,element:"holy"}]}], timeLimit:90 },
       ]
     },
     { id:"c12", order:12, name:"Câmara do Dragão Branco", icon:"🐲",
       mechanic:{ name:"Aura Dracônica Absoluta", desc:"TODOS os elementos exceto Caos e Sagrado são IMUNES. Dragão invoca Clones a cada 30% HP perdido. Chain Lightning e Corrupção têm efeito x2.", dragonAura:true, specialBoss:true },
       phases:[
-        { phase:1, enemies:[{name:"Dragão Branco — Fase 1",icon:"🐲",hp:780000,atk:11000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Dragão Branco — Dois Clones",icon:"🐲",hp:560000,atk:9000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]},{name:"Dragão Branco Clone α",icon:"🐲",hp:420000,atk:7000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"🐲 Dragão Branco de Olhos Azuis — FORMA FINAL",icon:"🐲",hp:1400000,atk:18000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal","void_mark"],minions:[{name:"Clone Último",icon:"🐲",hp:340000,atk:8000,element:"physical"}],specialMechanic:"Ao atingir 50% HP: invoca 1 Clone. Ao atingir 25% HP: invoca mais 2 Clones. Destruir um Clone restaura 8% HP do Dragão. Somente Caos e Sagrado causam dano não-reduzido."}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Dragão Branco — Fase 1",icon:"🐲",hp:280000,atk:5500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Dragão Branco — Dois Clones",icon:"🐲",hp:200000,atk:4500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]},{name:"Dragão Branco Clone α",icon:"🐲",hp:150000,atk:3500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"🐲 Dragão Branco de Olhos Azuis — FORMA FINAL",icon:"🐲",hp:500000,atk:9000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal","void_mark"],minions:[{name:"Clone Último",icon:"🐲",hp:120000,atk:4000,element:"physical"}],specialMechanic:"Ao atingir 50% HP: invoca 1 Clone. Ao atingir 25% HP: invoca mais 2 Clones. Destruir um Clone restaura 8% HP do Dragão. Somente Caos e Sagrado causam dano não-reduzido."}], timeLimit:90 },
       ]
     },
   ]
@@ -5363,7 +5355,7 @@ window.buyArenaShopItem = async function(itemId, cost, rewardJson) {
   const saveData = { arenaTokens: profile.arenaTokens };
 
   if (reward.foc)         { profile.foc = (profile.foc||0) + reward.foc; saveData.foc = profile.foc; }
-  if (reward.blons)       { profile.blons = Math.min((profile.blons||0)+reward.blons, window.BLONS_MAX||700); saveData.blons = profile.blons; }if (reward.pityReduce)  { profile.pity5Char = Math.max(0,(profile.pity5Char||0)-reward.pityReduce); saveData.pity5Char = profile.pity5Char; }
+  if (reward.blons)       { profile.blons = Math.min((profile.blons||0)+reward.blons, window.BLONS_MAX||160); saveData.blons = profile.blons; }if (reward.pityReduce)  { profile.pity5Char = Math.max(0,(profile.pity5Char||0)-reward.pityReduce); saveData.pity5Char = profile.pity5Char; }
   if (reward.xpBoost) {
     // Apply XP boost to active character
     const teamId = (profile.team||[])[0];
@@ -5639,150 +5631,93 @@ async function runAbyssChallenge(id) {
   const team = teamIds.map(tid=>chars.find(c=>c.id===tid)).filter(Boolean);
   if (team.length < 1) { toast("⚠ Monte um time antes de entrar no Abismo!","err"); return; }
 
+  // Pegar a primeira fase para o combate real
+  const phase = ch.phases && ch.phases[0];
+  const enemy = phase && phase.enemies && phase.enemies[0];
+
+  // Construir bossData para o combate real
+  const bossData = {
+    id: ch.id,
+    bossName: (enemy && enemy.name) || ch.name || "Guardião do Abismo",
+    bossIcon: ch.icon || "👹",
+    element: (enemy && enemy.element) || "dark",
+    bossHp: {
+      easy:   Math.round(((enemy && enemy.hp) || 80000) * 0.6),
+      normal: (enemy && enemy.hp) || 80000,
+      hard:   Math.round(((enemy && enemy.hp) || 80000) * 1.5),
+    },
+    bossAtk: {
+      easy:   Math.round(((enemy && enemy.atk) || 2000) * 0.7),
+      normal: (enemy && enemy.atk) || 2000,
+      hard:   Math.round(((enemy && enemy.atk) || 2000) * 1.4),
+    },
+    bossWeakness: (enemy && enemy.weakness) || [],
+    bossImmunity: (enemy && enemy.immunity) || [],
+    bossSpecial:  (enemy && enemy.special)  || ch.special || "",
+    bossUltName:  (enemy && enemy.ultName)  || "Domínio do Abismo",
+    bossUltMult:  (enemy && enemy.ultMult)  || 2.8,
+    bossUltType:  (enemy && enemy.ultType)  || "aoe",
+    phase2: (enemy && enemy.phase2) || null,
+    bossMinions: [],
+    tier: 5,
+    artifactSets: [],
+    artifactSetIds: [],
+  };
+
+  // Determinar dificuldade baseada no progresso atual
   const profile = STATE.profile;
   if (!profile.abyssProgress) profile.abyssProgress = {};
-
-  // Estrelas já registradas nessa câmara antes desta tentativa
-  const prevStars = (profile.abyssProgress[id]||{}).stars||0;
-  // Fases que o jogador ainda precisa vencer (cada fase vale 3 estrelas, total 9)
-  const phases = ch.phases || [];
-
-  // Quantas fases o jogador já concluiu (baseado em progresso anterior)
-  // Ex: 0 estrelas = começa da fase 1; 3 = começa da fase 2; 6 = começa da fase 3
-  const startPhaseIdx = prevStars >= 6 ? 2 : prevStars >= 3 ? 1 : 0;
-
-  // Roda UMA fase e retorna Promise<"win"|"exit"|"lose">
-  function runPhase(phaseIdx) {
-    return new Promise(async (resolve) => {
-      const phase = phases[phaseIdx];
-      if (!phase) { resolve("win"); return; }
-
-      const enemy = (phase.enemies && phase.enemies[0]) || {};
-
-      // Cada fase tem dificuldade própria: fase 0=easy, 1=normal, 2=hard
-      const phaseDiff = phaseIdx === 0 ? "easy" : phaseIdx === 1 ? "normal" : "hard";
-
-      const bossData = {
-        id: ch.id + "_p" + phase.phase,
-        bossName: enemy.name || ch.name || "Guardião do Abismo",
-        bossIcon: ch.icon || "👹",
-        element: enemy.element || "dark",
-        bossHp: {
-          easy:   Math.round((enemy.hp || 80000) * 0.7),
-          normal: enemy.hp || 80000,
-          hard:   Math.round((enemy.hp || 80000) * 1.45),
-        },
-        bossAtk: {
-          easy:   Math.round((enemy.atk || 2000) * 0.7),
-          normal: enemy.atk || 2000,
-          hard:   Math.round((enemy.atk || 2000) * 1.4),
-        },
-        bossWeakness: enemy.weakness || [],
-        bossImmunity: enemy.immunity || [],
-        bossSpecial:  enemy.special  || ch.special || "",
-        bossUltName:  enemy.ultName  || "Domínio do Abismo",
-        bossUltMult:  enemy.ultMult  || 2.8,
-        bossUltType:  enemy.ultType  || "aoe",
-        phase2: enemy.phase2 || null,
-        bossMinions: enemy.minions || [],
-        tier: 5,
-        artifactSets: [],
-        artifactSetIds: [],
-      };
-
-      async function onPhaseWin() {
-        // Cada fase concede 3 estrelas
-        const newStars = Math.min(9, prevStars + (phaseIdx - startPhaseIdx + 1) * 3);
-        profile.abyssProgress[id] = { stars: newStars, completed: newStars >= 9 };
-        // Salva progresso incremental — se o jogador fechar o app entre fases, não perde nada
-        await saveProfile(STATE.user.uid, { abyssProgress: profile.abyssProgress });
-
-        const hasNextPhase = (phaseIdx + 1) < phases.length && newStars < 9;
-        if (hasNextPhase) {
-          // Mostra tela intermediária antes da próxima fase
-          const cbKey = "_abyssPhase" + phaseIdx + "_cb";
-          openModal(
-            ch.icon + " Fase " + phase.phase + " Concluída!",
-            '<div style="text-align:center;padding:20px">' +
-            '<div style="font-size:2.5rem;margin-bottom:10px">⚔️</div>' +
-            '<div style="font-family:\'Cinzel Decorative\',cursive;color:var(--gold);font-size:1rem;margin-bottom:8px">Fase ' + phase.phase + ' Superada!</div>' +
-            '<div style="font-size:1.6rem;margin:10px 0;letter-spacing:3px">' + "⭐".repeat(newStars) + "☆".repeat(Math.max(0,9-newStars)) + '</div>' +
-            '<div style="font-size:.8rem;color:var(--txt3);margin-bottom:16px">' + newStars + '/9 estrelas · Próxima: Fase ' + phases[phaseIdx+1].phase + '</div>' +
-            '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
-            '<button class="btn btn-gold btn-sm" onclick="closeModal();window.' + cbKey + '(true)">⚔ Avançar para Fase ' + phases[phaseIdx+1].phase + '</button>' +
-            '<button class="btn btn-ghost btn-sm" onclick="closeModal();window.' + cbKey + '(false)">🏠 Sair (progresso salvo)</button>' +
-            '</div></div>'
-          );
-          window[cbKey] = function(continuar) {
-            delete window[cbKey];
-            resolve(continuar ? "win" : "exit");
-          };
-        } else {
-          resolve("win");
-        }
-      }
-
-      async function onPhaseLose() {
-        resolve("lose");
-      }
-
-      await startCombat(bossData, phaseDiff, onPhaseWin, onPhaseLose);
-    });
-  }
+  const prev = (profile.abyssProgress[id]||{}).stars||0;
+  const diff = prev >= 6 ? "hard" : prev >= 3 ? "normal" : "easy";
 
   closeModal();
 
-  // Encadeia as fases a partir da que o jogador ainda não concluiu
-  for (let i = startPhaseIdx; i < phases.length; i++) {
-    const result = await runPhase(i);
+  // Callbacks de vitória e derrota
+  async function onAbyssWin() {
+    // Calcular estrelas: hard=3, normal=2, easy=1 por fase
+    const phaseCount = (ch.phases || []).length || 1;
+    const starsPerPhase = diff === "hard" ? 3 : diff === "normal" ? 2 : 1;
+    const newStars = Math.min(9, prev + starsPerPhase * phaseCount);
+    profile.abyssProgress[id] = { stars: newStars, completed: newStars >= 9 };
 
-    if (result === "lose") {
-      const curStars = (profile.abyssProgress[id]||{}).stars||0;
-      openModal("💀 Derrota no Abismo",
-        '<div style="text-align:center;padding:20px">' +
-        '<div style="font-size:4rem;margin-bottom:12px">💀</div>' +
-        '<div style="font-family:\'Cinzel\',serif;color:#ff6666;font-size:1.1rem;margin-bottom:10px">Equipe derrotada na Fase ' + phases[i].phase + '!</div>' +
-        '<p style="color:var(--txt3);font-size:.85rem">O Abismo é implacável. Fortaleça seus heróis e retorne.</p>' +
-        (curStars > 0 ? '<div style="font-size:.78rem;color:var(--txt3);margin-top:8px">Progresso mantido: ' + curStars + '/9 ⭐</div>' : '') +
-        '<button class="btn btn-gold btn-full" style="margin-top:16px" onclick="closeModal();renderEndgame()">Voltar ao Abismo</button>' +
-        '</div>');
-      return;
-    }
+    const blonsGain = [0,50,100,200,300,500,700,900,1100,1500][newStars] || 0;
+    const focGain = Math.round(blonsGain * 0.15);
+    profile.foc = (profile.foc||0) + focGain;
+    profile.blons = (profile.blons||0) + blonsGain;
+    await saveProfile(STATE.user.uid, {
+      abyssProgress: profile.abyssProgress,
+      foc: profile.foc,
+      blons: profile.blons,
+    });
+    updateFocDisplay();
 
-    if (result === "exit") {
-      // Jogador saiu voluntariamente entre fases — progresso já foi salvo
-      renderEndgame();
-      return;
-    }
-    // result === "win" → continua para próxima fase no loop
+    openModal(`${ch.icon||"⭐"} Câmara Conquistada!`, `
+    <div style="text-align:center;padding:20px">
+      <div style="font-size:3.5rem;margin-bottom:10px;animation:pulse 1s infinite">${newStars>=9?"🏆":newStars>=6?"⭐":"💫"}</div>
+      <div style="font-family:'Cinzel Decorative',cursive;color:var(--gold);font-size:1.1rem;margin-bottom:8px">${newStars>=9?"Câmara Conquistada!":"Progresso Registrado!"}</div>
+      <div style="font-size:2rem;margin:12px 0;letter-spacing:4px">${"⭐".repeat(newStars)}${"☆".repeat(Math.max(0,9-newStars))}</div>
+      <div style="font-size:.8rem;color:var(--txt3);margin-bottom:12px">${newStars}/9 estrelas</div>
+      <div style="display:flex;justify-content:center;gap:20px;margin-top:10px;padding:10px;background:rgba(212,168,67,.08);border-radius:8px">
+        <span style="color:#66ccff">🔵 +${blonsGain} Blons</span>
+        <span style="color:var(--gold)">✨ +${focGain} FoC</span>
+      </div>
+      <button class="btn btn-gold btn-full" style="margin-top:16px" onclick="closeModal();renderEndgame()">✨ Coletar Recompensas</button>
+    </div>`);
   }
 
-  // Todas as fases vencidas — tela de vitória final com recompensas
-  const finalStars = (profile.abyssProgress[id]||{}).stars || 0;
-  const blonsGain = [0,50,100,200,300,500,700,900,1100,1500][finalStars] || 0;
-  const focGain = Math.round(blonsGain * 0.15);
-  profile.foc   = (profile.foc||0) + focGain;
-  profile.blons = Math.min((profile.blons||0) + blonsGain, window.BLONS_MAX || 700);
-  await saveProfile(STATE.user.uid, {
-    abyssProgress: profile.abyssProgress,
-    foc: profile.foc,
-    blons: profile.blons,
-  });
-  updateFocDisplay();
-  updateBlonsDisplay();
+  async function onAbyssLose() {
+    openModal("💀 Derrota no Abismo", `
+    <div style="text-align:center;padding:20px">
+      <div style="font-size:4rem;margin-bottom:12px">💀</div>
+      <div style="font-family:'Cinzel',serif;color:#ff6666;font-size:1.1rem;margin-bottom:10px">Equipe derrotada!</div>
+      <p style="color:var(--txt3);font-size:.85rem">O Abismo é implacável. Fortaleça seus heróis e retorne.</p>
+      ${prev > 0 ? `<div style="font-size:.78rem;color:var(--txt3);margin-top:8px">Progresso mantido: ${prev}/9 ⭐</div>` : ''}
+      <button class="btn btn-gold btn-full" style="margin-top:16px" onclick="closeModal();renderEndgame()">Voltar ao Abismo</button>
+    </div>`);
+  }
 
-  openModal((ch.icon||"⭐") + " Câmara Conquistada!",
-    '<div style="text-align:center;padding:20px">' +
-    '<div style="font-size:3.5rem;margin-bottom:10px;animation:pulse 1s infinite">' + (finalStars>=9?"🏆":finalStars>=6?"⭐":"💫") + '</div>' +
-    '<div style="font-family:\'Cinzel Decorative\',cursive;color:var(--gold);font-size:1.1rem;margin-bottom:8px">' + (finalStars>=9?"Câmara Conquistada!":"Progresso Registrado!") + '</div>' +
-    '<div style="font-size:2rem;margin:12px 0;letter-spacing:4px">' + "⭐".repeat(finalStars) + "☆".repeat(Math.max(0,9-finalStars)) + '</div>' +
-    '<div style="font-size:.8rem;color:var(--txt3);margin-bottom:12px">' + finalStars + '/9 estrelas</div>' +
-    '<div style="display:flex;justify-content:center;gap:20px;margin-top:10px;padding:10px;background:rgba(212,168,67,.08);border-radius:8px">' +
-    '<span style="color:#66ccff">🔵 +' + blonsGain + ' Blons</span>' +
-    '<span style="color:var(--gold)">✨ +' + focGain + ' FoC</span>' +
-    '</div>' +
-    '<button class="btn btn-gold btn-full" style="margin-top:16px" onclick="closeModal();renderEndgame()">✨ Coletar Recompensas</button>' +
-    '</div>');
+  // Iniciar combate real!
+  await startCombat(bossData, diff, onAbyssWin, onAbyssLose);
 }
 window.runAbyssChallenge = runAbyssChallenge;
 
@@ -6143,7 +6078,7 @@ const PITY_5 = 90;
 const PITY_4 = 10;
 const INITIAL_FOC = 30 * PULL_COST; // 30 pulls iniciais
 // ── BLONS ──
-const BLONS_MAX = 700;       // máximo de Blons
+const BLONS_MAX = 250;       // máximo de Blons
 const BLONS_REGEN = 1;       // Blons regenerados por minuto
 const BLONS_REGEN_MS = 60000;// intervalo de regeneração (ms)
 const BLONS_DUNGEON = 20;    // custo dungeon
@@ -9014,11 +8949,12 @@ async function doPlayerAction(f, cs, type) {
     boss.broken ? '<span style="color:#ffaa00"> 💥Break!</span>'            : '',
   ].join('');
 
+  const descLine = skill.description ? '<br><span style="font-size:.72rem;color:#aaa;opacity:.85;font-style:italic">'+skill.description+'</span>' : '';
   if (immune) {
-    await combatLog(icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b>… <span style="color:#ff8888">IMUNE</span>!', 0);
+    await combatLog(icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b>… <span style="color:#ff8888">IMUNE</span>!'+descLine, 0);
   } else if (!isHealerBasic) {
     await combatLog(
-      icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags, 0
+      icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags+descLine, 0
     );
   }
 
@@ -10346,7 +10282,7 @@ async function buyBlonsPack(packId) {
   const curFoc = STATE.profile.foc || 0;
   if (curFoc < pack.foc) { toast("❌ FoC insuficiente!", "err"); return; }
   STATE.profile.foc   = curFoc - pack.foc;
-  STATE.profile.blons = Math.min((STATE.profile.blons || 0) + pack.blons, window.BLONS_MAX || 700);
+  STATE.profile.blons = Math.min((STATE.profile.blons || 0) + pack.blons, window.BLONS_MAX || 160);
   STATE.profile.blonsLastRegen = STATE.profile.blonsLastRegen || Date.now();
   await saveProfile(STATE.user.uid, {foc: STATE.profile.foc, blons: STATE.profile.blons, blonsLastRegen: STATE.profile.blonsLastRegen});
   updateFocDisplay(); updateBlonsDisplay();
@@ -11754,7 +11690,7 @@ async function admRenderTower() {
     <div class="card-title">⚙ Configurações Globais — Torre & Blons</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px">
       <div class="field"><label>FoC padrão por andar</label><input id="cfg-tower-foc" type="number" value="${cfg.defaultTowerFoc||50}" min="1"></div>
-      <div class="field"><label>🔵 Blons máximo</label><input id="cfg-blons-max" type="number" value="${cfg.blonsMax||700}" min="10"></div>
+      <div class="field"><label>🔵 Blons máximo</label><input id="cfg-blons-max" type="number" value="${cfg.blonsMax||160}" min="10"></div>
       <div class="field"><label>🔵 Blons por dungeon</label><input id="cfg-blons-dung" type="number" value="${cfg.blonsDungeon||20}" min="1"></div>
       <div class="field"><label>🔵 Blons por torre</label><input id="cfg-blons-tower" type="number" value="${cfg.blonsTower||30}" min="1"></div>
       <div class="field"><label>Regen Blons (por min)</label><input id="cfg-blons-regen" type="number" value="${cfg.blonsRegen||1}" min="1"></div>
@@ -12454,7 +12390,7 @@ async function admRenderConfig() {
   <div class="card" style="margin-bottom:20px;border-color:rgba(60,140,255,.25)">
     <div class="card-title">🔵 Sistema de Blons</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
-      <div class="field"><label>Blons Máximo</label><input id="cfg-blons-max" type="number" value="${cfg.blonsMax||700}" min="10"></div>
+      <div class="field"><label>Blons Máximo</label><input id="cfg-blons-max" type="number" value="${cfg.blonsMax||160}" min="10"></div>
       <div class="field"><label>Custo por Dungeon</label><input id="cfg-blons-dung" type="number" value="${cfg.blonsDungeon||20}" min="1"></div>
       <div class="field"><label>Custo por Torre</label><input id="cfg-blons-tower" type="number" value="${cfg.blonsTower||30}" min="1"></div>
       <div class="field"><label>Regen por minuto</label><input id="cfg-blons-regen" type="number" value="${cfg.blonsRegen||1}" min="1"></div>
@@ -14813,35 +14749,22 @@ var MOB_TABS = [
 var _mobLeftIdx  = 1; // team
 var _mobRightIdx = 2; // inventory
 
-// Renderiza o drawer de abas + ações rápidas (modais) e atualiza os potinhos
+// Renderiza o drawer de abas e atualiza os potinhos laterais
 function mobRenderDrawer() {
   var grid = document.getElementById('mob-tab-drawer-inner');
   if (!grid) return;
   var cur = (STATE && STATE.currentTab) || '';
-  var tabs = MOB_TABS.slice();
+  var tabs = MOB_TABS.slice(); // cópia para não mutar o original
+  // Adiciona Admin dinamicamente se o jogador estiver em modo admin
   if (STATE && STATE.adminMode) tabs.push({ id:'admin', icon:'👑', label:'Admin' });
 
-  // Grade de abas normais (openTab)
-  var tabsHtml = tabs.map(function(t) {
+  grid.innerHTML = tabs.map(function(t) {
     var isOn = t.id === cur;
     return '<button class="mob-drawer-btn' + (isOn ? ' on' : '') + '" onclick="mobDrawerPick(\'' + t.id + '\')">'
       + '<span style="font-size:.9rem">' + t.icon + '</span>'
       + '<span>' + t.label + '</span>'
     + '</button>';
   }).join('');
-
-  // Separador + ações rápidas (abrem modais, não mudam aba)
-  var actionsHtml = ''
-    + '<div style="grid-column:1/-1;margin:8px 0 4px;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;'
-    +   'font-size:.62rem;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;font-family:\'Cinzel\',serif">Ações Rápidas</div>'
-    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderFriendSystem();">'
-    +   '<span style="font-size:.9rem">👥</span><span>Amigos</span></button>'
-    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderDailyMissionsPanel();">'
-    +   '<span style="font-size:.9rem">📋</span><span>Missões</span></button>'
-    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderGlobalLeaderboard();">'
-    +   '<span style="font-size:.9rem">🏆</span><span>Top Players</span></button>';
-
-  grid.innerHTML = tabsHtml + actionsHtml;
 }
 
 // Atualiza o ícone e label dos potinhos laterais com base nos atalhos atuais
@@ -16003,29 +15926,20 @@ function showDamageFloat(dmg, x, y, type, element) {
 function triggerHitFlash(type) {
   const el = document.getElementById('combat-hit-flash');
   if (!el) return;
-
-  // Cancela qualquer listener pendente de ciclo anterior
-  if (el._flashEndHandler) {
-    el.removeEventListener('animationend', el._flashEndHandler);
-    el._flashEndHandler = null;
-  }
-
-  // Reseta completamente: remove classe, força reflow para o browser descartar
-  // o estado de animação anterior antes de re-aplicar
+  // Geração para evitar race condition: só limpa se ainda for a mesma chamada
+  el._flashGen = (el._flashGen || 0) + 1;
+  const gen = el._flashGen;
   el.className = '';
   el.style.animation = 'none';
-  void el.offsetWidth; // força reflow síncrono — imprescindível para restart
-  el.style.animation  = '';
-
-  // Aplica a nova classe (o CSS define a animação via seletor .flash-*)
+  void el.offsetWidth; // força reflow antes de re-aplicar
+  el.style.animation = '';
   el.className = 'flash-' + (type || 'red');
-
-  // Limpa a classe assim que a animação terminar naturalmente (sem forwards)
-  el._flashEndHandler = function() {
-    el.className = '';
-    el._flashEndHandler = null;
-  };
-  el.addEventListener('animationend', el._flashEndHandler, { once: true });
+  setTimeout(() => {
+    if (el && el._flashGen === gen) {
+      el.className = '';
+      el.style.animation = 'none';
+    }
+  }, 450);
 }
 
 // ── Shake da tela ─────────────────────────────────────────────────────────────
@@ -16042,9 +15956,10 @@ function triggerScreenShake(intensity) {
 function triggerUltEffect(element) {
   const el = document.getElementById('ult-overlay');
   if (!el) return;
+  el.className = 'active';
   const color = ELEMENT_COLORS[element] || 'rgba(255,200,0,.08)';
   el.style.background = `radial-gradient(ellipse at center, ${color.replace(')', ',.12)')} 0%, transparent 70%)`;
-  _restartOverlay(el);
+  setTimeout(() => { if (el) el.className = ''; }, 1200);
   triggerHitFlash('gold');
 }
 
@@ -16119,20 +16034,15 @@ function animateBossDefeat() {
 function animatePhase2() {
   const bossEl = document.querySelector('#combat-boss');
   if (bossEl) {
-    // phase2-anim é uma classe de animação em CSS, não um overlay com display:none,
-    // então usamos o mesmo padrão: cancela handler anterior, reflow, re-adiciona.
-    if (bossEl._p2EndHandler) {
-      bossEl.removeEventListener('animationend', bossEl._p2EndHandler);
-      bossEl._p2EndHandler = null;
-    }
+    // Remove + reflow antes de re-adicionar para resetar animação corretamente
     bossEl.classList.remove('phase2-anim');
     void bossEl.offsetWidth;
     bossEl.classList.add('phase2-anim');
-    bossEl._p2EndHandler = function() {
-      bossEl.classList.remove('phase2-anim');
-      bossEl._p2EndHandler = null;
-    };
-    bossEl.addEventListener('animationend', bossEl._p2EndHandler, { once: true });
+    // Geração para evitar que setTimeout stale remova a classe errada
+    const _p2gen = (bossEl._p2gen = (bossEl._p2gen || 0) + 1);
+    setTimeout(() => {
+      if (bossEl && bossEl._p2gen === _p2gen) bossEl.classList.remove('phase2-anim');
+    }, 1600);
   }
   triggerHitFlash('purple');
   triggerScreenShake(2);
@@ -16370,28 +16280,12 @@ window.triggerScreenShake = function(duration = 400) {
   }, 10);
 };
 
-// ── Helper: reinicia animação num overlay de forma confiável ─────────────────
-// Cancela listener anterior, força reflow síncrono, re-adiciona .active,
-// e usa animationend para limpar — sem setTimeout, sem forwards fill-mode.
-function _restartOverlay(el) {
-  if (!el) return;
-  if (el._ovEndHandler) {
-    el.removeEventListener('animationend', el._ovEndHandler);
-    el._ovEndHandler = null;
-  }
-  el.classList.remove('active');
-  void el.offsetWidth; // reflow síncrono — descarta estado de animação anterior
-  el.classList.add('active');
-  el._ovEndHandler = function() {
-    el.classList.remove('active');
-    el._ovEndHandler = null;
-  };
-  el.addEventListener('animationend', el._ovEndHandler, { once: true });
-}
-
 // Vignette Flash - Efeito de escurecimento
 window.triggerVignetteFlash = function() {
-  _restartOverlay(document.getElementById('combat-vignette'));
+  const vignette = document.getElementById('combat-vignette');
+  if (!vignette) return;
+  vignette.classList.remove('active');
+  setTimeout(() => vignette.classList.add('active'), 10);
 };
 
 // Slash Effects - Cortes estilo Honkai Star Rail
@@ -16415,25 +16309,37 @@ window.triggerSlashEffect = function(x, y, type) {
 
 // Sukuna Domain Expansion
 window.triggerSukunaDomain = function() {
-  _restartOverlay(document.getElementById('sukuna-domain-overlay'));
+  const domain = document.getElementById('sukuna-domain-overlay');
+  if (!domain) return;
+  domain.classList.remove('active');
+  setTimeout(() => domain.classList.add('active'), 10);
   window.triggerScreenShake(600);
 };
 
 // Sukuna Ultimate Flash
 window.triggerSukunaUlt = function() {
-  _restartOverlay(document.getElementById('sukuna-ult-flash'));
+  const flash = document.getElementById('sukuna-ult-flash');
+  if (!flash) return;
+  flash.classList.remove('active');
+  setTimeout(() => flash.classList.add('active'), 10);
   window.triggerScreenShake(600);
   window.triggerVignetteFlash();
 };
 
 // Boss Impact Overlay
 window.triggerBossImpact = function() {
-  _restartOverlay(document.getElementById('boss-impact-overlay'));
+  const impact = document.getElementById('boss-impact-overlay');
+  if (!impact) return;
+  impact.classList.remove('active');
+  setTimeout(() => impact.classList.add('active'), 10);
 };
 
 // Crit Impact Flash
 window.triggerCritImpact = function() {
-  _restartOverlay(document.getElementById('crit-impact-overlay'));
+  const crit = document.getElementById('crit-impact-overlay');
+  if (!crit) return;
+  crit.classList.remove('active');
+  setTimeout(() => crit.classList.add('active'), 10);
   window.triggerScreenShake(300);
 };
 
