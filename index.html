@@ -584,8 +584,8 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   animation: hitFlash .35s ease-out forwards;
 }
 #combat-hit-flash.flash-gold {
-  background: radial-gradient(ellipse at center, rgba(255,220,0,.25) 0%, transparent 70%);
-  animation: hitFlash .4s ease-out forwards;
+  background: transparent;
+  animation: none;
 }
 #combat-hit-flash.flash-blue {
   background: radial-gradient(ellipse at center, rgba(80,150,255,.2) 0%, transparent 70%);
@@ -1125,12 +1125,11 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   pointer-events: none;
 }
 #crit-impact-overlay.active {
-  display: block;
-  animation: critImpact .45s ease-out forwards;
+  display: none;
 }
 @keyframes critImpact {
-  0%   { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.3) 0%, transparent 55%); opacity: 1; }
-  100% { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.0) 0%, transparent 55%); opacity: 0; }
+  0%   { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1582,16 +1581,14 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 8650;
   pointer-events: none;
   display: none;
-  background: radial-gradient(circle at center, rgba(255,255,0,.8), rgba(255,200,0,.3) 40%, transparent 70%);
 }
 
 #crit-impact-overlay.active {
-  display: block;
-  animation: critFlash 0.4s ease-out;
+  display: none;
 }
 
 @keyframes critFlash {
-  0% { opacity: 1; }
+  0% { opacity: 0; }
   100% { opacity: 0; }
 }
 
@@ -8949,12 +8946,11 @@ async function doPlayerAction(f, cs, type) {
     boss.broken ? '<span style="color:#ffaa00"> 💥Break!</span>'            : '',
   ].join('');
 
-  const descLine = skill.description ? '<br><span style="font-size:.72rem;color:#aaa;opacity:.85;font-style:italic">'+skill.description+'</span>' : '';
   if (immune) {
-    await combatLog(icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b>… <span style="color:#ff8888">IMUNE</span>!'+descLine, 0);
+    await combatLog(icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b>… <span style="color:#ff8888">IMUNE</span>!', 0);
   } else if (!isHealerBasic) {
     await combatLog(
-      icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags+descLine, 0
+      icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags, 0
     );
   }
 
@@ -14764,7 +14760,10 @@ function mobRenderDrawer() {
       + '<span style="font-size:.9rem">' + t.icon + '</span>'
       + '<span>' + t.label + '</span>'
     + '</button>';
-  }).join('');
+  }).join('')
+  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderFriendSystem()"><span style="font-size:.9rem">👥</span><span>Amigos</span></button>'
+  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderGlobalLeaderboard()"><span style="font-size:.9rem">🏆</span><span>Top Players</span></button>'
+  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderDailyMissionsPanel()"><span style="font-size:.9rem">📋</span><span>Missões</span></button>';
 }
 
 // Atualiza o ícone e label dos potinhos laterais com base nos atalhos atuais
