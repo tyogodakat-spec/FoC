@@ -1025,9 +1025,11 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 9200;
   pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(80,0,0,.0) 0%, rgba(180,0,0,.25) 50%, rgba(0,0,0,.7) 100%);
-  animation: sukDomainIn 1.2s ease-out forwards;
 }
-#sukuna-domain-overlay.active { display: block; }
+#sukuna-domain-overlay.active {
+  display: block;
+  animation: sukDomainIn 1.2s ease-out;
+}
 @keyframes sukDomainIn {
   0%   { opacity: 0; }
   20%  { opacity: 1; }
@@ -1043,7 +1045,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   font-size: 1.5rem;
   color: rgba(200,0,0,.8);
   text-shadow: 0 0 10px rgba(255,0,0,.9);
-  animation: sukunaRuneFly var(--dur, 1s) ease-out forwards;
+  animation: sukunaRuneFly var(--dur, 1s) ease-out;
   filter: drop-shadow(0 0 6px rgba(255,0,0,.8));
 }
 @keyframes sukunaRuneFly {
@@ -1097,9 +1099,8 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 8500;
   opacity: 0;
   background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.5) 100%);
-  transition: opacity .3s;
 }
-#combat-vignette.active { opacity: 1; }
+/* .active handled by the second block below via animation */
 
 /* Efeito de impacto de boss */
 #boss-impact-overlay {
@@ -1111,7 +1112,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #boss-impact-overlay.active {
   display: block;
-  animation: bossImpact .5s ease-out forwards;
+  animation: bossImpact .5s ease-out;
 }
 @keyframes bossImpact {
   0%   { background: radial-gradient(ellipse at center, rgba(255,60,60,.35) 0%, transparent 60%); opacity: 1; }
@@ -1128,7 +1129,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #crit-impact-overlay.active {
   display: block;
-  animation: critImpact .45s ease-out forwards;
+  animation: critImpact .45s ease-out;
 }
 @keyframes critImpact {
   0%   { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.3) 0%, transparent 55%); opacity: 1; }
@@ -3803,8 +3804,8 @@ const DUNGEON_PRESETS = {
       "Chama do Inferno":{ "2pc":"DMG Fogo +15%", "4pc":"Burn aplicado aumenta ATK em 18% por 2 turnos." },
       "Coração do Vulcão":{ "2pc":"ATK +18%", "4pc":"Ao usar Ult, Burn em todos inimigos por 2 turnos." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:320000, hard:780000 },
+    bossAtk:{ easy:1800, normal:4200, hard:10500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   void_citadel: {
@@ -3822,8 +3823,8 @@ const DUNGEON_PRESETS = {
       "Vazio Eterno":{ "2pc":"DMG Dark/Chaos +18%", "4pc":"Void Mark aplicado explode em 2 turnos a menos." },
       "Sombra Absoluta":{ "2pc":"Crit DMG +20%", "4pc":"Ataques críticos aplicam Void Mark (30% chance)." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:320000, hard:780000 },
+    bossAtk:{ easy:1800, normal:4200, hard:10500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   thunder_peak: {
@@ -3841,8 +3842,8 @@ const DUNGEON_PRESETS = {
       "Coroa do Trovão":{ "2pc":"DMG Lightning +18%", "4pc":"Electrify aplicado propaga para alvo adj. (Chain Lightning)." },
       "Tempestade Perpétua":{ "2pc":"Energy Recharge +20%", "4pc":"Ult custa 15% menos energia. +25% DMG após usar Ult." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:320000, hard:780000 },
+    bossAtk:{ easy:1800, normal:4200, hard:10500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   abyssal_ocean: {
@@ -3860,8 +3861,8 @@ const DUNGEON_PRESETS = {
       "Profundeza Eterna":{ "2pc":"HP +20%", "4pc":"Ao curar aliados, aumenta ATK do curado em 15% por 2 turnos." },
       "Maré das Almas":{ "2pc":"DMG Water/Ice +16%", "4pc":"Freeze aplicado aumenta dano de todos em 22% por duração." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:320000, hard:780000 },
+    bossAtk:{ easy:1800, normal:4200, hard:10500 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   // ── T4 DUNGEONS ──
@@ -3987,8 +3988,8 @@ const DUNGEON_PRESETS = {
       "Presas da Maldição":{ "2pc":"ATK +20%", "4pc":"Ao usar Ult, Crit Rate +15% e Crit DMG +20% por 2 turnos." },
       "Sello do Rei":{ "2pc":"DMG Chaos +22%", "4pc":"Curse aplicado causa explosão de dano = 50% ATK ao expirar." }
     },
-    bossHp:{ easy:155000, normal:270000, hard:390000 },
-    bossAtk:{ easy:2000, normal:3500, hard:6000 },
+    bossHp:{ easy:155000, normal:340000, hard:860000 },
+    bossAtk:{ easy:2000, normal:4500, hard:11500 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:40,
     bossSpecial:"Domínio Ativo: no turno 1, todos os ataques do boss acertam garantidamente. Destrói escudos no 1° turno. Sukuna regenera 5% HP ao usar Ult.",
@@ -4018,8 +4019,8 @@ const DUNGEON_PRESETS = {
       "Alma do Shinigami":{ "2pc":"DMG Holy +18%", "4pc":"Ao aplicar Cleanse, ATK do time +15% por 2 turnos." },
       "Escudo do Soul Society":{ "2pc":"DEF +22%", "4pc":"Ao ser atingido abaixo de 50% HP, escudo automático de 25% HP (1x/batalha)." }
     },
-    bossHp:{ easy:145000, normal:255000, hard:370000 },
-    bossAtk:{ easy:1900, normal:3300, hard:5700 },
+    bossHp:{ easy:145000, normal:330000, hard:820000 },
+    bossAtk:{ easy:1900, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:38,
     bossSpecial:"Bankai de Morte: a cada 3 turnos, o boss ativa uma história que aplica aleatoriamente: Bleed, Freeze ou Curse em todo o time.",
@@ -4049,8 +4050,8 @@ const DUNGEON_PRESETS = {
       "Respiração das Chamas":{ "2pc":"DMG Fire +18%", "4pc":"Ataques físicos têm 20% de chance de aplicar Burn (2 turnos)." },
       "Marca do Demonslayer":{ "2pc":"ATK +18%", "4pc":"Ao eliminar um inimigo, ATK +10% por 3 turnos (acumula até 3x)." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:360000 },
-    bossAtk:{ easy:1850, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:320000, hard:800000 },
+    bossAtk:{ easy:1850, normal:4200, hard:10800 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:36,
     bossSpecial:"Sonho Profundo: a cada 2 turnos, aplica Sleep em 1 aliado aleatório (perde próximo turno). Cleanse remove Sleep."
@@ -4346,10 +4347,14 @@ const TOWER_FLOOR_PRESETS = (() => {
     const focReward = Math.floor(30 + floor * 1.7 + (floor > 50 ? floor * 0.8 : 0));
     // Blons escalados — total = 25.000
     const blonsReward = Math.round(rawBlons[i] * blonsScale);
-    // Boss HP cresce exponencialmente: andar 1 = 5k, andar 50 = 43k, andar 100 = 390k
-    const bossHp  = Math.round(5000  * Math.pow(1.045, floor - 1));
-    // Boss ATK cresce junto — andar 1 = 300, andar 100 = ~14500
-    const bossAtk = Math.round(300   * Math.pow(1.04,  floor - 1));
+    // Boss HP — curva suave até andar 14, depois escala agressivamente a partir do 15
+    // Andar 1=5k, 14=8.5k, 15=14k, 30=80k, 50=380k, 75=2.2M, 100=10M
+    const _hpBase = 5000 * Math.pow(1.045, floor - 1);
+    const bossHp  = Math.round(floor < 15 ? _hpBase : _hpBase * Math.pow(1.12, floor - 14));
+    // Boss ATK — mesma lógica: suave até 14, depois dobra o crescimento
+    // Andar 1=300, 14=510, 15=700, 30=3200, 50=12000, 100=90000
+    const _atkBase = 300 * Math.pow(1.04, floor - 1);
+    const bossAtk = Math.round(floor < 15 ? _atkBase : _atkBase * Math.pow(1.10, floor - 14));
     floors.push({
       floor, name: floorNames[i] || `Andar ${floor}`,
       bossName: boss.n, bossIcon: boss.i, bossDescription: boss.d,
@@ -5199,50 +5204,50 @@ const ABYSS_PRESETS = {
     { id:"c7", order:7, name:"Câmara do Caos", icon:"🔴",
       mechanic:{ name:"Entropia Caótica", desc:"A cada turno, um efeito aleatório: +20% ATK do time, -15% DEF dos inimigos, ou DOT de Corrupção em todos.", chaosRandom:true },
       phases:[
-        { phase:1, enemies:[{name:"Demônio do Caos",icon:"🔴",hp:88000,atk:2200,element:"chaos",weakness:["holy","quantum"],immunity:["chaos","corruption"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Avatar do Caos",icon:"🌀",hp:130000,atk:2900,element:"chaos",weakness:["holy"],immunity:["chaos","corruption","nightmare"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Caos Encarnado",icon:"🔴",hp:200000,atk:4000,element:"chaos",weakness:["holy","quantum","ice"],immunity:["chaos","corruption","nightmare","curse"],minions:[{name:"Fragmento de Caos",icon:"🔴",hp:40000,atk:1400,element:"chaos"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Demônio do Caos",icon:"🔴",hp:160000,atk:3500,element:"chaos",weakness:["holy","quantum"],immunity:["chaos","corruption"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Avatar do Caos",icon:"🌀",hp:230000,atk:4600,element:"chaos",weakness:["holy"],immunity:["chaos","corruption","nightmare"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Caos Encarnado",icon:"🔴",hp:380000,atk:6500,element:"chaos",weakness:["holy","quantum","ice"],immunity:["chaos","corruption","nightmare","curse"],minions:[{name:"Fragmento de Caos",icon:"🔴",hp:70000,atk:2200,element:"chaos"}]}], timeLimit:90 },
       ]
     },
     { id:"c8", order:8, name:"Câmara da Alma",icon:"👻",
       mechanic:{ name:"Drenar Vital", desc:"Soul Drain ativo em todos os inimigos permanentemente. Curas recebidas -30% para o time.", permanentDot:"soul_drain", healDebuff:30 },
       phases:[
-        { phase:1, enemies:[{name:"Espectro Ancião",icon:"👻",hp:95000,atk:2400,element:"dark",weakness:["holy","fire"],immunity:["soul_drain","undead"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Fantasma do Herói",icon:"🫥",hp:140000,atk:3100,element:"dark",weakness:["holy","chaos"],immunity:["soul_drain","undead","curse"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Lorde das Almas",icon:"☠",hp:220000,atk:4500,element:"dark",weakness:["holy","quantum"],immunity:["soul_drain","undead","curse","nightmare"],minions:[{name:"Alma Presa",icon:"👻",hp:45000,atk:1600,element:"dark"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Espectro Ancião",icon:"👻",hp:170000,atk:3800,element:"dark",weakness:["holy","fire"],immunity:["soul_drain","undead"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Fantasma do Herói",icon:"🫥",hp:250000,atk:5000,element:"dark",weakness:["holy","chaos"],immunity:["soul_drain","undead","curse"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Lorde das Almas",icon:"☠",hp:420000,atk:7200,element:"dark",weakness:["holy","quantum"],immunity:["soul_drain","undead","curse","nightmare"],minions:[{name:"Alma Presa",icon:"👻",hp:80000,atk:2500,element:"dark"}]}], timeLimit:90 },
       ]
     },
     { id:"c9", order:9, name:"Câmara do Tempo", icon:"⏳",
       mechanic:{ name:"Paradoxo Temporal", desc:"Lacre Temporal ativo no time durante 3 turnos no início de cada fase. Prioridade: limpe com Caos ou aguarde.", startDebuff:"time_seal", startDebuffDuration:3 },
       phases:[
-        { phase:1, enemies:[{name:"Guardião do Tempo",icon:"⏳",hp:105000,atk:2600,element:"quantum",weakness:["chaos","dark"],immunity:["time_seal","stun"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Arauto da Eternidade",icon:"♾",hp:155000,atk:3400,element:"quantum",weakness:["chaos"],immunity:["time_seal","stun","petrify"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Dragão do Tempo",icon:"⏰",hp:240000,atk:5000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["time_seal","stun","petrify","freeze"],minions:[{name:"Eco Temporal",icon:"⏳",hp:55000,atk:1800,element:"quantum"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Guardião do Tempo",icon:"⏳",hp:190000,atk:4200,element:"quantum",weakness:["chaos","dark"],immunity:["time_seal","stun"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Arauto da Eternidade",icon:"♾",hp:280000,atk:5400,element:"quantum",weakness:["chaos"],immunity:["time_seal","stun","petrify"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Dragão do Tempo",icon:"⏰",hp:460000,atk:8000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["time_seal","stun","petrify","freeze"],minions:[{name:"Eco Temporal",icon:"⏳",hp:100000,atk:2800,element:"quantum"}]}], timeLimit:90 },
       ]
     },
     // ── CÂMARAS 10-12 (Endgame Absoluto) ──
     { id:"c10", order:10, name:"Câmara da Extinção", icon:"💀",
       mechanic:{ name:"Contagem Regressiva", desc:"A cada 3 turnos sem matar inimigo, todos recebem +1 stack de Corrupção. Máx 5 stacks = derrota.", rampingDebuff:"corruption", rampInterval:3, rampMaxStacks:5 },
       phases:[
-        { phase:1, enemies:[{name:"Titan da Extinção",icon:"💥",hp:180000,atk:4000,element:"dark",weakness:["chaos","holy"],immunity:["corruption","curse","undead"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Arauto do Fim",icon:"☠",hp:250000,atk:5200,element:"chaos",weakness:["holy","quantum"],immunity:["corruption","nightmare","time_seal"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"Primordial da Extinção",icon:"💀",hp:350000,atk:6500,element:"dark",weakness:["holy","chaos","quantum"],immunity:["corruption","nightmare","time_seal","soul_drain"],minions:[{name:"Sombra da Extinção",icon:"💀",hp:65000,atk:2200,element:"dark"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Titan da Extinção",icon:"💥",hp:450000,atk:8000,element:"dark",weakness:["chaos","holy"],immunity:["corruption","curse","undead"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Arauto do Fim",icon:"☠",hp:620000,atk:10500,element:"chaos",weakness:["holy","quantum"],immunity:["corruption","nightmare","time_seal"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"Primordial da Extinção",icon:"💀",hp:870000,atk:13000,element:"dark",weakness:["holy","chaos","quantum"],immunity:["corruption","nightmare","time_seal","soul_drain"],minions:[{name:"Sombra da Extinção",icon:"💀",hp:160000,atk:4400,element:"dark"}]}], timeLimit:90 },
       ]
     },
     { id:"c11", order:11, name:"Câmara do Criador", icon:"✦",
       mechanic:{ name:"Energia da Criação", desc:"Todos os ataques têm multiplicador elemental dobrado. Imunidades dos inimigos ignoram 50% dos bônus elemental.", doubleElemMult:true, enemyImmuneReduction:0.5 },
       phases:[
-        { phase:1, enemies:[{name:"Archon Supremo",icon:"👑",hp:210000,atk:4800,element:"quantum",weakness:["physical","chaos"],immunity:["void_mark","time_seal","corruption","nightmare"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Deus Primordial",icon:"👑",hp:300000,atk:6000,element:"holy",weakness:["chaos","dark"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"O Criador",icon:"✦",hp:420000,atk:7500,element:"quantum",weakness:["chaos","dark","physical"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain","bleed"],minions:[{name:"Fragmento da Criação",icon:"✦",hp:80000,atk:2800,element:"holy"}]}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Archon Supremo",icon:"👑",hp:520000,atk:9600,element:"quantum",weakness:["physical","chaos"],immunity:["void_mark","time_seal","corruption","nightmare"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Deus Primordial",icon:"👑",hp:750000,atk:12000,element:"holy",weakness:["chaos","dark"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"O Criador",icon:"✦",hp:1050000,atk:15000,element:"quantum",weakness:["chaos","dark","physical"],immunity:["void_mark","time_seal","corruption","nightmare","soul_drain","bleed"],minions:[{name:"Fragmento da Criação",icon:"✦",hp:200000,atk:5600,element:"holy"}]}], timeLimit:90 },
       ]
     },
     { id:"c12", order:12, name:"Câmara do Dragão Branco", icon:"🐲",
       mechanic:{ name:"Aura Dracônica Absoluta", desc:"TODOS os elementos exceto Caos e Sagrado são IMUNES. Dragão invoca Clones a cada 30% HP perdido. Chain Lightning e Corrupção têm efeito x2.", dragonAura:true, specialBoss:true },
       phases:[
-        { phase:1, enemies:[{name:"Dragão Branco — Fase 1",icon:"🐲",hp:280000,atk:5500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal"]}], timeLimit:90 },
-        { phase:2, enemies:[{name:"Dragão Branco — Dois Clones",icon:"🐲",hp:200000,atk:4500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]},{name:"Dragão Branco Clone α",icon:"🐲",hp:150000,atk:3500,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]}], timeLimit:90 },
-        { phase:3, enemies:[{name:"🐲 Dragão Branco de Olhos Azuis — FORMA FINAL",icon:"🐲",hp:500000,atk:9000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal","void_mark"],minions:[{name:"Clone Último",icon:"🐲",hp:120000,atk:4000,element:"physical"}],specialMechanic:"Ao atingir 50% HP: invoca 1 Clone. Ao atingir 25% HP: invoca mais 2 Clones. Destruir um Clone restaura 8% HP do Dragão. Somente Caos e Sagrado causam dano não-reduzido."}], timeLimit:90 },
+        { phase:1, enemies:[{name:"Dragão Branco — Fase 1",icon:"🐲",hp:780000,atk:11000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal"]}], timeLimit:90 },
+        { phase:2, enemies:[{name:"Dragão Branco — Dois Clones",icon:"🐲",hp:560000,atk:9000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]},{name:"Dragão Branco Clone α",icon:"🐲",hp:420000,atk:7000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum"]}], timeLimit:90 },
+        { phase:3, enemies:[{name:"🐲 Dragão Branco de Olhos Azuis — FORMA FINAL",icon:"🐲",hp:1400000,atk:18000,element:"physical",weakness:["chaos","holy"],immunity:["fire","water","lightning","ice","wind","earth","nature","dark","quantum","burn","freeze","electrify","bleed","poison","entangle","soul_drain","nightmare","time_seal","void_mark"],minions:[{name:"Clone Último",icon:"🐲",hp:340000,atk:8000,element:"physical"}],specialMechanic:"Ao atingir 50% HP: invoca 1 Clone. Ao atingir 25% HP: invoca mais 2 Clones. Destruir um Clone restaura 8% HP do Dragão. Somente Caos e Sagrado causam dano não-reduzido."}], timeLimit:90 },
       ]
     },
   ]
@@ -14808,22 +14813,35 @@ var MOB_TABS = [
 var _mobLeftIdx  = 1; // team
 var _mobRightIdx = 2; // inventory
 
-// Renderiza o drawer de abas e atualiza os potinhos laterais
+// Renderiza o drawer de abas + ações rápidas (modais) e atualiza os potinhos
 function mobRenderDrawer() {
   var grid = document.getElementById('mob-tab-drawer-inner');
   if (!grid) return;
   var cur = (STATE && STATE.currentTab) || '';
-  var tabs = MOB_TABS.slice(); // cópia para não mutar o original
-  // Adiciona Admin dinamicamente se o jogador estiver em modo admin
+  var tabs = MOB_TABS.slice();
   if (STATE && STATE.adminMode) tabs.push({ id:'admin', icon:'👑', label:'Admin' });
 
-  grid.innerHTML = tabs.map(function(t) {
+  // Grade de abas normais (openTab)
+  var tabsHtml = tabs.map(function(t) {
     var isOn = t.id === cur;
     return '<button class="mob-drawer-btn' + (isOn ? ' on' : '') + '" onclick="mobDrawerPick(\'' + t.id + '\')">'
       + '<span style="font-size:.9rem">' + t.icon + '</span>'
       + '<span>' + t.label + '</span>'
     + '</button>';
   }).join('');
+
+  // Separador + ações rápidas (abrem modais, não mudam aba)
+  var actionsHtml = ''
+    + '<div style="grid-column:1/-1;margin:8px 0 4px;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;'
+    +   'font-size:.62rem;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;font-family:\'Cinzel\',serif">Ações Rápidas</div>'
+    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderFriendSystem();">'
+    +   '<span style="font-size:.9rem">👥</span><span>Amigos</span></button>'
+    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderDailyMissionsPanel();">'
+    +   '<span style="font-size:.9rem">📋</span><span>Missões</span></button>'
+    + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderGlobalLeaderboard();">'
+    +   '<span style="font-size:.9rem">🏆</span><span>Top Players</span></button>';
+
+  grid.innerHTML = tabsHtml + actionsHtml;
 }
 
 // Atualiza o ícone e label dos potinhos laterais com base nos atalhos atuais
@@ -16024,24 +16042,9 @@ function triggerScreenShake(intensity) {
 function triggerUltEffect(element) {
   const el = document.getElementById('ult-overlay');
   if (!el) return;
-
-  // Cancela listener pendente do ciclo anterior
-  if (el._ultEndHandler) {
-    el.removeEventListener('animationend', el._ultEndHandler);
-    el._ultEndHandler = null;
-  }
-
-  el.className = '';
-  void el.offsetWidth; // reflow para descartar estado anterior
   const color = ELEMENT_COLORS[element] || 'rgba(255,200,0,.08)';
   el.style.background = `radial-gradient(ellipse at center, ${color.replace(')', ',.12)')} 0%, transparent 70%)`;
-  el.className = 'active';
-
-  el._ultEndHandler = function() {
-    el.className = '';
-    el._ultEndHandler = null;
-  };
-  el.addEventListener('animationend', el._ultEndHandler, { once: true });
+  _restartOverlay(el);
   triggerHitFlash('gold');
 }
 
@@ -16116,15 +16119,15 @@ function animateBossDefeat() {
 function animatePhase2() {
   const bossEl = document.querySelector('#combat-boss');
   if (bossEl) {
-    // Cancela listener pendente de ciclo anterior
+    // phase2-anim é uma classe de animação em CSS, não um overlay com display:none,
+    // então usamos o mesmo padrão: cancela handler anterior, reflow, re-adiciona.
     if (bossEl._p2EndHandler) {
       bossEl.removeEventListener('animationend', bossEl._p2EndHandler);
       bossEl._p2EndHandler = null;
     }
     bossEl.classList.remove('phase2-anim');
-    void bossEl.offsetWidth; // reflow para descartar estado anterior
+    void bossEl.offsetWidth;
     bossEl.classList.add('phase2-anim');
-
     bossEl._p2EndHandler = function() {
       bossEl.classList.remove('phase2-anim');
       bossEl._p2EndHandler = null;
@@ -16367,12 +16370,28 @@ window.triggerScreenShake = function(duration = 400) {
   }, 10);
 };
 
+// ── Helper: reinicia animação num overlay de forma confiável ─────────────────
+// Cancela listener anterior, força reflow síncrono, re-adiciona .active,
+// e usa animationend para limpar — sem setTimeout, sem forwards fill-mode.
+function _restartOverlay(el) {
+  if (!el) return;
+  if (el._ovEndHandler) {
+    el.removeEventListener('animationend', el._ovEndHandler);
+    el._ovEndHandler = null;
+  }
+  el.classList.remove('active');
+  void el.offsetWidth; // reflow síncrono — descarta estado de animação anterior
+  el.classList.add('active');
+  el._ovEndHandler = function() {
+    el.classList.remove('active');
+    el._ovEndHandler = null;
+  };
+  el.addEventListener('animationend', el._ovEndHandler, { once: true });
+}
+
 // Vignette Flash - Efeito de escurecimento
 window.triggerVignetteFlash = function() {
-  const vignette = document.getElementById('combat-vignette');
-  if (!vignette) return;
-  vignette.classList.remove('active');
-  setTimeout(() => vignette.classList.add('active'), 10);
+  _restartOverlay(document.getElementById('combat-vignette'));
 };
 
 // Slash Effects - Cortes estilo Honkai Star Rail
@@ -16396,48 +16415,25 @@ window.triggerSlashEffect = function(x, y, type) {
 
 // Sukuna Domain Expansion
 window.triggerSukunaDomain = function() {
-  const domain = document.getElementById('sukuna-domain-overlay');
-  if (!domain) return;
-  domain.classList.remove('active');
-  setTimeout(() => domain.classList.add('active'), 10);
+  _restartOverlay(document.getElementById('sukuna-domain-overlay'));
   window.triggerScreenShake(600);
 };
 
 // Sukuna Ultimate Flash
 window.triggerSukunaUlt = function() {
-  const flash = document.getElementById('sukuna-ult-flash');
-  if (!flash) return;
-  // Cancela listener pendente
-  if (flash._sukunaEndHandler) {
-    flash.removeEventListener('animationend', flash._sukunaEndHandler);
-    flash._sukunaEndHandler = null;
-  }
-  flash.classList.remove('active');
-  void flash.offsetWidth; // força reflow para reiniciar a animação limpa
-  flash.classList.add('active');
-  flash._sukunaEndHandler = function() {
-    flash.classList.remove('active');
-    flash._sukunaEndHandler = null;
-  };
-  flash.addEventListener('animationend', flash._sukunaEndHandler, { once: true });
+  _restartOverlay(document.getElementById('sukuna-ult-flash'));
   window.triggerScreenShake(600);
   window.triggerVignetteFlash();
 };
 
 // Boss Impact Overlay
 window.triggerBossImpact = function() {
-  const impact = document.getElementById('boss-impact-overlay');
-  if (!impact) return;
-  impact.classList.remove('active');
-  setTimeout(() => impact.classList.add('active'), 10);
+  _restartOverlay(document.getElementById('boss-impact-overlay'));
 };
 
 // Crit Impact Flash
 window.triggerCritImpact = function() {
-  const crit = document.getElementById('crit-impact-overlay');
-  if (!crit) return;
-  crit.classList.remove('active');
-  setTimeout(() => crit.classList.add('active'), 10);
+  _restartOverlay(document.getElementById('crit-impact-overlay'));
   window.triggerScreenShake(300);
 };
 
