@@ -581,23 +581,23 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #combat-hit-flash.flash-red {
   background: radial-gradient(ellipse at center, transparent 40%, rgba(255,30,30,.35) 100%);
-  animation: hitFlash .35s ease-out forwards;
+  animation: hitFlash .35s ease-out;
 }
 #combat-hit-flash.flash-gold {
-  background: transparent;
-  animation: none;
+  background: radial-gradient(ellipse at center, rgba(255,220,0,.25) 0%, transparent 70%);
+  animation: hitFlash .4s ease-out;
 }
 #combat-hit-flash.flash-blue {
   background: radial-gradient(ellipse at center, rgba(80,150,255,.2) 0%, transparent 70%);
-  animation: hitFlash .3s ease-out forwards;
+  animation: hitFlash .3s ease-out;
 }
 #combat-hit-flash.flash-purple {
   background: radial-gradient(ellipse at center, rgba(180,80,255,.22) 0%, transparent 70%);
-  animation: hitFlash .35s ease-out forwards;
+  animation: hitFlash .35s ease-out;
 }
 #combat-hit-flash.flash-green {
   background: radial-gradient(ellipse at center, rgba(50,220,100,.2) 0%, transparent 70%);
-  animation: hitFlash .3s ease-out forwards;
+  animation: hitFlash .3s ease-out;
 }
 @keyframes hitFlash {
   0%   { opacity: 1; }
@@ -660,7 +660,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #ult-overlay.active {
   display: block;
-  animation: ultAura 1.2s ease-out forwards;
+  animation: ultAura 1.2s ease-out;
 }
 @keyframes ultAura {
   0%   { opacity: 0; transform: scale(.8); }
@@ -920,13 +920,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 
 /* ── Efeito de turno ativo ── */
-.active-turn-glow {
-  animation: activeTurn 1s ease-in-out infinite;
-}
-@keyframes activeTurn {
-  0%,100% { box-shadow: 0 0 6px rgba(212,168,67,.4); }
-  50%     { box-shadow: 0 0 18px rgba(212,168,67,.9), 0 0 35px rgba(212,168,67,.3); }
-}
+/* active-turn-glow definido abaixo */
 
 /* ── Efeito de dano recebido no personagem ── */
 @keyframes fighterHit {
@@ -1025,9 +1019,11 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 9200;
   pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(80,0,0,.0) 0%, rgba(180,0,0,.25) 50%, rgba(0,0,0,.7) 100%);
-  animation: sukDomainIn 1.2s ease-out forwards;
 }
-#sukuna-domain-overlay.active { display: block; }
+#sukuna-domain-overlay.active {
+  display: block;
+  animation: sukDomainIn 1.2s ease-out;
+}
 @keyframes sukDomainIn {
   0%   { opacity: 0; }
   20%  { opacity: 1; }
@@ -1060,9 +1056,12 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 9100;
   pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(255,0,0,.4) 0%, rgba(100,0,0,.6) 40%, rgba(0,0,0,.8) 100%);
-  animation: sukunaUltFlash .8s ease-out forwards;
+
 }
-#sukuna-ult-flash.active { display: block; }
+#sukuna-ult-flash.active {
+  display: block;
+  animation: sukunaUltFlash .8s ease-out;
+}
 @keyframes sukunaUltFlash {
   0%   { opacity: 0; }
   10%  { opacity: 1; }
@@ -1088,16 +1087,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 
 /* Efeito de vinheta de combate */
-#combat-vignette {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 8500;
-  opacity: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.5) 100%);
-  transition: opacity .3s;
-}
-#combat-vignette.active { opacity: 1; }
+/* #combat-vignette definido abaixo com .active */
 
 /* Efeito de impacto de boss */
 #boss-impact-overlay {
@@ -1109,7 +1099,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
 }
 #boss-impact-overlay.active {
   display: block;
-  animation: bossImpact .5s ease-out forwards;
+  animation: bossImpact .5s ease-out;
 }
 @keyframes bossImpact {
   0%   { background: radial-gradient(ellipse at center, rgba(255,60,60,.35) 0%, transparent 60%); opacity: 1; }
@@ -1125,11 +1115,12 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   pointer-events: none;
 }
 #crit-impact-overlay.active {
-  display: none;
+  display: block;
+  animation: critImpact .45s ease-out forwards;
 }
 @keyframes critImpact {
-  0%   { opacity: 0; }
-  100% { opacity: 0; }
+  0%   { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.3) 0%, transparent 55%); opacity: 1; }
+  100% { background: radial-gradient(ellipse at 50% 45%, rgba(255,200,0,.0) 0%, transparent 55%); opacity: 0; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1581,14 +1572,16 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   z-index: 8650;
   pointer-events: none;
   display: none;
+  background: radial-gradient(circle at center, rgba(255,255,0,.8), rgba(255,200,0,.3) 40%, transparent 70%);
 }
 
 #crit-impact-overlay.active {
-  display: none;
+  display: block;
+  animation: critFlash 0.4s ease-out;
 }
 
 @keyframes critFlash {
-  0% { opacity: 0; }
+  0% { opacity: 1; }
   100% { opacity: 0; }
 }
 
@@ -1626,6 +1619,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   font-size: 3.2rem !important;
   font-weight: 900;
   color: #ffff00 !important;
+  text-shadow: 0 0 10px rgba(255,255,0,.8), 0 0 20px rgba(255,200,0,.6), 0 0 40px rgba(255,100,0,.4) !important;
   animation: critBounce 1.2s ease-out !important;
 }
 
@@ -1718,7 +1712,7 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
     <div class="nav-tabs" id="nav-tabs"></div>
     <div class="nav-right">
       <div class="foc-disp">💎 <span id="nav-foc">0</span></div>
-      <div class="blons-disp" id="blons-disp" title="Blons — regenera 1 por minuto">🔵 <span id="nav-blons">160</span>/<span id="nav-blons-max">160</span></div>
+      <div class="blons-disp" id="blons-disp" title="Blons — regenera ~250 por hora">🔵 <span id="nav-blons">1000</span>/<span id="nav-blons-max">1000</span></div>
       <span class="usr-name" id="nav-username"></span>
       <button class="logout-x" onclick="doLogout()">Sair</button>
     </div>
@@ -3270,6 +3264,418 @@ const CHAR_PRESETS = {
     ]
   },
 
+
+  // ══════════════  ESDEATH — ICE MONO DPS (T5 LIMITADO)  ══════════════
+
+  esdeath_t5:{
+    label:"❄ Esdeath — T5 Limitado (Gelo / Mono-Cryo DPS)",
+    charRole:"main_dps", rarity:5, element:"ice", weaponType:"Espada",
+    dotEffects:["freeze","frostbite"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"DPS de gelo puro. Mono-Cryo: maximiza dano elemental de gelo. Priorize Crit Rate→Crit DMG→DMG Gelo→ATK%. Freeze garante um turno grátis." },
+    suggestedStats:{ hp:14000, atk:2000, def:620, atkPct:35, critRate:15, critDmg:80, energyRecharge:100, spd:104, elementalMastery:80, breakEffect:0, elementBonus:{ice:46}, healBonus:0 },
+    skills:{
+      basic:{   name:"Lança de Gelo Absoluto",    mult:1.3, hits:1, energyCost:0,   scale:"atk", description:"Lança atravessa o inimigo — dano de gelo puro. Cada hit acumula Frostbite passivamente." },
+      charged:{ name:"Glaciar da Extinção",        mult:2.4, hits:3, energyCost:0,   scale:"atk", description:"Três lanças de gelo em sequência. O 3º hit aplica Freeze garantido por 1 turno (inimigo perde o turno)." },
+      ult:{     name:"Império do Gelo Eterno",     mult:5.8, hits:1, energyCost:100, scale:"atk", description:"Esdeath congela o campo inteiro — dano massivo de gelo. Aplica Frostbite por 3 turnos. +40% DMG gelo ao time por 2 turnos. Ignora 25% da DEF." },
+      passive:{  name:"General do Império",        description:"Com Freeze ativo no inimigo, todos os ataques de Esdeath ganham +25% Crit DMG. Frostbite empilha até 3× — cada stack adiciona +8% dano de gelo." },
+    },
+    constellations:[
+      { name:"Disciplina Absoluta",        type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Freeze dura 1 turno extra e o inimigo fica com -20% ATK após descongelar." },
+      { name:"Soldados do Gelo",           type:"ice_dmg_up",    value:15, description:"Dano de Gelo +15%. Frostbite causa dano por turno = 12% ATK de Esdeath por stack." },
+      { name:"Lança Glacial Refinada",     type:"skill_mult_up", value:28, description:"Skill +28% dano. O 3º hit da Charged ignora 20% adicional de DEF enquanto Freeze estiver ativo." },
+      { name:"Trono de Gelo",              type:"crit_dmg_up",   value:25, description:"Crit DMG +25%. Com 3 stacks de Frostbite, o próximo ataque é garantido crítico." },
+      { name:"Extinção Glaciar",           type:"ult_mult_up",   value:30, description:"Ult +30% dano. O buff de DMG Gelo do Ult sobe para +55% e dura 3 turnos." },
+      { name:"Imperadora do Fim",          type:"ult_mult_up",   value:50, description:"Ult +50% adicional. Após o Ult, Esdeath age imediatamente de novo (turno duplo) com +60% Crit DMG nesse turno extra." },
+    ],
+  },
+
+  // ══════════════  OMEGAMON — HOLY ÚNICO DPS (T5 LIMITADO)  ══════════════
+
+  omegamon_t5:{
+    label:"✨ Omegamon — T5 Limitado (Holy / Único DPS Sagrado)",
+    charRole:"main_dps", rarity:5, element:"holy", weaponType:"Espada",
+    dotEffects:["holy_burn","shatter"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"O único DPS de elemento Holy. Escala por ATK e DMG Holy. Priorize Crit Rate→Crit DMG→DMG Holy→ATK%. Ignorar resistências inimigas." },
+    suggestedStats:{ hp:16000, atk:2100, def:700, atkPct:38, critRate:12, critDmg:85, energyRecharge:100, spd:100, elementalMastery:0, breakEffect:0, elementBonus:{holy:50}, healBonus:0 },
+    skills:{
+      basic:{   name:"Grey Sword — Holy Slash",    mult:1.4, hits:1, energyCost:0,   scale:"atk", description:"A espada sagrada de Omegamon corta ignorando qualquer barreira. Ignora 15% da DEF inimiga." },
+      charged:{ name:"Omega Cannon — Holy Beam",   mult:2.6, hits:2, energyCost:0,   scale:"atk", description:"Dois disparos do canhão sagrado — o 2º hit aplica Holy Burn por 2 turnos. +20% dano se o inimigo tiver algum debuff." },
+      ult:{     name:"All Delete — Julgamento Final", mult:6.5, hits:1, energyCost:100, scale:"atk", description:"O poder combinado das duas armas de Omegamon — dano holy absoluto. Ignora 40% da DEF. +50% DMG Holy ao time por 3 turnos. Holy Burn garantido por 3 turnos." },
+      passive:{  name:"Cavaleiro Supremo",          description:"Omegamon ignora resistências elementais inimigas permanentemente. Com Holy Burn ativo: +20% Crit DMG. Ao crítico, regenera 15 de energia." },
+    },
+    constellations:[
+      { name:"Espada Sagrada Afiada",       type:"crit_rate_up",  value:10, description:"Crit Rate +10%. O Basic ignora 25% da DEF (era 15%)." },
+      { name:"Canhão Divino",               type:"holy_dmg_up",   value:18, description:"Dano Holy +18%. Holy Burn causa dano = 18% ATK por turno (era 12%)." },
+      { name:"All Delete Amplificado",      type:"ult_mult_up",   value:25, description:"Ult +25% dano. O buff de DMG Holy do Ult sobe para +70% e dura 4 turnos." },
+      { name:"Dois Cavaleiros em Um",       type:"skill_mult_up", value:22, description:"Skill +22%. A Charged passa a ter 3 hits — o 3º é garantido crítico." },
+      { name:"Julgamento Além do Limite",   type:"crit_dmg_up",   value:30, description:"Crit DMG +30%. Com Holy Burn ativo no inimigo, Ult causa dano adicional = 20% do HP máximo inimigo (true damage)." },
+      { name:"Omega — Forma Perfeita",      type:"ult_mult_up",   value:60, description:"Ult +60% adicional. All Delete agora atinge todos os inimigos (AoE total) e remove 2 buffs de cada um. Omegamon age imediatamente após o Ult." },
+    ],
+  },
+
+  // ══════════════  HOLY BUFFERS (T5)  ══════════════
+
+  // ══════════════  FIRE — 1 ADICIONAL  ══════════════
+
+  // ══════════════  WATER — 2 ADICIONAIS  ══════════════
+
+  // ══════════════  WIND — 2 ADICIONAIS  ══════════════
+
+  // ══════════════  EARTH — 2 ADICIONAIS  ══════════════
+
+  // ══════════════  NATURE — 2 ADICIONAIS  ══════════════
+
+  // ══════════════  CHAOS — 1 ADICIONAL  ══════════════
+
+  // ══════════════  QUANTUM — 3 CHARS  ══════════════
+
+
+  // ══════════  FIRE +1  ══════════
+
+  natsu_t5:{
+    label:"🔥 Natsu Dragneel — T5 Flex DPS (Fogo / Magia do Dragão | Fairy Tail)",
+    charRole:"flex", rarity:5, element:"fire", weaponType:"Espada",
+    dotEffects:["burn"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"Flex agressivo de fogo. ATK%->EM->Crit. Come Fogo cura ao receber dano de fogo. Modo Dragão é o pico de dano." },
+    suggestedStats:{ hp:15000, atk:1800, def:660, atkPct:30, critRate:10, critDmg:65, energyRecharge:112, spd:108, elementalMastery:80, breakEffect:10, elementBonus:{fire:28}, healBonus:0 },
+    skills:{
+      basic:{   name:"Punho Incubo de Fogo",        mult:1.2, hits:1, energyCost:0,   scale:"atk", description:"O soco flamejante classico de Natsu. 25% de chance de Burn por 2 turnos." },
+      charged:{ name:"Rugido do Dragao de Fogo",    mult:2.3, hits:1, energyCost:0,   scale:"atk", description:"Rugido concentrado — Burn garantido por 2 turnos. +15% ATK proprio por 1 turno." },
+      ult:{     name:"Modo Dragao — Chama Suprema", mult:5.5, hits:3, energyCost:100, scale:"atk", description:"3 hits explosivos com Burn garantido em cada. +25% DMG fogo ao time por 3 turnos. A cada hit acumula +10% ATK temporario." },
+      passive:{  name:"Come Fogo",                  description:"Ao receber dano de fogo, cura 8% do proprio HP e ganha +15% ATK por 1 turno. Com Burn no inimigo ao usar Ult, dano +30%." },
+    },
+    constellations:[
+      { name:"Magia Herdada de Igneel",  type:"fire_dmg_up",   value:12, description:"Dano de Fogo +12%. Burn de Natsu dura +1 turno." },
+      { name:"Amigo Acima de Tudo",      type:"atk_up",        value:14, description:"ATK% +14%. Ult com aliados abaixo de 50% HP ganha +20% de dano." },
+      { name:"Rugido Amplificado",       type:"skill_mult_up", value:25, description:"Skill +25%. Rugido passa a ter 2 hits — ambos podem aplicar Burn." },
+      { name:"Fogo de Dragao Apurado",   type:"em_up",         value:35, description:"EM +35. Come Fogo ativa com qualquer ataque aliado de fogo." },
+      { name:"Modo Dragao Ampliado",     type:"ult_mult_up",   value:30, description:"Ult +30%. Os 3 hits causam Burn individual por 3 turnos cada." },
+      { name:"Filho de Igneel",          type:"ult_mult_up",   value:50, description:"Ult +50%. Em Modo Dragao, Natsu e imune a dano por 1 turno e ganha +60% Crit DMG." },
+    ],
+  },
+
+  // ══════════  WATER +2  ══════════
+
+  kisame_t4:{
+    label:"🦈 Kisame Hoshigaki — T4 Sub-DPS (Agua / Samehada / Drain | Naruto)",
+    charRole:"sub_dps", rarity:4, element:"water", weaponType:"Espada",
+    dotEffects:["drown","manavoid"],
+    scale:{ primary:"atk", secondary:"break", desc:"Sub-DPS que drena energia inimiga. ATK%->Break->Crit. Manavoid trava energia inimiga. Samehada absorve chakra a cada hit." },
+    suggestedStats:{ hp:13000, atk:1350, def:650, atkPct:24, critRate:10, critDmg:50, energyRecharge:118, spd:100, elementalMastery:35, breakEffect:55, elementBonus:{water:14}, healBonus:0 },
+    skills:{
+      basic:{   name:"Corte da Samehada",            mult:1.1, hits:1, energyCost:0,   scale:"atk", description:"A espada viva absorve chakra — drena 10 de energia do inimigo e restaura 5 a Kisame." },
+      charged:{ name:"Esfera de Tubarao",            mult:1.9, hits:2, energyCost:0,   scale:"atk", description:"2 esferas de agua — o 2 hit aplica Manavoid por 2 turnos e +15% Break cada." },
+      ult:{     name:"Fusao com a Samehada",         mult:4.2, hits:3, energyCost:100, scale:"atk", description:"Kisame funde com a Samehada — 3 hits, Drown garantido, Manavoid por 3 turnos, Break +45%. Drena 25 de energia do inimigo." },
+      passive:{  name:"Monstro Sem Cauda",           description:"A cada 10 de energia drenada, Kisame ganha +8% ATK acumulativo (max +32%). Com Manavoid ativo, ataques ignoram 12% da DEF." },
+    },
+    constellations:[
+      { name:"Samehada Faminta",          type:"break_up",      value:15, description:"Break Effect +15%. Samehada drena +15 de energia por hit (era 10)." },
+      { name:"Parceiro de Itachi",        type:"atk_up",        value:12, description:"ATK% +12%. Com Manavoid ativo, Kisame ganha +12% Crit Rate." },
+      { name:"Esfera Ampliada",           type:"skill_mult_up", value:20, description:"Skill +20%. Esfera de Tubarao passa a ter 3 hits — o 3 aplica Drown garantido." },
+      { name:"Fusao Total",               type:"water_dmg_up",  value:12, description:"Dano de Agua +12%. Na fusao, Kisame ganha +20% de todos os stats por 2 turnos." },
+      { name:"Tubarao Supremo",           type:"ult_mult_up",   value:25, description:"Ult +25%. Passa a ter 4 hits, cada um com 35% de chance de Drown." },
+      { name:"O Monstro das Nuvens",      type:"ult_mult_up",   value:40, description:"Ult +40%. Com 4 stacks de ATK da Passiva, causa dano extra = 20% do proprio HP maximo (true damage)." },
+    ],
+  },
+
+  juvia_t4:{
+    label:"💧 Juvia Lockser — T4 Flex (Agua / Escudo / Amor | Fairy Tail)",
+    charRole:"flex", rarity:4, element:"water", weaponType:"Cajado",
+    dotEffects:["drown"],
+    scale:{ primary:"hp", secondary:"er", desc:"Flex aquatica — escuda o time e aplica Drown. HP%->ER->Heal Bonus. Segunda suporteira ou tanque off-meta em times de agua." },
+    suggestedStats:{ hp:20000, atk:640, def:840, atkPct:0, critRate:10, critDmg:50, energyRecharge:145, spd:96, elementalMastery:30, breakEffect:0, elementBonus:{water:10}, healBonus:18 },
+    skills:{
+      basic:{   name:"Bala de Agua",                mult:0.6, hits:1, energyCost:0,   scale:"hp",  description:"Projetil de agua preciso — 20% de chance de Drown." },
+      charged:{ name:"Armadura d Agua",             mult:0.0, hits:0, energyCost:0,   scale:"hp",  description:"Juvia se converte em agua — escudo ao time (14% HP) e cura leve (10% HP) no aliado mais fraco." },
+      ult:{     name:"Chuva Eterna — Amor de Juvia",mult:2.2, hits:1, energyCost:100, scale:"hp",  description:"Chuva sagrada — cura time (18% HP), Drown garantido, escudo (20% HP) por 2 turnos, +15% DMG agua ao time." },
+      passive:{  name:"Por Gray-sama",              description:"Com aliado fisico no time, Juvia ganha +20% Heal Bonus e +15% HP. O escudo da Charged vale +5% a mais por aliado vivo." },
+    },
+    constellations:[
+      { name:"Amor de Fairy Tail",        type:"hp_up",         value:15, description:"HP% +15%. Escudo da Charged sobe para 20% HP de Juvia." },
+      { name:"Chuva Constante",           type:"er_up",         value:18, description:"ER +18%. Apos o Ult, regenera 15 de energia a cada aliado." },
+      { name:"Armadura Aprimorada",       type:"shield_up",     value:20, description:"Escudo +20%. A Charged tambem aplica Drown com 50% de chance." },
+      { name:"Guarda do Gray",            type:"heal_bonus_up", value:15, description:"Heal Bonus +15%. Passiva ativa com qualquer aliado (nao so fisico)." },
+      { name:"Chuva Eterna Ampliada",     type:"ult_mult_up",   value:0,  description:"Cura do Ult sobe para 26% HP. Escudo dura 3 turnos. Buff de agua sobe para +22%." },
+      { name:"Corpo d Agua",              type:"ult_mult_up",   value:0,  description:"Apos o Ult, Juvia e imune a dano por 1 turno. Ao voltar, explode causando dano = 28% HP em todos os inimigos." },
+    ],
+  },
+
+  // ══════════  WIND +2  ══════════
+
+  temari_t5:{
+    label:"🌀 Temari — T5 Main DPS (Vento / Leque Shikigami | Naruto)",
+    charRole:"main_dps", rarity:5, element:"wind", weaponType:"Espada",
+    dotEffects:["void","shatter"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"DPS de vento pura. ATK%->DMG Vento->Crit. Void reduz SPD inimiga. Kamatari amplifica cada Ult. DEF inimiga reduzida para amplificar o time." },
+    suggestedStats:{ hp:13500, atk:1900, def:640, atkPct:34, critRate:12, critDmg:70, energyRecharge:108, spd:106, elementalMastery:75, breakEffect:20, elementBonus:{wind:30}, healBonus:0 },
+    skills:{
+      basic:{   name:"Rajada do Leque",              mult:1.2, hits:1, energyCost:0,   scale:"atk", description:"Temari abre o leque parcialmente — rajada de vento cortante. 20% de chance de Void." },
+      charged:{ name:"Kamatari — Foice do Vento",   mult:2.4, hits:2, energyCost:0,   scale:"atk", description:"Invoca o Shikigami Kamatari — 2 cortes de foice. Void garantido no 2 hit por 2 turnos." },
+      ult:{     name:"Tempestade Suprema — Leque Aberto", mult:5.6, hits:1, energyCost:100, scale:"atk", description:"Tempestade total. Shatter garantido, Void por 3 turnos, +30% DMG vento ao time por 3 turnos. Reduz DEF inimiga em 20% por 3 turnos." },
+      passive:{  name:"Jonin da Areia",              description:"Com Void ativo, Temari ganha +20% Crit Rate. Cada stack de Void aumenta o dano em +10% (max +30%)." },
+    },
+    constellations:[
+      { name:"Filha do Kazekage",         type:"wind_dmg_up",   value:12, description:"Dano de Vento +12%. Void de Temari reduz SPD em 35% (era 25%)." },
+      { name:"Kamatari Evoluido",         type:"skill_mult_up", value:22, description:"Skill +22%. Kamatari passa a ter 3 cortes — o 3 ignora 20% da DEF." },
+      { name:"Leque Reforcado",           type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Ult passa a ter 2 hits e o 2 e garantido critico." },
+      { name:"Irma de Gaara",             type:"atk_up",        value:14, description:"ATK% +14%. Com Gaara no time, +15% DMG vento adicional para Temari." },
+      { name:"Tempestade de Areia",       type:"ult_mult_up",   value:30, description:"Ult +30%. Reducao de DEF sobe para 30% e dura 4 turnos." },
+      { name:"Vento da Aldeia da Areia",  type:"ult_mult_up",   value:50, description:"Ult +50%. Apos o Ult, Temari invoca Kamatari por 2 turnos automaticamente — 40% ATK de dano por turno." },
+    ],
+  },
+
+  inuyasha_t4:{
+    label:"🌀 Inuyasha — T4 Flex DPS (Vento / Fenda do Vazio | Inuyasha)",
+    charRole:"flex", rarity:4, element:"wind", weaponType:"Espada",
+    dotEffects:["void","shatter"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"Flex de vento com dano bruto. ATK%->DMG Vento->Crit. Tessaiga corta atraves de qualquer defesa. Void acumula para amplificar o Kaze no Kizu." },
+    suggestedStats:{ hp:14000, atk:1400, def:660, atkPct:26, critRate:10, critDmg:55, energyRecharge:110, spd:112, elementalMastery:40, breakEffect:25, elementBonus:{wind:16}, healBonus:0 },
+    skills:{
+      basic:{   name:"Tessaiga — Corte Simples",    mult:1.1, hits:1, energyCost:0,   scale:"atk", description:"O corte classico da Tessaiga — rapido e poderoso. 20% de chance de Void." },
+      charged:{ name:"Sankon Tesso",                mult:2.0, hits:3, energyCost:0,   scale:"atk", description:"3 golpes de garra de fogo — Break +15% por hit e 25% de Shatter no ultimo." },
+      ult:{     name:"Kaze no Kizu — Fenda do Vazio",mult:4.8, hits:1, energyCost:100, scale:"atk", description:"A tecnica suprema da Tessaiga — Void garantido por 3 turnos, Shatter garantido, +20% DMG vento ao time por 2 turnos. Ignora 25% da DEF." },
+      passive:{  name:"Sangue do Yokai",            description:"Com menos de 40% HP, Inuyasha entra em modo Yokai — ATK +25% e ganha +15% Crit DMG. A Tessaiga ignora 10% de DEF em todos os ataques." },
+    },
+    constellations:[
+      { name:"Tessaiga Transformada",     type:"wind_dmg_up",   value:10, description:"Dano de Vento +10%. Kaze no Kizu ignora 35% da DEF (era 25%)." },
+      { name:"Modo Yokai Liberado",       type:"atk_up",        value:12, description:"ATK% +12%. Modo Yokai ativa com menos de 55% HP (era 40%)." },
+      { name:"Sankon Tesso Aprimorado",   type:"skill_mult_up", value:20, description:"Skill +20%. Sankon Tesso passa a ter 4 hits — o 4 aplica Void garantido." },
+      { name:"Meio Demonio Orgulhoso",    type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Em modo Yokai, Crit Rate adicional +12%." },
+      { name:"Kaze no Kizu Supremo",      type:"ult_mult_up",   value:25, description:"Ult +25%. Void do Ult reduz SPD inimiga em 35%." },
+      { name:"Bakuryuha",                 type:"ult_mult_up",   value:40, description:"Ult +40%. Apos o Ult, Inuyasha reflete 30% do dano recebido no proximo turno de volta ao inimigo como dano de vento." },
+    ],
+  },
+
+  // ══════════  EARTH +2  ══════════
+
+  gaara_t5:{
+    label:"🏜 Gaara — T5 Sub-DPS (Terra / Areia / Kazekage | Naruto)",
+    charRole:"sub_dps", rarity:5, element:"earth", weaponType:"Cajado",
+    dotEffects:["erosion","shatter"],
+    scale:{ primary:"def", secondary:"atk", desc:"Sub-DPS que escala em DEF. DEF%->ATK%->Crit. A areia protege e o dano escala com a propria DEF. Erosion empilha para amplificar todo o time." },
+    suggestedStats:{ hp:16000, atk:1200, def:1500, atkPct:16, critRate:10, critDmg:55, energyRecharge:115, spd:96, elementalMastery:30, breakEffect:40, elementBonus:{earth:20}, healBonus:0 },
+    skills:{
+      basic:{   name:"Areia Afiada",                mult:0.9, hits:1, energyCost:0,   scale:"def", description:"Gaara dispara areia cortante baseada em DEF. 25% de chance de Erosion." },
+      charged:{ name:"Cercado de Areia",            mult:1.8, hits:2, energyCost:0,   scale:"def", description:"2 golpes de areia comprimida baseados em DEF — o 2 aplica Erosion garantido. +20% Break cada." },
+      ult:{     name:"Caixao de Areia",             mult:4.5, hits:1, energyCost:100, scale:"def", description:"Gaara encerra o inimigo em areia — Shatter garantido, Erosion por 3 turnos, Break +50%. +25% DEF ao time por 2 turnos." },
+      passive:{  name:"Armadura de Areia",          description:"Gaara recebe -20% de dano permanentemente. Com Erosion ativo, aliados ganham +10% DMG terra. Ao ser atingido, regenera 5 de energia." },
+    },
+    constellations:[
+      { name:"Areia do Deserto",          type:"def_up",        value:15, description:"DEF +15%. Erosion de Gaara reduz DEF inimiga em -10% por stack (era -8%)." },
+      { name:"Kazekage da Areia",         type:"earth_dmg_up",  value:14, description:"Dano de Terra +14%. Com 4 stacks de Erosion, proximo ataque ignora 50% da DEF." },
+      { name:"Caixao Aprimorado",         type:"skill_mult_up", value:22, description:"Skill +22%. Cercado passa a ter 3 hits — o 3 aplica Erosion adicional." },
+      { name:"Protecao da Mae Areia",     type:"hp_up",         value:15, description:"HP% +15%. Reducao de dano da Passiva sobe para 28%." },
+      { name:"Kazekage Supremo",          type:"ult_mult_up",   value:28, description:"Ult +28%. Break sobe para +65%. Shatter causa dano extra = 20% da DEF de Gaara." },
+      { name:"Gaara — Quinto Kazekage",   type:"ult_mult_up",   value:45, description:"Ult +45%. Com 4 stacks de Erosion, o Ult ignora resistencias e causa dano extra = 35% da DEF. Apos o Ult, Gaara regenera 25% do proprio HP." },
+    ],
+  },
+
+  diane_t4:{
+    label:"🌍 Diane — T4 Tank/Flex (Terra / Gigante / Shesher | Nanatsu no Taizai)",
+    charRole:"flex", rarity:4, element:"earth", weaponType:"Machado",
+    dotEffects:["shatter","erosion"],
+    scale:{ primary:"hp", secondary:"def", desc:"Tank de terra gigante. HP%->DEF%->ER. Diane usa o proprio corpo como arma — quanto maior o HP, maior o dano. Protege aliados e contra-ataca." },
+    suggestedStats:{ hp:24000, atk:900, def:1100, atkPct:0, critRate:10, critDmg:50, energyRecharge:115, spd:88, elementalMastery:20, breakEffect:40, elementBonus:{earth:12}, healBonus:8 },
+    skills:{
+      basic:{   name:"Soco da Gigante",              mult:0.9, hits:1, energyCost:0,   scale:"hp",  description:"Diane esmaga o inimigo com o puno gigante — dano baseado em HP. 20% de chance de Shatter." },
+      charged:{ name:"Shesher — Golpe da Terra",    mult:0.0, hits:0, energyCost:0,   scale:"hp",  description:"Diane mergulha na terra — ganha +30% DEF por 2 turnos e cria escudo para o time (15% do proprio HP)." },
+      ult:{     name:"Gideon — Pancada Final",       mult:2.2, hits:2, energyCost:100, scale:"hp",  description:"2 golpes pesados de martelo baseados em HP — Shatter e Erosion garantidos. Cura 20% do proprio HP e concede +18% DEF ao time por 2 turnos." },
+      passive:{  name:"Raca dos Gigantes",          description:"Com mais de 60% HP, recebe -22% de dano. Ao ser atingida por critico, contra-ataca com 50% HP de dano e regenera 8 de energia." },
+    },
+    constellations:[
+      { name:"Gigante da Aldeia das Fadas",type:"hp_up",        value:15, description:"HP% +15%. Escudo da Charged sobe para 20% HP de Diane." },
+      { name:"Shesher Dominado",          type:"def_up",        value:15, description:"DEF +15%. A reducao de dano da Passiva sobe para 30%." },
+      { name:"Gideon Refinado",           type:"ult_mult_up",   value:22, description:"Ult +22%. A cura sobe para 28% HP. DEF buff do time sobe para +25%." },
+      { name:"Amor pelo Meliodas",        type:"hp_up",         value:18, description:"HP% +18%. Contra-ataque da Passiva passa a ocorrer com 65% de chance." },
+      { name:"Gigante Evoluida",          type:"ult_mult_up",   value:28, description:"Ult +28%. Com Shatter e Erosion simultaneos, dano adicional = 18% HP de Diane." },
+      { name:"Diane — Serpente do Pecado",type:"ult_mult_up",   value:0,  description:"Apos o Ult, Diane e imune a dano por 1 turno. O contra-ataque da Passiva passa a causar dano = 80% HP de Diane (ignorando DEF inimiga)." },
+    ],
+  },
+
+  // ══════════  NATURE +2  ══════════
+
+  ban_t5:{
+    label:"🍺 Ban — T5 Flex DPS (Natureza / Imortalidade / Roubo | Nanatsu no Taizai)",
+    charRole:"flex", rarity:5, element:"nature", weaponType:"Espada",
+    dotEffects:["withering","bloodpact"],
+    scale:{ primary:"atk", secondary:"hp", desc:"Flex imortal. ATK%->HP%->Crit. Rouba vida do inimigo para se curar. Withering impede curas inimigas. Quase impossivel de matar com constellacoes altas." },
+    suggestedStats:{ hp:18000, atk:1700, def:680, atkPct:28, critRate:10, critDmg:65, energyRecharge:115, spd:104, elementalMastery:50, breakEffect:20, elementBonus:{nature:18}, healBonus:0 },
+    skills:{
+      basic:{   name:"Snatch — Roubo de Forca",     mult:1.2, hits:1, energyCost:0,   scale:"atk", description:"Ban rouba a forca vital do inimigo — cura 10% do dano causado como HP. 20% de chance de Withering." },
+      charged:{ name:"Physical Hunt",               mult:2.2, hits:3, energyCost:0,   scale:"atk", description:"3 golpes de velocidade absurda — o 3 aplica Withering garantido por 2 turnos. Cura 15% do dano total causado." },
+      ult:{     name:"Banishing Kill",              mult:5.0, hits:1, energyCost:100, scale:"atk", description:"Ban concentra toda a forca roubada — Withering por 3 turnos, Bloodpact por 2 turnos. +20% ATK ao time. Cura Ban em 40% do dano causado." },
+      passive:{  name:"Imortalidade da Fonte Sagrada", description:"Ban nao pode morrer enquanto houver aliados vivos (1x por batalha). Ao ser reduzido a 0 HP, ressuscita com 30% HP. Com Withering ativo, todas as curas de Ban sao +50%." },
+    },
+    constellations:[
+      { name:"Pecado da Avareza",         type:"atk_up",        value:14, description:"ATK% +14%. Snatch cura 15% do dano causado (era 10%)." },
+      { name:"Elaine Protegida",          type:"hp_up",         value:15, description:"HP% +15%. A ressurreicao da Passiva passa a ocorrer com 50% HP (era 30%)." },
+      { name:"Physical Hunt Supremo",     type:"skill_mult_up", value:22, description:"Skill +22%. Physical Hunt passa a ter 4 hits — o 4 drena 20 de energia do inimigo." },
+      { name:"Fonte Sagrada Dominada",    type:"nature_dmg_up", value:14, description:"Dano de Natureza +14%. A cura do Ult sobe para 55% do dano causado." },
+      { name:"Banishing Kill Aprimorado", type:"ult_mult_up",   value:28, description:"Ult +28%. Bloodpact converte 130% de qualquer cura inimiga em dano." },
+      { name:"Ban — O Imortal",           type:"ult_mult_up",   value:45, description:"Ult +45%. A Passiva ativa 2 vezes por batalha. Apos ressuscitar, Ban entra em Furia — +40% ATK e +30% DMG Natureza por 3 turnos." },
+    ],
+  },
+
+  shinobu_t4:{
+    label:"🦋 Kocho Shinobu — T4 Sub-DPS (Natureza / Veneno / Respiracao Inseto | Kimetsu no Yaiba)",
+    charRole:"sub_dps", rarity:4, element:"nature", weaponType:"Espada",
+    dotEffects:["poison","withering"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS de veneno. ATK%->EM->Crit. Acumula Poison e Withering — perfeita para manter DOTs enquanto o Main DPS ataca." },
+    suggestedStats:{ hp:11000, atk:1450, def:560, atkPct:24, critRate:10, critDmg:55, energyRecharge:125, spd:112, elementalMastery:85, breakEffect:0, elementBonus:{nature:18}, healBonus:0 },
+    skills:{
+      basic:{   name:"Picada de Abelha",            mult:1.0, hits:1, energyCost:0,   scale:"atk", description:"Shinobu perfura com a lamina envenenada — 35% de chance de Poison por 2 turnos." },
+      charged:{ name:"Respiracao Inseto — Danca da Borboleta", mult:1.8, hits:3, energyCost:0, scale:"atk", description:"3 perfuracoes rapidas — Poison garantido no 3 hit por 2 turnos. Withering com 35% de chance (curas reduzidas 70%)." },
+      ult:{     name:"Respiracao Inseto — Veneno Absoluto", mult:3.8, hits:1, energyCost:100, scale:"atk", description:"Shinobu injeta veneno fatal — Poison e Withering garantidos por 3 turnos. +20% DMG Natureza ao time. Com Poison ativo, dano do Ult +30%." },
+      passive:{  name:"Medica Venenosa",            description:"Cada stack de Poison causa dano extra = 8% do EM de Shinobu por turno. Com Withering ativo, inimigo nao pode ser curado e Shinobu ganha +10% Crit Rate." },
+    },
+    constellations:[
+      { name:"Lamina Envenenada",         type:"nature_dmg_up", value:10, description:"Dano de Natureza +10%. Poison de Shinobu dura +1 turno." },
+      { name:"Borboleta da Morte",        type:"em_up",         value:28, description:"EM +28. Withering reduz curas em 85% (era 70%)." },
+      { name:"Danca Refinada",            type:"skill_mult_up", value:20, description:"Skill +20%. A Charged passa a ter 4 hits — o 4 aplica Poison e Withering simultaneamente." },
+      { name:"Veneno Fatal",              type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Dano passivo de Poison sobe para 12% EM por turno." },
+      { name:"Forma Final Aprimorada",    type:"ult_mult_up",   value:25, description:"Ult +25%. Com Poison E Withering simultaneos, dano adicional = 12% HP maximo inimigo." },
+      { name:"Pilar Inseto",              type:"ult_mult_up",   value:40, description:"Ult +40%. Apos o Ult, Shinobu aplica Poison automaticamente a cada turno por 3 turnos sem precisar atacar." },
+    ],
+  },
+
+  // ══════════  CHAOS +1  ══════════
+
+  aizen_t5:{
+    label:"🌀 Aizen Sosuke — T5 Sub-DPS (Caos / Kyoka Suigetsu / Ilusao | Bleach)",
+    charRole:"sub_dps", rarity:5, element:"chaos", weaponType:"Espada",
+    dotEffects:["timerot","spectral"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS de caos que manipula a percepcao inimiga. ATK%->EM->ER. Kyoka Suigetsu derruba buffs e distorce o tempo. O inimigo nunca sabe o que e real." },
+    suggestedStats:{ hp:14000, atk:1800, def:680, atkPct:30, critRate:10, critDmg:65, energyRecharge:130, spd:104, elementalMastery:70, breakEffect:0, elementBonus:{chaos:28}, healBonus:0 },
+    skills:{
+      basic:{   name:"Hakudo — Toque Perfeito",     mult:1.1, hits:1, energyCost:0,   scale:"atk", description:"Aizen atinge com precisao absoluta — o inimigo sequer percebe. 25% de chance de Timerot por 1 turno." },
+      charged:{ name:"Kyoka Suigetsu — Ilusao Total",mult:2.2, hits:2, energyCost:0, scale:"atk", description:"Aizen distorce a realidade — 2 hits de caos. Spectral garantido por 2 turnos (40% miss, -15 energia/turno)." },
+      ult:{     name:"Transcendencia — Acima de Tudo",mult:5.0, hits:1, energyCost:100, scale:"atk", description:"Aizen transcende — Timerot por 3 turnos, Spectral por 3 turnos, remove 2 buffs do inimigo. +25% DMG Caos ao time por 3 turnos. Inimigo sofre -25% ATK." },
+      passive:{  name:"Acima de Todos os Shinigamis", description:"Com Timerot ativo, buffs dos aliados duram +1 turno extra. Com Spectral ativo, Aizen ganha +20% Crit DMG. Aizen e imune a Spectral e Timerot." },
+    },
+    constellations:[
+      { name:"Plano dos 100 Anos",        type:"chaos_dmg_up",  value:12, description:"Dano de Caos +12%. Timerot remove 2 turnos dos buffs inimigos por tick (era 1)." },
+      { name:"Kyoka Suigetsu Perfeito",   type:"atk_up",        value:14, description:"ATK% +14%. Spectral aumenta miss para 55% (era 40%)." },
+      { name:"Transcendencia Refinada",   type:"ult_mult_up",   value:22, description:"Ult +22%. Buff de time sobe para +35% DMG Caos por 4 turnos." },
+      { name:"Acima dos Deuses",          type:"er_up",         value:18, description:"ER +18%. A Passiva estende buffs aliados em +2 turnos ao usar o Ult." },
+      { name:"Ilusao Suprema",            type:"skill_mult_up", value:20, description:"Skill +20%. A Charged passa a ter 3 hits — o 3 aplica Timerot garantido." },
+      { name:"Aizen — Rei do Hueco Mundo",type:"ult_mult_up",   value:50, description:"Ult +50%. Com Timerot + Spectral simultaneos, Aizen duplica o dano do proximo ataque de cada aliado no turno seguinte." },
+    ],
+  },
+
+  // ══════════  HOLY +2 BUFFERS  ══════════
+
+  mirio_t5:{
+    label:"✨ Mirio Togata — T5 Buffer Holy (Crit Rate / Crit DMG | Boku no Hero Academia)",
+    charRole:"support", rarity:5, element:"holy", weaponType:"Espada",
+    dotEffects:[],
+    scale:{ primary:"er", secondary:"hp", desc:"Buffer puro de Crit. ER->HP%->SPD. Lemillion inspira o time com Crit Rate e Crit DMG massivos. Alta ER para Ults frequentes." },
+    suggestedStats:{ hp:18000, atk:450, def:820, atkPct:0, critRate:10, critDmg:50, energyRecharge:195, spd:110, elementalMastery:0, breakEffect:0, elementBonus:{}, healBonus:0 },
+    skills:{
+      basic:{   name:"Soco Permeavel",               mult:0.5, hits:1, energyCost:0,   scale:"atk", description:"Mirio golpeia atravessando a guarda — dano minimo, foca em utilidade." },
+      charged:{ name:"Bencao de Lemillion",          mult:0.0, hits:0, energyCost:0,   scale:"er",  description:"Mirio inspira o aliado com maior ATK — concede +18% Crit Rate e +32% Crit DMG por 2 turnos." },
+      ult:{     name:"Eu Salvarei Todos!",           mult:0.0, hits:0, energyCost:100, scale:"er",  description:"Mirio inspira o time inteiro — +25% Crit Rate e +50% Crit DMG por 3 turnos. Regenera 20 de energia para cada aliado. Aliados ganham imunidade a 1 golpe fatal." },
+      passive:{  name:"Aura do Lemillion",           description:"Enquanto em campo, todos os aliados ganham +8% Crit DMG permanente. Apos o Ult, efeito dobra para +16% por 2 turnos adicionais." },
+    },
+    constellations:[
+      { name:"Heroi em Treinamento",      type:"er_up",         value:20, description:"ER +20%. Bencao de Lemillion sobe para +25% Crit Rate e +42% Crit DMG." },
+      { name:"Quirk — Permeabilidade",    type:"crit_dmg_up",   value:15, description:"Crit DMG proprio +15%. Ult sobe para +35% Crit Rate e +65% Crit DMG ao time." },
+      { name:"Protecao Absoluta",         type:"er_up",         value:18, description:"ER +18%. A Charged passa a afetar os 2 aliados com maior ATK." },
+      { name:"Lemillion Verdadeiro",      type:"crit_rate_up",  value:8,  description:"Crit Rate proprio +8%. Apos o Ult, o proximo ataque de qualquer aliado e garantido critico." },
+      { name:"Eu Carrego o Time",         type:"ult_mult_up",   value:0,  description:"Ult dura 4 turnos. Adiciona +15% DMG geral ao time durante a duracao." },
+      { name:"O Melhor Heroi",            type:"ult_mult_up",   value:0,  description:"Apos o Ult, Mirio aplica +45% Crit DMG individual ao aliado com maior ATK (dura 3 turnos). A imunidade a golpe fatal funciona 2 vezes por batalha." },
+    ],
+  },
+
+  mereoleona_t4:{
+    label:"✨ Mereoleona Vermillion — T4 Buffer Holy (ATK / SPD / Fogo Sagrado | Black Clover)",
+    charRole:"support", rarity:4, element:"holy", weaponType:"Espada",
+    dotEffects:[],
+    scale:{ primary:"er", secondary:"atk", desc:"Buffer de ATK e SPD que tambem causa dano. ER->ATK%->SPD. Mana Zone amplifica todo o time. Alta SPD para agir antes dos DPS." },
+    suggestedStats:{ hp:17000, atk:850, def:780, atkPct:10, critRate:10, critDmg:50, energyRecharge:165, spd:115, elementalMastery:0, breakEffect:0, elementBonus:{}, healBonus:0 },
+    skills:{
+      basic:{   name:"Chama Magica Sagrada",         mult:0.7, hits:1, energyCost:0,   scale:"atk", description:"Mereoleona lanca chama sagrada — dano moderado e pressiona o inimigo." },
+      charged:{ name:"Amplificacao da Mana Zone",   mult:0.0, hits:0, energyCost:0,   scale:"er",  description:"Ativa a Mana Zone — concede +28% ATK e +20% SPD ao aliado alvo por 2 turnos." },
+      ult:{     name:"Purgatorio da Capitao",        mult:1.8, hits:1, energyCost:100, scale:"atk", description:"Dano + buff massivo ao time: +35% ATK e +25% SPD por 3 turnos. Aliado com maior ATK recebe +18% adicional. Inimigo fica com -20% DEF por 2 turnos." },
+      passive:{  name:"Capitao da Brigada Crimson",  description:"Enquanto em campo, aliados ganham +6 SPD base. Apos o Ult, Mereoleona age novamente imediatamente no proximo turno." },
+    },
+    constellations:[
+      { name:"Capitao Real",              type:"er_up",         value:18, description:"ER +18%. Buff de ATK da Charged sobe para +36%." },
+      { name:"Mana Zone Ampliada",        type:"spd_up",        value:10, description:"SPD +10. A Charged passa a afetar os 2 aliados com maior ATK." },
+      { name:"Purgatorio Refinado",       type:"ult_mult_up",   value:0,  description:"Buff do Ult dura 4 turnos. +35% ATK sobe para +45%." },
+      { name:"Brigada Crimson",           type:"atk_up",        value:12, description:"ATK% +12%. Bonus especial do Ult sobe de +18% para +30% para o aliado com maior ATK." },
+      { name:"Capitao Invicta",           type:"spd_up",        value:8,  description:"SPD +8. Passiva concede +9 SPD base aos aliados (era +6)." },
+      { name:"Mereoleona — Fera Real",    type:"ult_mult_up",   value:0,  description:"Apos o Ult, Mereoleona concede turno extra ao aliado com maior ATK (age imediatamente). O escudo da Passiva agora vale +8% DEF ao time permanentemente." },
+    ],
+  },
+
+  // ══════════  QUANTUM +3  ══════════
+
+  rem_t5:{
+    label:"🔮 Rem — T5 Main DPS (Quantum / Oni / Break | Re:Zero)",
+    charRole:"main_dps", rarity:5, element:"quantum", weaponType:"Espada",
+    dotEffects:["shatter","bloodpact"],
+    scale:{ primary:"atk", secondary:"break", desc:"DPS quantica agressiva. ATK%->Break->Crit DMG. No modo Oni, troca sustentabilidade por dano puro. Bloodpact converte curas inimigas em dano." },
+    suggestedStats:{ hp:13000, atk:1950, def:620, atkPct:36, critRate:12, critDmg:80, energyRecharge:100, spd:106, elementalMastery:0, breakEffect:50, elementBonus:{quantum:35}, healBonus:0 },
+    skills:{
+      basic:{   name:"Manguail Quantico",            mult:1.2, hits:1, energyCost:0,   scale:"atk", description:"Rem golpeia com o manguail cheio de energia quantica — 20% de chance de Shatter." },
+      charged:{ name:"Modo Oni — Explosao Quantica", mult:2.5, hits:2, energyCost:0,   scale:"atk", description:"Rem ativa o sangue Oni — 2 golpes pesados com Break +25% cada. Bloodpact com 30% de chance por 2 turnos." },
+      ult:{     name:"Oni Liberto — Furia Quantica",  mult:5.8, hits:4, energyCost:100, scale:"atk", description:"Rem liberta o Oni — 4 golpes devastadores, Shatter garantido, Break +60%, Bloodpact por 3 turnos. +35% DMG Quantum ao time por 3 turnos." },
+      passive:{  name:"Amor Absoluto",               description:"Com Bloodpact ativo, qualquer cura do inimigo e convertida em dano. Rem nao pode morrer com HP acima de 1, uma vez por batalha." },
+    },
+    constellations:[
+      { name:"Pela Subaru-kun",           type:"crit_dmg_up",   value:18, description:"Crit DMG +18%. Bloodpact converte 120% do valor de cura em dano (era 100%)." },
+      { name:"Oni da Nevoa",              type:"break_up",      value:18, description:"Break Effect +18%. Shatter de Rem ignora 20% da DEF inimiga." },
+      { name:"Modo Oni Refinado",         type:"skill_mult_up", value:25, description:"Skill +25%. A Charged passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
+      { name:"Manguail Quantico Supremo", type:"quantum_dmg_up",value:15, description:"Dano Quantum +15%. Cada hit do Ult tem 40% de chance individual de Shatter." },
+      { name:"Furia Oni Suprema",         type:"ult_mult_up",   value:30, description:"Ult +30%. Os 4 hits aumentam para 5 e o 5 causa dano = 30% HP de Rem (ignora DEF)." },
+      { name:"Rem — A Oni Verdadeira",    type:"ult_mult_up",   value:50, description:"Ult +50%. Em modo Oni, Rem e imune a dano no primeiro turno apos o Ult e ganha +70% Crit DMG durante esses hits." },
+    ],
+  },
+
+  alucard_t5:{
+    label:"🔮 Alucard — T5 Sub-DPS (Quantum / Nao-Morto / Ilusao | Hellsing)",
+    charRole:"sub_dps", rarity:5, element:"quantum", weaponType:"Espada",
+    dotEffects:["bloodpact","spectral"],
+    scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS quantico que sangra o inimigo e cria ilusoes. ATK%->DMG Quantum->Crit. Bloodpact drena vida. Spectral confunde o inimigo completamente." },
+    suggestedStats:{ hp:15000, atk:1750, def:650, atkPct:30, critRate:10, critDmg:70, energyRecharge:128, spd:102, elementalMastery:60, breakEffect:0, elementBonus:{quantum:28}, healBonus:0 },
+    skills:{
+      basic:{   name:"Tiro do Casull",               mult:1.1, hits:1, energyCost:0,   scale:"atk", description:"Alucard dispara com precisao sobrenatural — 30% de chance de Bloodpact por 2 turnos." },
+      charged:{ name:"Mar de Almas — Schrodinger",   mult:2.1, hits:2, energyCost:0,   scale:"atk", description:"Alucard invoca almas do passado — 2 hits quanticos com Spectral garantido no 2 hit por 2 turnos." },
+      ult:{     name:"Modo Zero — Liberado",         mult:4.8, hits:3, energyCost:100, scale:"atk", description:"Alucard libera o Modo Zero — 3 hits devastadores, Bloodpact e Spectral garantidos por 3 turnos. +25% DMG Quantum ao time. Drena 20% do HP maximo inimigo como cura para Alucard." },
+      passive:{  name:"Nao-Morto Verdadeiro",        description:"Ao chegar em 0 HP, Alucard ressuscita com 40% HP (1x por batalha). Com Bloodpact ativo, cura 8% do dano causado como HP. Imune a Spectral e Bloodpact." },
+    },
+    constellations:[
+      { name:"Servo de Hellsing",         type:"quantum_dmg_up",value:12, description:"Dano Quantum +12%. Bloodpact drena 12% do dano como cura (era 8%)." },
+      { name:"Mar Infindavel de Almas",   type:"atk_up",        value:14, description:"ATK% +14%. Spectral de Alucard aumenta miss para 55% (era 40%)." },
+      { name:"Modo Zero Aprimorado",      type:"ult_mult_up",   value:22, description:"Ult +22%. A drenagem de HP sobe para 28% do HP maximo inimigo." },
+      { name:"Vampiro Ancestral",         type:"crit_dmg_up",   value:18, description:"Crit DMG +18%. A ressurreicao da Passiva agora ocorre com 55% HP." },
+      { name:"Schrodinger Dominado",      type:"skill_mult_up", value:20, description:"Skill +20%. Mar de Almas passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
+      { name:"Alucard — Deus Imortal",    type:"ult_mult_up",   value:45, description:"Ult +45%. Apos ressuscitar, Alucard entra em Modo Zero automaticamente — +50% ATK e +35% DMG Quantum por 3 turnos." },
+    ],
+  },
+
+  konan_t4:{
+    label:"🔮 Konan — T4 Flex (Quantum / Origami / Anjo da Dor | Naruto)",
+    charRole:"flex", rarity:4, element:"quantum", weaponType:"Cajado",
+    dotEffects:["spectral"],
+    scale:{ primary:"er", secondary:"atk", desc:"Flex quantica que mistura dano e suporte. ER->ATK%->SPD. Origami cria armadilhas e regenera energia do time. Perfeita para controle e apoio." },
+    suggestedStats:{ hp:15000, atk:1200, def:700, atkPct:14, critRate:10, critDmg:50, energyRecharge:155, spd:106, elementalMastery:40, breakEffect:0, elementBonus:{quantum:14}, healBonus:0 },
+    skills:{
+      basic:{   name:"Papel Cortante",               mult:0.9, hits:2, energyCost:0,   scale:"atk", description:"Konan lanca laminas de papel quantico — 2 hits rapidos com 20% de chance de Spectral." },
+      charged:{ name:"Mar de Papel — Armadilha",     mult:1.6, hits:1, energyCost:0,   scale:"atk", description:"Konan cobre o campo de papel — Spectral garantido por 2 turnos e regenera 15 de energia ao time." },
+      ult:{     name:"600 Bilhoes de Folhas de Papel", mult:3.8, hits:2, energyCost:100, scale:"atk", description:"2 hits de papel quantico explosivo — Spectral por 3 turnos, +20% DMG Quantum ao time por 2 turnos. Regenera 22 de energia para cada aliado." },
+      passive:{  name:"Anjo da Akatsuki",            description:"Enquanto em campo, aliados ganham +6% Crit Rate bonus. Apos o Ult, Konan regenera 15 de energia para ela mesma e age imediatamente no proximo turno." },
+    },
+    constellations:[
+      { name:"Papel Sagrado de Deus",     type:"er_up",         value:18, description:"ER +18%. A armadilha da Charged regenera 22 de energia ao time (era 15)." },
+      { name:"Angel de Nagato",           type:"atk_up",        value:12, description:"ATK% +12%. Spectral de Konan aumenta miss para 50% (era 40%)." },
+      { name:"Mar de Papel Aprimorado",   type:"ult_mult_up",   value:20, description:"Ult +20%. Regenera 30 de energia para cada aliado (era 22)." },
+      { name:"Origami Sagrado",           type:"quantum_dmg_up",value:10, description:"Dano Quantum +10%. A Passiva concede +8% Crit Rate bonus (era +6%)." },
+      { name:"600 Bilhoes Refinado",      type:"ult_mult_up",   value:22, description:"Ult +22%. Passa a ter 3 hits — o 3 aplica Spectral adicional com duração renovada." },
+      { name:"Konan — Deusa do Papel",    type:"ult_mult_up",   value:0,  description:"Apos o Ult, Konan cria um campo de papel por 2 turnos — todo aliado que atacar ganha +15% DMG nesse turno e regenera 5 de energia extra." },
+    ],
+  },
+
 }; // END CHAR_PRESETS
 
 
@@ -3775,6 +4181,410 @@ const WEAPON_PRESETS = {
       hp:0, atk:800, def:0, elementalDmg:0, breakEffect:0 }
   },
 
+
+  // ══ ESDEATH ══
+  eternal_frost_blade:{
+    label:"❄ Lâmina do Gelo Eterno ★★★★★ (Esdeath)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"esdeath_t5", charAffinityName:"Esdeath",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:22.1,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:8 },
+    passive:{
+      name:"Imperatriz do Gelo",
+      description:"DMG Gelo +28%. Crit DMG +22%. Cada hit de gelo acumula 1 stack de Frostbite no inimigo (máx 3). Com 3 stacks, o próximo ataque ignora 30% da DEF. ⚠ Passiva inativa se não equipada em Esdeath.",
+      passiveCondition:"esdeath_t5", passiveConditionName:"Esdeath",
+      atkPct:0, critRate:0, critDmg:22, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:28, breakEffect:0 }
+  },
+
+  // ══ OMEGAMON ══
+  all_delete_sword:{
+    label:"✨ All Delete ★★★★★ (Omegamon)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"omegamon_t5", charAffinityName:"Omegamon",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:24,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:6 },
+    passive:{
+      name:"Julgamento Sagrado",
+      description:"DMG Holy +32%. ATK +20%. Ataques ignoram 15% adicional de resistência inimiga. Ao crítico, regenera 12 de energia. ⚠ Passiva inativa se não equipada em Omegamon.",
+      passiveCondition:"omegamon_t5", passiveConditionName:"Omegamon",
+      atkPct:20, critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:32, breakEffect:0 }
+  },
+
+  // ══ SERAPHIEL ══
+  divine_lens_staff:{
+    label:"✨ Cajado da Lente Divina ★★★★★ (Seraphiel)",
+    rarity:5, weaponType:"Cajado",
+    charAffinity:"seraphiel_t5", charAffinityName:"Seraphiel",
+    stats:{ baseAtk:541, substatType:"energyRecharge", substatVal:55,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Foco do Serafim",
+      description:"ER +25%. Ao usar o Ult, o buff de Crit DMG concedido ao time aumenta +15% adicionalmente. HP +16% para sobrevivência. ⚠ Passiva inativa se não equipada em Seraphiel.",
+      passiveCondition:"seraphiel_t5", passiveConditionName:"Seraphiel",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:25,
+      hp:0, atk:0, def:0, elementalDmg:16, breakEffect:0 }
+  },
+
+  // ══ VALDRIS ══
+  herald_staff:{
+    label:"✨ Cajado do Heraldo ★★★★★ (Valdris)",
+    rarity:5, weaponType:"Cajado",
+    charAffinity:"valdris_t5", charAffinityName:"Valdris",
+    stats:{ baseAtk:541, substatType:"spd", substatVal:22,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Velocidade Divina",
+      description:"SPD +22. ER +20%. O buff de SPD concedido pelo Ult é aumentado em +8% adicionalmente. ⚠ Passiva inativa se não equipada em Valdris.",
+      passiveCondition:"valdris_t5", passiveConditionName:"Valdris",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:20,
+      hp:0, atk:0, def:0, elementalDmg:0, breakEffect:0 }
+  },
+
+  // ══ KAGURA ══
+  spirit_flame_staff:{
+    label:"🔥 Cajado da Chama Espiritual ★★★★★ (Kagura)",
+    rarity:5, weaponType:"Cajado",
+    charAffinity:"kagura_t5", charAffinityName:"Kagura",
+    stats:{ baseAtk:608, substatType:"elementalMastery", substatVal:115,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Dança das Chamas",
+      description:"EM +90 adicional. DMG Fogo +18%. Com Burn ativo no inimigo, regenera 12 de energia por turno. ⚠ Passiva inativa se não equipada em Kagura.",
+      passiveCondition:"kagura_t5", passiveConditionName:"Kagura",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:18, breakEffect:0 }
+  },
+
+  // ══ REI ══
+  at_field_lance:{
+    label:"💧 Lança AT Field ★★★★★ (Rei)",
+    rarity:5, weaponType:"Lança",
+    charAffinity:"rei_t5", charAffinityName:"Rei",
+    stats:{ baseAtk:674, substatType:"critDmg", substatVal:20,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Campo A.T. Ofensivo",
+      description:"ATK +18%. DMG Água +20%. Ao aplicar Drown, regenera 15 de energia. Ataques com Drown ativo no inimigo ganham +15% Crit DMG. ⚠ Passiva inativa se não equipada em Rei.",
+      passiveCondition:"rei_t5", passiveConditionName:"Rei",
+      atkPct:18, critRate:0, critDmg:15, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:20, breakEffect:0 }
+  },
+
+  // ══ VAYLEN ══
+  storm_sovereign_blade:{
+    label:"🌀 Lâmina da Tempestade Soberana ★★★★★ (Vaylen)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"vaylen_t5", charAffinityName:"Vaylen",
+    stats:{ baseAtk:741, substatType:"elementalMastery", substatVal:105,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:12 },
+    passive:{
+      name:"Mestre das Tempestades",
+      description:"DMG Vento +22%. SPD +12. Com Void ativo no inimigo, +12% Crit Rate. Cada DOT ativo concede +6% DMG Vento adicional (máx +24%). ⚠ Passiva inativa se não equipada em Vaylen.",
+      passiveCondition:"vaylen_t5", passiveConditionName:"Vaylen",
+      atkPct:12, critRate:12, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:22, breakEffect:0 }
+  },
+
+  // ══ RYUKEN ══
+  tectonic_spear:{
+    label:"🌍 Lança Tectônica ★★★★★ (Ryuken)",
+    rarity:5, weaponType:"Lança",
+    charAffinity:"ryuken_t5", charAffinityName:"Ryuken",
+    stats:{ baseAtk:674, substatType:"breakEffect", substatVal:65,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Pilão da Terra",
+      description:"Break Effect +45%. DMG Terra +18%. Erosion causado por Ryuken reduz DEF inimiga em +10% adicional por stack. Ao fazer Break, regenera 20 de energia. ⚠ Passiva inativa se não equipada em Ryuken.",
+      passiveCondition:"ryuken_t5", passiveConditionName:"Ryuken",
+      atkPct:14, critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:18, breakEffect:45 }
+  },
+
+  // ══ SYLVARA ══
+  venom_blade:{
+    label:"🍃 Lâmina do Veneno ★★★★★ (Sylvara)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"sylvara_t5", charAffinityName:"Sylvara",
+    stats:{ baseAtk:741, substatType:"elementalMastery", substatVal:110,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:8 },
+    passive:{
+      name:"Veneno da Selva",
+      description:"DMG Natureza +22%. EM +80 adicional. Com Poison e Withering simultâneos, +18% DMG geral. Cada stack de Poison ativo regenera 5 de energia por turno. ⚠ Passiva inativa se não equipada em Sylvara.",
+      passiveCondition:"sylvara_t5", passiveConditionName:"Sylvara",
+      atkPct:14, critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:22, breakEffect:0 }
+  },
+
+  // ══ VEXARA ══
+  chaos_grimoire:{
+    label:"🔴 Grimório do Caos ★★★★★ (Vexara)",
+    rarity:5, weaponType:"Grimório",
+    charAffinity:"vexara_t5", charAffinityName:"Vexara",
+    stats:{ baseAtk:608, substatType:"elementalMastery", substatVal:108,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Distorção Suprema",
+      description:"DMG Caos +24%. EM +80 adicional. Com Timerot ativo no inimigo, os buffs aliados duram +1 turno extra. Ao usar Ult, regenera 20 de energia para o aliado com maior ATK. ⚠ Passiva inativa se não equipada em Vexara.",
+      passiveCondition:"vexara_t5", passiveConditionName:"Vexara",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:18,
+      hp:0, atk:0, def:0, elementalDmg:24, breakEffect:0 }
+  },
+
+  // ══ MIRAEL ══
+  quantum_dagger:{
+    label:"🔮 Adaga Quântica ★★★★★ (Mirael)",
+    rarity:5, weaponType:"Adaga",
+    charAffinity:"mirael_t5", charAffinityName:"Mirael",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:26,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:10 },
+    passive:{
+      name:"Horizonte de Eventos",
+      description:"DMG Quantum +30%. Crit DMG +26%. Cada stack de Quantum Charge aumenta Crit DMG em +6% adicional (máx +30%). SPD +10. ⚠ Passiva inativa se não equipada em Mirael.",
+      passiveCondition:"mirael_t5", passiveConditionName:"Mirael",
+      atkPct:16, critRate:0, critDmg:26, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalDmg:30, breakEffect:0 }
+  },
+
+  // ══ NOXYN ══
+  illusion_grimoire:{
+    label:"🔮 Grimório das Ilusões ★★★★★ (Noxyn)",
+    rarity:5, weaponType:"Grimório",
+    charAffinity:"noxyn_t5", charAffinityName:"Noxyn",
+    stats:{ baseAtk:608, substatType:"elementalMastery", substatVal:105,
+      critRate:0, critDmg:0, energyRecharge:0,
+      hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Arquiteto das Ilusões",
+      description:"DMG Quantum +22%. EM +80 adicional. Com Spectral ativo, todos os aliados ganham +8% Crit Rate bônus adicional. Ao usar Ult, inimigo fica com -15% ATK por 2 turnos. ⚠ Passiva inativa se não equipada em Noxyn.",
+      passiveCondition:"noxyn_t5", passiveConditionName:"Noxyn",
+      atkPct:0, critRate:0, critDmg:12, energyRecharge:20,
+      hp:0, atk:0, def:0, elementalDmg:22, breakEffect:0 }
+  },
+
+
+  // ══ NATSU ══
+  igneel_fang:{
+    label:"🔥 Presa de Igneel ★★★★★ (Natsu)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"natsu_t5", charAffinityName:"Natsu Dragneel",
+    stats:{ baseAtk:741, substatType:"elementalMastery", substatVal:110,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:10 },
+    passive:{
+      name:"Magia do Dragao de Fogo",
+      description:"DMG Fogo +24%. EM +80 adicional. Com Burn ativo no inimigo, ATK +18%. Ao entrar em Modo Dragao, SPD +10 por 3 turnos. Passiva inativa fora do Natsu.",
+      passiveCondition:"natsu_t5", passiveConditionName:"Natsu Dragneel",
+      atkPct:18, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:24, breakEffect:0 }
+  },
+
+  // ══ KISAME ══
+  samehada_blade:{
+    label:"🦈 Samehada ★★★★ (Kisame)",
+    rarity:4, weaponType:"Espada",
+    charAffinity:"kisame_t4", charAffinityName:"Kisame Hoshigaki",
+    stats:{ baseAtk:608, substatType:"breakEffect", substatVal:52,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Espada Viva",
+      description:"Break Effect +32%. A cada hit, drena +5 de energia extra do inimigo. ATK +14%. DMG Agua +14%. Passiva inativa fora do Kisame.",
+      passiveCondition:"kisame_t4", passiveConditionName:"Kisame Hoshigaki",
+      atkPct:14, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:14, breakEffect:32 }
+  },
+
+  // ══ JUVIA ══
+  water_body_staff:{
+    label:"💧 Cajado do Corpo d'Agua ★★★★ (Juvia)",
+    rarity:4, weaponType:"Cajado",
+    charAffinity:"juvia_t4", charAffinityName:"Juvia Lockser",
+    stats:{ baseAtk:510, substatType:"hp", substatVal:680,
+      critRate:0, critDmg:0, energyRecharge:38, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Amor pela Agua",
+      description:"HP +16%. Heal Bonus +20%. Com aliado fisico no time, escudo concedido +18% mais forte. ER +18%. Passiva inativa fora da Juvia.",
+      passiveCondition:"juvia_t4", passiveConditionName:"Juvia Lockser",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:18, hp:0, atk:0, def:0, elementalDmg:0, breakEffect:0 }
+  },
+
+  // ══ TEMARI ══
+  kamatari_fan:{
+    label:"🌀 Leque Kamatari ★★★★★ (Temari)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"temari_t5", charAffinityName:"Temari",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:22,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:8 },
+    passive:{
+      name:"Shikigami do Vento",
+      description:"DMG Vento +26%. Crit DMG +22%. Com Void ativo, Crit Rate +14%. SPD +8. Reducao de DEF inimiga do Ult +8% adicional. Passiva inativa fora da Temari.",
+      passiveCondition:"temari_t5", passiveConditionName:"Temari",
+      atkPct:14, critRate:14, critDmg:22, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:26, breakEffect:0 }
+  },
+
+  // ══ INUYASHA ══
+  tessaiga:{
+    label:"🌀 Tessaiga ★★★★ (Inuyasha)",
+    rarity:4, weaponType:"Espada",
+    charAffinity:"inuyasha_t4", charAffinityName:"Inuyasha",
+    stats:{ baseAtk:648, substatType:"atk", substatVal:72,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:22, spd:0 },
+    passive:{
+      name:"Fang do Grande Inuio",
+      description:"ATK +14%. DMG Vento +16%. Break Effect +22%. Em modo Yokai, ATK +10% adicional e ataques ignoram 15% da DEF inimiga. Passiva inativa fora do Inuyasha.",
+      passiveCondition:"inuyasha_t4", passiveConditionName:"Inuyasha",
+      atkPct:14, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:16, breakEffect:22 }
+  },
+
+  // ══ GAARA ══
+  sand_gourd:{
+    label:"🏜 Cabaca de Areia ★★★★★ (Gaara)",
+    rarity:5, weaponType:"Cajado",
+    charAffinity:"gaara_t5", charAffinityName:"Gaara",
+    stats:{ baseAtk:541, substatType:"def", substatVal:120,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:38, spd:0 },
+    passive:{
+      name:"Kazekage da Areia",
+      description:"DEF +22%. Break Effect +28%. DMG Terra +18%. Cada stack de Erosion concede +6% DMG adicional (max +24%). Com Armadura de Areia ativa, dano recebido -10% adicional. Passiva inativa fora do Gaara.",
+      passiveCondition:"gaara_t5", passiveConditionName:"Gaara",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:18, breakEffect:28 }
+  },
+
+  // ══ DIANE ══
+  gideon_hammer:{
+    label:"🌍 Gideon ★★★★ (Diane)",
+    rarity:4, weaponType:"Machado",
+    charAffinity:"diane_t4", charAffinityName:"Diane",
+    stats:{ baseAtk:590, substatType:"hp", substatVal:720,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:32, spd:0 },
+    passive:{
+      name:"Martelo da Serpente",
+      description:"HP +18%. Break Effect +22%. DMG Terra +14%. Contra-ataque da Passiva ocorre com +20% de chance extra. Passiva inativa fora da Diane.",
+      passiveCondition:"diane_t4", passiveConditionName:"Diane",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:14, breakEffect:22 }
+  },
+
+  // ══ BAN ══
+  ban_couteau:{
+    label:"🍺 Couteau de Ban ★★★★★ (Ban)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"ban_t5", charAffinityName:"Ban",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:20,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:12 },
+    passive:{
+      name:"Faca do Ladrao Imortal",
+      description:"ATK +20%. HP +14%. Snatch cura +5% a mais do dano causado. Com Withering ativo, todas as curas de Ban +20% adicionais. SPD +12. Passiva inativa fora do Ban.",
+      passiveCondition:"ban_t5", passiveConditionName:"Ban",
+      atkPct:20, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:14, breakEffect:0 }
+  },
+
+  // ══ SHINOBU ══
+  butterfly_blade:{
+    label:"🦋 Lamina da Borboleta ★★★★ (Shinobu)",
+    rarity:4, weaponType:"Espada",
+    charAffinity:"shinobu_t4", charAffinityName:"Kocho Shinobu",
+    stats:{ baseAtk:580, substatType:"elementalMastery", substatVal:95,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:10 },
+    passive:{
+      name:"Veneno Supremo da Borboleta",
+      description:"DMG Natureza +16%. EM +70 adicional. Com Poison E Withering simultaneos, +14% DMG geral. SPD +10. Passiva inativa fora da Shinobu.",
+      passiveCondition:"shinobu_t4", passiveConditionName:"Kocho Shinobu",
+      atkPct:12, critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:16, breakEffect:0 }
+  },
+
+  // ══ AIZEN ══
+  kyoka_suigetsu:{
+    label:"🌀 Kyoka Suigetsu ★★★★★ (Aizen)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"aizen_t5", charAffinityName:"Aizen Sosuke",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:22,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Ilusao Total",
+      description:"DMG Caos +26%. Com Spectral ativo, Crit DMG +20% adicional. A extensao de buffs aliados da Passiva de Aizen adiciona +1 turno extra (total +2). ER +18%. Passiva inativa fora do Aizen.",
+      passiveCondition:"aizen_t5", passiveConditionName:"Aizen Sosuke",
+      atkPct:16, critRate:0, critDmg:20, energyRecharge:18, hp:0, atk:0, def:0, elementalDmg:26, breakEffect:0 }
+  },
+
+  // ══ MIRIO ══
+  lemillion_cape:{
+    label:"✨ Capa do Lemillion ★★★★★ (Mirio)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"mirio_t5", charAffinityName:"Mirio Togata",
+    stats:{ baseAtk:541, substatType:"energyRecharge", substatVal:58,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Quirk de Permeabilidade",
+      description:"ER +28%. HP +18%. O buff de Crit DMG do Ult de Mirio +12% adicional. Bencao de Lemillion regenera +5 de energia extra para o alvo. Passiva inativa fora do Mirio.",
+      passiveCondition:"mirio_t5", passiveConditionName:"Mirio Togata",
+      atkPct:0, critRate:0, critDmg:12, energyRecharge:28, hp:0, atk:0, def:0, elementalDmg:0, breakEffect:0 }
+  },
+
+  // ══ MEREOLEONA ══
+  crimson_blade:{
+    label:"✨ Espada Carmesim ★★★★ (Mereoleona)",
+    rarity:4, weaponType:"Espada",
+    charAffinity:"mereoleona_t4", charAffinityName:"Mereoleona Vermillion",
+    stats:{ baseAtk:590, substatType:"spd", substatVal:18,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Brigada Crimson Royal",
+      description:"SPD +18. ER +18%. O buff de ATK do Ult +8% adicional. A Passiva de SPD dos aliados sobe para +9 base (era +6). Passiva inativa fora da Mereoleona.",
+      passiveCondition:"mereoleona_t4", passiveConditionName:"Mereoleona Vermillion",
+      atkPct:10, critRate:0, critDmg:0, energyRecharge:18, hp:0, atk:0, def:0, elementalDmg:0, breakEffect:0 }
+  },
+
+  // ══ REM ══
+  morning_star:{
+    label:"🔮 Manguail da Manha ★★★★★ (Rem)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"rem_t5", charAffinityName:"Rem",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:24,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:48, spd:0 },
+    passive:{
+      name:"Furia Oni Despertada",
+      description:"Break Effect +38%. Crit DMG +24%. DMG Quantum +22%. Com Bloodpact ativo, Crit DMG +14% adicional. Break sempre que o inimigo for atingido por Shatter regenera 12 de energia a Rem. Passiva inativa fora da Rem.",
+      passiveCondition:"rem_t5", passiveConditionName:"Rem",
+      atkPct:16, critRate:0, critDmg:24, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:22, breakEffect:38 }
+  },
+
+  // ══ ALUCARD ══
+  casull_pistol:{
+    label:"🔮 Pistola Casull ★★★★★ (Alucard)",
+    rarity:5, weaponType:"Espada",
+    charAffinity:"alucard_t5", charAffinityName:"Alucard",
+    stats:{ baseAtk:741, substatType:"critDmg", substatVal:22,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:0 },
+    passive:{
+      name:"Nao-Morto Liberado",
+      description:"DMG Quantum +24%. HP +16%. Com Bloodpact ativo, cura +5% do dano adicional. Crit DMG +22%. Apos ressuscitar, ATK +20% por 3 turnos. Passiva inativa fora do Alucard.",
+      passiveCondition:"alucard_t5", passiveConditionName:"Alucard",
+      atkPct:16, critRate:0, critDmg:22, energyRecharge:0, hp:0, atk:0, def:0, elementalDmg:24, breakEffect:0 }
+  },
+
+  // ══ KONAN ══
+  paper_angel_staff:{
+    label:"🔮 Cajado do Anjo de Papel ★★★★ (Konan)",
+    rarity:4, weaponType:"Cajado",
+    charAffinity:"konan_t4", charAffinityName:"Konan",
+    stats:{ baseAtk:510, substatType:"energyRecharge", substatVal:48,
+      critRate:0, critDmg:0, energyRecharge:0, hp:0, atk:0, def:0, elementalMastery:0, breakEffect:0, spd:8 },
+    passive:{
+      name:"Origami Sagrado da Akatsuki",
+      description:"ER +24%. DMG Quantum +14%. A regeneracao de energia do Ult de Konan +8 adicional para cada aliado. SPD +8. Passiva inativa fora da Konan.",
+      passiveCondition:"konan_t4", passiveConditionName:"Konan",
+      atkPct:0, critRate:0, critDmg:0, energyRecharge:24, hp:0, atk:0, def:0, elementalDmg:14, breakEffect:0 }
+  },
+
 };
 window.WEAPON_PRESETS = WEAPON_PRESETS;
 
@@ -3797,8 +4607,8 @@ const DUNGEON_PRESETS = {
       "Chama do Inferno":{ "2pc":"DMG Fogo +15%", "4pc":"Burn aplicado aumenta ATK em 18% por 2 turnos." },
       "Coração do Vulcão":{ "2pc":"ATK +18%", "4pc":"Ao usar Ult, Burn em todos inimigos por 2 turnos." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:335000, hard:880000 },
+    bossAtk:{ easy:1800, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   void_citadel: {
@@ -3816,8 +4626,8 @@ const DUNGEON_PRESETS = {
       "Vazio Eterno":{ "2pc":"DMG Dark/Chaos +18%", "4pc":"Void Mark aplicado explode em 2 turnos a menos." },
       "Sombra Absoluta":{ "2pc":"Crit DMG +20%", "4pc":"Ataques críticos aplicam Void Mark (30% chance)." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:335000, hard:880000 },
+    bossAtk:{ easy:1800, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   thunder_peak: {
@@ -3835,8 +4645,8 @@ const DUNGEON_PRESETS = {
       "Coroa do Trovão":{ "2pc":"DMG Lightning +18%", "4pc":"Electrify aplicado propaga para alvo adj. (Chain Lightning)." },
       "Tempestade Perpétua":{ "2pc":"Energy Recharge +20%", "4pc":"Ult custa 15% menos energia. +25% DMG após usar Ult." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:335000, hard:880000 },
+    bossAtk:{ easy:1800, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   abyssal_ocean: {
@@ -3854,8 +4664,8 @@ const DUNGEON_PRESETS = {
       "Profundeza Eterna":{ "2pc":"HP +20%", "4pc":"Ao curar aliados, aumenta ATK do curado em 15% por 2 turnos." },
       "Maré das Almas":{ "2pc":"DMG Water/Ice +16%", "4pc":"Freeze aplicado aumenta dano de todos em 22% por duração." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:355000 },
-    bossAtk:{ easy:1800, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:335000, hard:880000 },
+    bossAtk:{ easy:1800, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.6,t4:0.3,t5:0.1}, normal:{t3:0.3,t4:0.45,t5:0.25}, hard:{t3:0,t4:0.2,t5:0.8} }
   },
   // ── T4 DUNGEONS ──
@@ -3981,8 +4791,8 @@ const DUNGEON_PRESETS = {
       "Presas da Maldição":{ "2pc":"ATK +20%", "4pc":"Ao usar Ult, Crit Rate +15% e Crit DMG +20% por 2 turnos." },
       "Sello do Rei":{ "2pc":"DMG Chaos +22%", "4pc":"Curse aplicado causa explosão de dano = 50% ATK ao expirar." }
     },
-    bossHp:{ easy:155000, normal:270000, hard:390000 },
-    bossAtk:{ easy:2000, normal:3500, hard:6000 },
+    bossHp:{ easy:155000, normal:365000, hard:970000 },
+    bossAtk:{ easy:2000, normal:4700, hard:12000 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:40,
     bossSpecial:"Domínio Ativo: no turno 1, todos os ataques do boss acertam garantidamente. Destrói escudos no 1° turno. Sukuna regenera 5% HP ao usar Ult.",
@@ -4012,8 +4822,8 @@ const DUNGEON_PRESETS = {
       "Alma do Shinigami":{ "2pc":"DMG Holy +18%", "4pc":"Ao aplicar Cleanse, ATK do time +15% por 2 turnos." },
       "Escudo do Soul Society":{ "2pc":"DEF +22%", "4pc":"Ao ser atingido abaixo de 50% HP, escudo automático de 25% HP (1x/batalha)." }
     },
-    bossHp:{ easy:145000, normal:255000, hard:370000 },
-    bossAtk:{ easy:1900, normal:3300, hard:5700 },
+    bossHp:{ easy:145000, normal:345000, hard:920000 },
+    bossAtk:{ easy:1900, normal:4500, hard:11400 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:38,
     bossSpecial:"Bankai de Morte: a cada 3 turnos, o boss ativa uma história que aplica aleatoriamente: Bleed, Freeze ou Curse em todo o time.",
@@ -4043,8 +4853,8 @@ const DUNGEON_PRESETS = {
       "Respiração das Chamas":{ "2pc":"DMG Fire +18%", "4pc":"Ataques físicos têm 20% de chance de aplicar Burn (2 turnos)." },
       "Marca do Demonslayer":{ "2pc":"ATK +18%", "4pc":"Ao eliminar um inimigo, ATK +10% por 3 turnos (acumula até 3x)." }
     },
-    bossHp:{ easy:140000, normal:248000, hard:360000 },
-    bossAtk:{ easy:1850, normal:3200, hard:5500 },
+    bossHp:{ easy:140000, normal:335000, hard:900000 },
+    bossAtk:{ easy:1850, normal:4300, hard:11000 },
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.4}, hard:{t3:0,t4:0.15,t5:0.85} },
     recLevel:36,
     bossSpecial:"Sonho Profundo: a cada 2 turnos, aplica Sleep em 1 aliado aleatório (perde próximo turno). Cleanse remove Sleep."
@@ -4332,18 +5142,25 @@ const TOWER_FLOOR_PRESETS = (() => {
     rawBlons.push(i % 10 === 0 ? base * 1.5 : base);
   }
   const rawSum = rawBlons.reduce((a,b)=>a+b,0);
-  const blonsScale = 25000 / rawSum;
+  const blonsScale = 40000 / rawSum;
 
   for (let i = 0; i < 100; i++) {
     const floor = i + 1;
     const boss = bosses[i] || bosses[bosses.length-1];
-    const focReward = Math.floor(30 + floor * 1.7 + (floor > 50 ? floor * 0.8 : 0));
-    // Blons escalados — total = 25.000
+    // FoC: dobra a escala após andar 15 para justificar a dificuldade
+    const focReward = Math.floor(floor < 15
+      ? 30 + floor * 1.7
+      : 30 + floor * 3.5 + (floor > 50 ? floor * 1.5 : 0));
+    // Blons escalados — total ajustado para ~40.000 (mais recompensador)
     const blonsReward = Math.round(rawBlons[i] * blonsScale);
-    // Boss HP cresce exponencialmente: andar 1 = 5k, andar 50 = 43k, andar 100 = 390k
-    const bossHp  = Math.round(5000  * Math.pow(1.045, floor - 1));
-    // Boss ATK cresce junto — andar 1 = 300, andar 100 = ~14500
-    const bossAtk = Math.round(300   * Math.pow(1.04,  floor - 1));
+    // Boss HP — suave até andar 14, multiplicador agressivo a partir do 15
+    // Andar 1≈5k, 14≈8.5k, 15≈17k, 30≈120k, 50≈700k, 75≈5M, 100≈25M
+    const _hpBase = 5000 * Math.pow(1.045, floor - 1);
+    const bossHp  = Math.round(floor < 15 ? _hpBase : _hpBase * Math.pow(1.15, floor - 14));
+    // Boss ATK — mesma lógica de breakpoint no andar 15
+    // Andar 1≈300, 14≈510, 15≈750, 30≈5000, 50≈22000, 100≈160000
+    const _atkBase = 300 * Math.pow(1.04, floor - 1);
+    const bossAtk = Math.round(floor < 15 ? _atkBase : _atkBase * Math.pow(1.12, floor - 14));
     floors.push({
       floor, name: floorNames[i] || `Andar ${floor}`,
       bossName: boss.n, bossIcon: boss.i, bossDescription: boss.d,
@@ -4838,8 +5655,8 @@ const DUNGEON_PRESETS_EXTRA = {
       atkMult:145, message:"Kenjaku revela cérebro verdadeiro. Velocidade duplicada!",
       minions:[{name:"Pintura da Morte",icon:"🖼",hp:55000,atk:2800,element:"dark"}] },
     phase2Trigger:50,
-    bossHp:{ easy:160000, normal:280000, hard:400000 },
-    bossAtk:{ easy:2000, normal:3500, hard:6000 },
+    bossHp:{ easy:160000, normal:378000, hard:1000000 },
+    bossAtk:{ easy:2000, normal:4700, hard:12000 },
     artifactTier:"T5",
     artifactSets:["Rei das Maldições","Vazio Eterno"],
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.25,t4:0.45,t5:0.30}, hard:{t3:0,t4:0.15,t5:0.85} }
@@ -4863,8 +5680,8 @@ const DUNGEON_PRESETS_EXTRA = {
       atkMult:160, message:"Domínio expande — hit garantido agora ativo!",
       minions:[{name:"Clone das Sombras",icon:"👁",hp:50000,atk:2500,element:"dark"}] },
     phase2Trigger:40,
-    bossHp:{ easy:150000, normal:270000, hard:390000 },
-    bossAtk:{ easy:2200, normal:3800, hard:6500 },
+    bossHp:{ easy:150000, normal:365000, hard:975000 },
+    bossAtk:{ easy:2200, normal:5100, hard:13000 },
     artifactTier:"T5",
     artifactSets:["Vazio Eterno","Rei das Maldições"],
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.45,t5:0.35}, hard:{t3:0,t4:0.1,t5:0.9} }
@@ -4909,8 +5726,8 @@ const DUNGEON_PRESETS_EXTRA = {
       atkMult:155, message:"Kizaru atinge velocidade máxima — impossível de esquivar!",
       minions:[{name:"Almirante Subordinado",icon:"⭐",hp:40000,atk:2200,element:"lightning"}] },
     phase2Trigger:45,
-    bossHp:{ easy:145000, normal:260000, hard:375000 },
-    bossAtk:{ easy:1900, normal:3400, hard:5800 },
+    bossHp:{ easy:145000, normal:351000, hard:937000 },
+    bossAtk:{ easy:1900, normal:4600, hard:11600 },
     artifactTier:"T5",
     artifactSets:["Tempestade Eterna","Deus dos Raios"],
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.25,t4:0.4,t5:0.35}, hard:{t3:0,t4:0.15,t5:0.85} }
@@ -4934,8 +5751,8 @@ const DUNGEON_PRESETS_EXTRA = {
       atkMult:170, message:"Aizen absorveu a Hogyoku — DEUS.",
       minions:[{name:"Espírito Maldito Especial",icon:"😈",hp:60000,atk:2400,element:"physical"}] },
     phase2Trigger:35,
-    bossHp:{ easy:155000, normal:275000, hard:395000 },
-    bossAtk:{ easy:2100, normal:3700, hard:6200 },
+    bossHp:{ easy:155000, normal:371000, hard:987000 },
+    bossAtk:{ easy:2100, normal:5000, hard:12400 },
     artifactTier:"T5",
     artifactSets:["Vazio Eterno","Sombra Absoluta"],
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.45,t5:0.35}, hard:{t3:0,t4:0.1,t5:0.9} }
@@ -4959,8 +5776,8 @@ const DUNGEON_PRESETS_EXTRA = {
       atkMult:150, message:"Piedmon invoca os Cavaleiros do Apocalipse!",
       minions:[{name:"Death Painting",icon:"🖼",hp:55000,atk:2800,element:"dark"}] },
     phase2Trigger:50,
-    bossHp:{ easy:165000, normal:290000, hard:415000 },
-    bossAtk:{ easy:2000, normal:3600, hard:6100 },
+    bossHp:{ easy:165000, normal:392000, hard:1037000 },
+    bossAtk:{ easy:2000, normal:4900, hard:12200 },
     artifactTier:"T5",
     artifactSets:["Vazio Eterno","Andarilho Nômade"],
     difficultyDrops:{ easy:{t3:0.5,t4:0.35,t5:0.15}, normal:{t3:0.2,t4:0.4,t5:0.40}, hard:{t3:0,t4:0.1,t5:0.9} }
@@ -5352,7 +6169,7 @@ window.buyArenaShopItem = async function(itemId, cost, rewardJson) {
   const saveData = { arenaTokens: profile.arenaTokens };
 
   if (reward.foc)         { profile.foc = (profile.foc||0) + reward.foc; saveData.foc = profile.foc; }
-  if (reward.blons)       { profile.blons = Math.min((profile.blons||0)+reward.blons, window.BLONS_MAX||160); saveData.blons = profile.blons; }if (reward.pityReduce)  { profile.pity5Char = Math.max(0,(profile.pity5Char||0)-reward.pityReduce); saveData.pity5Char = profile.pity5Char; }
+  if (reward.blons)       { profile.blons = Math.min((profile.blons||0)+reward.blons, window.BLONS_MAX||1000); saveData.blons = profile.blons; }if (reward.pityReduce)  { profile.pity5Char = Math.max(0,(profile.pity5Char||0)-reward.pityReduce); saveData.pity5Char = profile.pity5Char; }
   if (reward.xpBoost) {
     // Apply XP boost to active character
     const teamId = (profile.team||[])[0];
@@ -6075,8 +6892,8 @@ const PITY_5 = 90;
 const PITY_4 = 10;
 const INITIAL_FOC = 30 * PULL_COST; // 30 pulls iniciais
 // ── BLONS ──
-const BLONS_MAX = 250;       // máximo de Blons
-const BLONS_REGEN = 1;       // Blons regenerados por minuto
+const BLONS_MAX = 1000;      // máximo de Blons
+const BLONS_REGEN = 4;       // Blons regenerados por minuto (~250/hora)
 const BLONS_REGEN_MS = 60000;// intervalo de regeneração (ms)
 const BLONS_DUNGEON = 20;    // custo dungeon
 const BLONS_TOWER  = 30;     // custo torre
@@ -6755,33 +7572,91 @@ function generatePull(banner, isChar, profile, pk5, pk4, gk) {
 
 function buildItem(name, rarity, isChar, banner) {
   const els = Object.keys(ELEMENTS);
+
+  // Resolver presetKey pelo nome — busca no CHAR_PRESETS
+  function resolvePresetKey(charName) {
+    if (!charName || !window.CHAR_PRESETS) return null;
+    const tokens = charName.toLowerCase().split(' ');
+    // Busca por label que contenha qualquer token do nome
+    const byLabel = Object.entries(window.CHAR_PRESETS).find(([k, p]) =>
+      p.label && tokens.some(t => t.length > 2 && p.label.toLowerCase().includes(t))
+    );
+    if (byLabel) return byLabel[0];
+    // Busca por key direta
+    const byKey = Object.keys(window.CHAR_PRESETS).find(k =>
+      tokens.some(t => t.length > 2 && k.toLowerCase().startsWith(t))
+    );
+    return byKey || null;
+  }
+
   // Try to find in catalog cache
   const catalog = window._catalogCache || {};
   const catalogKey = isChar ? "characters" : "weapons_catalog";
   const catalogItems = catalog[catalogKey] || [];
   const found = catalogItems.find(x => x.name === name);
   if (found) {
-    // Use full catalog data
+    const pk = found.presetKey || (isChar ? resolvePresetKey(name) : null) || found.id;
+    const preset = (isChar && pk && window.CHAR_PRESETS?.[pk]) ? window.CHAR_PRESETS[pk] : {};
+    const ss = preset.suggestedStats || {};
     return {
       ...found,
+      presetKey: pk,
       type: isChar ? "character" : "weapon",
       level: 1, energy: 0,
-      // Preserve stats and ultimate from catalog
-      stats: found.stats || {hp:1000,atk:100,def:80,critRate:10,critDmg:50,energyRecharge:100,spd:100,elementalMastery:0,breakEffect:0,elementBonus:{}},
+      charRole: preset.charRole || found.charRole || 'main_dps',
+      element: preset.element || found.element,
+      skills: preset.skills || found.skills || {},
+      constellations: preset.constellations || found.constellations || [],
+      dotEffects: preset.dotEffects || found.dotEffects || [],
+      stats: ss.hp ? {
+        hp: ss.hp, atk: ss.atk||100, def: ss.def||80,
+        critRate: ss.critRate||5, critDmg: ss.critDmg||50,
+        energyRecharge: ss.energyRecharge||100, spd: ss.spd||100,
+        elementalMastery: ss.elementalMastery||0, breakEffect: ss.breakEffect||0,
+        elementBonus: ss.elementBonus||{}, healBonus: ss.healBonus||0,
+      } : found.stats || {hp:1000,atk:100,def:80,critRate:5,critDmg:50,energyRecharge:100,spd:100,elementalMastery:0,breakEffect:0,elementBonus:{},healBonus:0},
       ultimate: found.ultimate || {name:name+" Ult",dmgMultiplier:200,scale:"atk",energyCost:100,hits:1},
     };
   }
-  // Fallback if not in catalog
-  const elem = banner.element || els[Math.floor(Math.random()*els.length)];
-  const id = name.toLowerCase().replace(/\s+/g,"_")+"_"+rarity;
+
+  // Fallback: montar direto do CHAR_PRESETS
+  const pk = isChar ? resolvePresetKey(name) : null;
+  const preset = (pk && window.CHAR_PRESETS?.[pk]) ? window.CHAR_PRESETS[pk] : {};
+  const elem = preset.element || banner.element || els[Math.floor(Math.random()*els.length)];
+  const id = pk || name.toLowerCase().replace(/\s+/g,"_")+"_"+rarity;
+  const ss = preset.suggestedStats || {};
   return {
-    id, name, rarity, element: elem,
+    id, name, rarity,
+    presetKey: pk || id,
+    element: elem,
+    charRole: preset.charRole || 'main_dps',
     icon: isChar ? (ELEMENTS[elem]||"🌟") : "⚔",
     type: isChar ? "character" : "weapon",
     imageUrl: banner.charImageUrl||"",
     level: 1, energy: 0,
-    stats: {hp:1000,atk:100,def:80,critRate:10,critDmg:50,energyRecharge:100,spd:100,elementalMastery:0,breakEffect:0,elementBonus:{}},
-    ultimate: {name:name+" Ult",dmgMultiplier:200,scale:"atk",energyCost:100,hits:1},
+    skills: preset.skills || {},
+    constellations: preset.constellations || [],
+    dotEffects: preset.dotEffects || [],
+    stats: {
+      hp:               ss.hp               || 1000,
+      atk:              ss.atk              || 100,
+      def:              ss.def              || 80,
+      critRate:         ss.critRate         || 5,
+      critDmg:          ss.critDmg          || 50,
+      energyRecharge:   ss.energyRecharge   || 100,
+      spd:              ss.spd              || 100,
+      elementalMastery: ss.elementalMastery || 0,
+      breakEffect:      ss.breakEffect      || 0,
+      elementBonus:     ss.elementBonus     || {},
+      healBonus:        ss.healBonus        || 0,
+    },
+    ultimate: {
+      name: preset.skills?.ult?.name || name+" Ult",
+      dmgMultiplier: (preset.skills?.ult?.mult || 3.0) * 100,
+      scale: preset.skills?.ult?.scale || "atk",
+      energyCost: preset.skills?.ult?.energyCost || 100,
+      hits: preset.skills?.ult?.hits || 1,
+    },
   };
 }
 
@@ -9341,6 +10216,9 @@ async function runDungeon(did, diff) {
         { stat:"DMG fire%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG water%",val:mainScale(rarity,38.8,29.2,19.4) },
         { stat:"DMG lightning%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG ice%",val:mainScale(rarity,38.8,29.2,19.4) },
         { stat:"DMG chaos%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG dark%",val:mainScale(rarity,38.8,29.2,19.4) },
+        { stat:"DMG holy%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG physical%",val:mainScale(rarity,38.8,29.2,19.4) },
+        { stat:"DMG wind%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG earth%",val:mainScale(rarity,38.8,29.2,19.4) },
+        { stat:"DMG nature%",val:mainScale(rarity,38.8,29.2,19.4) },{ stat:"DMG quantum%",val:mainScale(rarity,38.8,29.2,19.4) },
       ],
       "Coroa": [
         { stat:"HP%",val:mainScale(rarity,43.2,32.4,21.6) },{ stat:"ATK%",val:mainScale(rarity,43.2,32.4,21.6) },
@@ -9350,7 +10228,8 @@ async function runDungeon(did, diff) {
       "Emblema": [
         { stat:"Energy Recharge%",val:mainScale(rarity,51.8,38.9,26.0) },
         { stat:"Break Effect%",val:mainScale(rarity,64.8,48.6,32.4) },
-        { stat:"Crit Rate%",val:mainScale(rarity,32.4,24.3,16.2) },{ stat:"Crit DMG%",val:mainScale(rarity,64.8,48.6,32.4) },
+        { stat:"ATK%",val:mainScale(rarity,43.2,32.4,21.6) },
+        { stat:"HP%",val:mainScale(rarity,43.2,32.4,21.6) },
       ],
     };
     const pool = MAIN_POOLS[slot] || MAIN_POOLS["Ampulheta"];
@@ -10222,7 +11101,7 @@ async function renderShop() {
           Gaste em Dungeons <strong style="color:#66ccff">(−${BLONS_DUNGEON})</strong> e Torre <strong style="color:#66ccff">(−${BLONS_TOWER})</strong>
         </div>
         <div style="font-size:.78rem;color:${blons>=BLONS_MAX?"#44ff88":"var(--txt3)"}">
-          ${blons>=BLONS_MAX?"✅ Blons cheios!":"⏱ Regenera 1 por minuto • Cheio em "+minsUntilFull+" min"}
+          ${blons>=BLONS_MAX?"✅ Blons cheios!":"⏱ Regenera ~250/h • Cheio em "+minsUntilFull+" min"}
         </div>
       </div>
       <div style="text-align:right;min-width:140px">
@@ -10257,7 +11136,7 @@ async function renderShop() {
     <div class="card-title">ℹ Como funcionam os Blons</div>
     <div style="display:flex;flex-direction:column;gap:8px;font-size:.85rem;color:var(--txt2)">
       <div>🔵 Blons são sua energia para explorar o mundo</div>
-      <div>⏱ Regeneram automaticamente <strong>1 por minuto</strong> até o máximo de <strong>${BLONS_MAX}</strong></div>
+      <div>⏱ Regeneram automaticamente <strong>~250 por hora</strong> até o máximo de <strong>${BLONS_MAX}</strong></div>
       <div>🏚 <strong>Dungeons</strong> custam <strong style="color:#66ccff">${BLONS_DUNGEON} Blons</strong> por entrada</div>
       <div>🏰 <strong>Torre</strong> custa <strong style="color:#66ccff">${BLONS_TOWER} Blons</strong> por andar</div>
       <div>💎 Você pode comprar Blons extras usando <strong style="color:var(--gold)">FoC</strong></div>
@@ -14760,10 +15639,7 @@ function mobRenderDrawer() {
       + '<span style="font-size:.9rem">' + t.icon + '</span>'
       + '<span>' + t.label + '</span>'
     + '</button>';
-  }).join('')
-  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderFriendSystem()"><span style="font-size:.9rem">👥</span><span>Amigos</span></button>'
-  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderGlobalLeaderboard()"><span style="font-size:.9rem">🏆</span><span>Top Players</span></button>'
-  + '<button class="mob-drawer-btn" onclick="mobCloseDrawer();renderDailyMissionsPanel()"><span style="font-size:.9rem">📋</span><span>Missões</span></button>';
+  }).join('');
 }
 
 // Atualiza o ícone e label dos potinhos laterais com base nos atalhos atuais
@@ -15925,20 +16801,27 @@ function showDamageFloat(dmg, x, y, type, element) {
 function triggerHitFlash(type) {
   const el = document.getElementById('combat-hit-flash');
   if (!el) return;
-  // Geração para evitar race condition: só limpa se ainda for a mesma chamada
-  el._flashGen = (el._flashGen || 0) + 1;
-  const gen = el._flashGen;
+  // Cancela listeners e timers pendentes do ciclo anterior
+  if (el._flashEnd) { el.removeEventListener('animationend', el._flashEnd); el._flashEnd = null; }
+  if (el._flashTimer) { clearTimeout(el._flashTimer); el._flashTimer = null; }
+  // Reflow síncrono para reiniciar a animação de forma confiável no mobile
   el.className = '';
   el.style.animation = 'none';
-  void el.offsetWidth; // força reflow antes de re-aplicar
+  void el.offsetWidth;
   el.style.animation = '';
   el.className = 'flash-' + (type || 'red');
-  setTimeout(() => {
-    if (el && el._flashGen === gen) {
-      el.className = '';
-      el.style.animation = 'none';
-    }
-  }, 450);
+  // Limpeza primária via animationend + fallback por timer
+  el._flashEnd = function() {
+    el.className = '';
+    el._flashEnd = null;
+    if (el._flashTimer) { clearTimeout(el._flashTimer); el._flashTimer = null; }
+  };
+  el.addEventListener('animationend', el._flashEnd, { once: true });
+  el._flashTimer = setTimeout(() => {
+    el.className = '';
+    el._flashEnd = null;
+    el._flashTimer = null;
+  }, 550); // fallback caso animationend não dispare
 }
 
 // ── Shake da tela ─────────────────────────────────────────────────────────────
@@ -15955,10 +16838,16 @@ function triggerScreenShake(intensity) {
 function triggerUltEffect(element) {
   const el = document.getElementById('ult-overlay');
   if (!el) return;
-  el.className = 'active';
+  if (el._ovTimer)  { clearTimeout(el._ovTimer);  el._ovTimer  = null; }
+  if (el._ovEndFn)  { el.removeEventListener('animationend', el._ovEndFn); el._ovEndFn = null; }
   const color = ELEMENT_COLORS[element] || 'rgba(255,200,0,.08)';
   el.style.background = `radial-gradient(ellipse at center, ${color.replace(')', ',.12)')} 0%, transparent 70%)`;
-  setTimeout(() => { if (el) el.className = ''; }, 1200);
+  el.classList.remove('active');
+  void el.offsetWidth;
+  el.classList.add('active');
+  el._ovEndFn = function() { el.classList.remove('active'); el._ovEndFn = null; };
+  el.addEventListener('animationend', el._ovEndFn, { once: true });
+  el._ovTimer = setTimeout(() => { el.classList.remove('active'); el._ovTimer = null; }, 1300);
   triggerHitFlash('gold');
 }
 
@@ -16279,12 +17168,35 @@ window.triggerScreenShake = function(duration = 400) {
   }, 10);
 };
 
+// ── Helper central: reinicia overlay com reflow síncrono + animationend cleanup ──
+// Elimina o padrão setTimeout 10ms que falha no mobile quando o event loop está ocupado
+function _triggerOverlay(id, durationMs) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Cancela qualquer cleanup pendente do ciclo anterior
+  if (el._ovTimer) { clearTimeout(el._ovTimer); el._ovTimer = null; }
+  if (el._ovEndFn) { el.removeEventListener('animationend', el._ovEndFn); el._ovEndFn = null; }
+  // Remove classe → reflow síncrono → re-adiciona (sem setTimeout)
+  el.classList.remove('active');
+  void el.offsetWidth; // força o browser a descartar o estado de animação anterior
+  el.classList.add('active');
+  // Limpeza via animationend (mais confiável) + fallback por timer
+  el._ovEndFn = function() {
+    el.classList.remove('active');
+    el._ovEndFn = null;
+    if (el._ovTimer) { clearTimeout(el._ovTimer); el._ovTimer = null; }
+  };
+  el.addEventListener('animationend', el._ovEndFn, { once: true });
+  el._ovTimer = setTimeout(() => {
+    el.classList.remove('active');
+    el._ovEndFn = null;
+    el._ovTimer = null;
+  }, (durationMs || 800) + 100); // fallback para quando animationend não dispara
+}
+
 // Vignette Flash - Efeito de escurecimento
 window.triggerVignetteFlash = function() {
-  const vignette = document.getElementById('combat-vignette');
-  if (!vignette) return;
-  vignette.classList.remove('active');
-  setTimeout(() => vignette.classList.add('active'), 10);
+  _triggerOverlay('combat-vignette', 400);
 };
 
 // Slash Effects - Cortes estilo Honkai Star Rail
@@ -16308,37 +17220,25 @@ window.triggerSlashEffect = function(x, y, type) {
 
 // Sukuna Domain Expansion
 window.triggerSukunaDomain = function() {
-  const domain = document.getElementById('sukuna-domain-overlay');
-  if (!domain) return;
-  domain.classList.remove('active');
-  setTimeout(() => domain.classList.add('active'), 10);
+  _triggerOverlay('sukuna-domain-overlay', 1200);
   window.triggerScreenShake(600);
 };
 
 // Sukuna Ultimate Flash
 window.triggerSukunaUlt = function() {
-  const flash = document.getElementById('sukuna-ult-flash');
-  if (!flash) return;
-  flash.classList.remove('active');
-  setTimeout(() => flash.classList.add('active'), 10);
+  _triggerOverlay('sukuna-ult-flash', 800);
   window.triggerScreenShake(600);
   window.triggerVignetteFlash();
 };
 
 // Boss Impact Overlay
 window.triggerBossImpact = function() {
-  const impact = document.getElementById('boss-impact-overlay');
-  if (!impact) return;
-  impact.classList.remove('active');
-  setTimeout(() => impact.classList.add('active'), 10);
+  _triggerOverlay('boss-impact-overlay', 500);
 };
 
 // Crit Impact Flash
 window.triggerCritImpact = function() {
-  const crit = document.getElementById('crit-impact-overlay');
-  if (!crit) return;
-  crit.classList.remove('active');
-  setTimeout(() => crit.classList.add('active'), 10);
+  _triggerOverlay('crit-impact-overlay', 450);
   window.triggerScreenShake(300);
 };
 
