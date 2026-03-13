@@ -7594,9 +7594,17 @@ function generatePull(banner, isChar, profile, pk5, pk4, gk) {
     return buildItem(name, 4, isChar, banner);
   }
 
-  // 3★
+  // 3★ — armas T3 foram removidas do jogo.
+  // Personagens 3★ ainda podem existir (banneres de personagem podem ter pool3).
+  // Armas: se cair aqui, promove para 4★ aleatório do pool4.
   const pool3 = banner.pool3 || [];
-  const name  = pool3.length ? pool3[Math.floor(Math.random() * pool3.length)] : "Item Comum";
+  if (!isChar) {
+    // Arma: promove para 4★
+    const pool4fb = banner.pool4 || banner.featured || [];
+    const nameFb  = pool4fb.length ? pool4fb[Math.floor(Math.random() * pool4fb.length)] : null;
+    if (nameFb) return buildItem(nameFb, 4, false, banner);
+  }
+  const name = pool3.length ? pool3[Math.floor(Math.random() * pool3.length)] : "Item Comum";
   return buildItem(name, 3, isChar, banner);
 }
 
@@ -7893,11 +7901,15 @@ function renderInvWeapons() {
         ${st.critDmg?` • CDMG +${st.critDmg}%`:""}
       </div>
       ${w.passive&&w.passive.name?`<div style="font-size:.68rem;color:#88aaff;margin-bottom:6px">✨ ${w.passive.name}</div>`:""}
-      ${equippedBy?
-        `<div style="font-size:.68rem;color:var(--gold3);margin-bottom:4px">Equipada: ${equippedBy.name}</div>
-         <button class="btn btn-ghost btn-xs btn-full" onclick="unequipWeapon('${w.id}')">Desequipar</button>`:
-        `<button class="btn btn-blue btn-xs btn-full" onclick="openEquipWeapon('${w.id}')">Equipar</button>`
-      }
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px">
+        ${equippedBy?
+          `<div style="font-size:.65rem;color:var(--gold3);width:100%;margin-bottom:3px">⚔ ${equippedBy.name}</div>
+           <button class="btn btn-ghost btn-xs" style="flex:1" onclick="unequipWeapon('${w.id}')">Desequipar</button>`:
+          `<button class="btn btn-blue btn-xs" style="flex:1" onclick="openEquipWeapon('${w.id}')">Equipar</button>`
+        }
+        <button class="btn btn-xs" style="flex:1;background:rgba(255,170,0,.15);color:#ffcc44;border:1px solid rgba(255,170,0,.25)" onclick="openUpgradeWeaponPanel('${w.id}')">⬆ Lv.${w.level||1}</button>
+        <button class="btn btn-xs" style="flex:1;background:rgba(100,180,255,.1);color:#88aaff;border:1px solid rgba(100,180,255,.2)" onclick="refineWeapon('${w.id}')" title="Refinar (requer 1 cópia duplicada)">✨ R${w.refinement||w.refine||1}${(w.dupes||0)>0?' 🔁'+w.dupes:''}</button>
+      </div>
     </div>`;
   }).join("")}
   </div>`;
@@ -7995,6 +8007,20 @@ function artXpNeeded(lv, rarity) {
   return Math.round(base * (1 + lv * 0.15));
 }
 function artMaxLevel(rarity) { return rarity===5?20:rarity===4?16:12; }
+
+// Main stat escala do valor base (Lv0) até valor máximo (LvMax) — igual HSR
+// Curva: base + (max-base) * (lv/lvMax)^0.85  →  começa ~15% do max, cresce suavemente
+// Valores base por raridade (Lv0): ~14.8% do max ★5, ~14.5% do max ★4, ~14.0% do max ★3
+const ART_MAIN_BASE_RATIO = { 5: 0.148, 4: 0.145, 3: 0.140 };
+function mainStatAtLevel(baseMaxVal, lv, rarity, isFlat) {
+  const lvMax   = artMaxLevel(rarity);
+  const baseVal = Math.round(baseMaxVal * (ART_MAIN_BASE_RATIO[rarity] || 0.148));
+  if (lv <= 0) return isFlat ? baseVal : +baseVal.toFixed(1);
+  if (lv >= lvMax) return isFlat ? baseMaxVal : +baseMaxVal.toFixed(1);
+  const t   = Math.pow(lv / lvMax, 0.85);
+  const val = baseVal + (baseMaxVal - baseVal) * t;
+  return isFlat ? Math.round(val) : +val.toFixed(1);
+}
 // Quantos substats estão revelados no nível atual
 // Quantos substats estão visíveis: HSR — todos os subStats do artefato são revelados
 // (o 4º nasce oculto só se startedWith3=true e lv=0; após lv4 é revelado)
@@ -9769,6 +9795,24 @@ async function doPlayerAction(f, cs, type) {
     const withBonus = Math.round(raw * bonuses.dmgBonus);
     actualDmg = boss.broken ? Math.round(withBonus * 1.5) : withBonus;
     boss.hp   = Math.max(0, boss.hp - actualDmg);
+
+    // ── Dano elemental extra (ignora DEF) ─────────────────────────────────
+    // Todo personagem aplica dano do seu elemento proporcional ao elementBonus%.
+    // main_dps com elementBonus no preset = aplicador focado (fator 1.0).
+    // Outros roles ou sem elementBonus no preset = aplicador fraco (fator 0.4).
+    const _eb = (f.elementBonus || {})[f.element] || 0;
+    if (_eb > 0) {
+      const _presetEb = (window.CHAR_PRESETS?.[f.presetKey || f.id]?.stats?.elementBonus || {})[f.element] || 0;
+      const _isFocused = (f.charRole === 'main_dps') && _presetEb > 0;
+      const _focusFactor = _isFocused ? 1.0 : 0.4;
+      const _elemDmgExtra = Math.round(f.atk * (_eb / 100) * (skill.mult || 1.0) * _focusFactor);
+      if (_elemDmgExtra > 0) {
+        boss.hp = Math.max(0, boss.hp - _elemDmgExtra);
+        f._lastElemDmgExtra = _elemDmgExtra; // guarda para usar no log
+      }
+    } else {
+      f._lastElemDmgExtra = 0;
+    }
   }
 
   // ── EFEITOS VISUAIS DO ATAQUE ─────────────────────────────────────────────
@@ -9816,6 +9860,22 @@ async function doPlayerAction(f, cs, type) {
     await combatLog(
       icon+' <b>'+f.name+'</b> → <b>'+skill.name+'</b> — <span style="color:'+dmgColor+';font-weight:bold">'+fmtNum(actualDmg)+' DMG</span>'+tags, 0
     );
+    // ── Log de dano elemental extra (sem DEF) ──────────────────────────────
+    const _ede = f._lastElemDmgExtra || 0;
+    if (_ede > 0) {
+      const _elIcon = (window.ELEMENTS || {})[f.element] || '✨';
+      const _elColor = (window.EL_COLORS || {})[f.element] || '#ffee44';
+      const _elName  = f.element ? (f.element.charAt(0).toUpperCase() + f.element.slice(1)) : 'Elemental';
+      const _presetEb2 = (window.CHAR_PRESETS?.[f.presetKey || f.id]?.stats?.elementBonus || {})[f.element] || 0;
+      const _isFoc = (f.charRole === 'main_dps') && _presetEb2 > 0;
+      const _tip = _isFoc
+        ? `<span style="font-size:.7rem;color:rgba(255,255,255,.4)"> (aplicador focado)</span>`
+        : `<span style="font-size:.7rem;color:rgba(255,255,255,.3)"> (aplicador secundário)</span>`;
+      await combatLog(
+        `&nbsp;&nbsp;<span style="color:${_elColor}">${_elIcon} DMG ${_elName}: +<b>${fmtNum(_ede)}</b></span><span style="font-size:.72rem;color:rgba(255,255,255,.45)"> (ignora DEF)</span>${_tip}`,
+        0
+      );
+    }
   }
 
   // ── Break bar ─────────────────────────────────────────────────────────────
@@ -11746,37 +11806,16 @@ async function admOpenBannerForm(type, existing={}) {
   <div style="font-family:'Cinzel',serif;color:var(--gold2);margin:12px 0 8px">⭐⭐⭐⭐ Pool 4★</div>
   <div id="ab-pool4-list">${charCheckboxes(star4,"ab4",existing.pool4||[])}</div>
 
-  <div style="font-family:'Cinzel',serif;color:var(--gold2);margin:12px 0 8px">⭐⭐⭐ Pool 3★</div>
-  <div id="ab-pool3-list">${charCheckboxes(star3,"ab3",existing.pool3||[])}</div>
-
   <!-- TIER do banner -->
   <div class="field" style="margin-top:12px"><label>Tier do Banner</label>
-    <select id="ab-tier" onchange="(function(v){var d=document.getElementById('ab-t3-drops');if(d)d.style.display=v==='3'?'block':'none';})(this.value)">
+    <select id="ab-tier">
       <option value="5" ${(existing.tier||5)===5?"selected":""}>★★★★★ T5 — Limited (personagem exclusivo)</option>
       <option value="4" ${existing.tier===4?"selected":""}>★★★★ T4 — Standard (personagem padrão)</option>
-      <option value="3" ${existing.tier===3?"selected":""}>★★★ T3 — Padrão (dá itens por pull)</option>
+
     </select>
   </div>
 
-  <!-- Drops por pull para banner T3 -->
-  <div id="ab-t3-drops" style="display:${(existing.tier||5)===3?'block':'none'}">
-    <div class="card" style="padding:12px;margin:10px 0;border-color:rgba(100,200,100,.2);background:rgba(80,180,80,.03)">
-      <div style="font-family:'Cinzel',serif;color:#88ddaa;font-size:.85rem;margin-bottom:4px">🎁 Itens Concedidos por Pull (T3)</div>
-      <div style="font-size:.72rem;color:var(--txt3);margin-bottom:10px">Cada pull neste banner concede automaticamente esses itens ao jogador.</div>
-      <div style="font-family:'Cinzel',serif;color:var(--gold2);font-size:.78rem;margin-bottom:6px">🔹 XP de Relíquia (Cristais)</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
-        <div class="field"><label style="font-size:.68rem">Cristal T3 🔹</label><input id="ab-axp3" type="number" min="0" value="${existing.pullXp?.axp3??1}" placeholder="0"></div>
-        <div class="field"><label style="font-size:.68rem">Cristal T4 🔷</label><input id="ab-axp4" type="number" min="0" value="${existing.pullXp?.axp4??0}" placeholder="0"></div>
-        <div class="field"><label style="font-size:.68rem">Cristal T5 💎</label><input id="ab-axp5" type="number" min="0" value="${existing.pullXp?.axp5??0}" placeholder="0"></div>
-      </div>
-      <div style="font-family:'Cinzel',serif;color:var(--gold2);font-size:.78rem;margin-bottom:6px">🔶 XP de Arma (Pedras)</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-        <div class="field"><label style="font-size:.68rem">Pedra T3 🔶</label><input id="ab-wxp3" type="number" min="0" value="${existing.pullXp?.wxp3??1}" placeholder="0"></div>
-        <div class="field"><label style="font-size:.68rem">Pedra T4 🔷</label><input id="ab-wxp4" type="number" min="0" value="${existing.pullXp?.wxp4??0}" placeholder="0"></div>
-        <div class="field"><label style="font-size:.68rem">Pedra T5 💠</label><input id="ab-wxp5" type="number" min="0" value="${existing.pullXp?.wxp5??0}" placeholder="0"></div>
-      </div>
-    </div>
-  </div>
+
   <div class="field" style="margin-top:12px"><label>Status</label><select id="ab-active">
     <option value="true" ${existing.active!==false?"selected":""}>✅ Ativo</option>
     <option value="false" ${existing.active===false?"selected":""}>⏸ Pausado</option>
@@ -11951,7 +11990,7 @@ async function admOpenWeaponForm(existing={}) {
   <div class="field"><label>Nome</label><input id="aw-name" value="${existing.name||""}" placeholder="Nome da arma"></div>
   <div class="grid2">
     <div class="field"><label>Raridade</label><select id="aw-rarity">
-      ${[5,4,3,2,1].map(r=>`<option value="${r}" ${existing.rarity==r?"selected":""}>${"★".repeat(r)} ${r}★</option>`).join("")}
+      ${[5,4].map(r=>`<option value="${r}" ${existing.rarity==r?"selected":""}>${"★".repeat(r)} ${r}★</option>`).join("")}
     </select></div>
     <div class="field"><label>Tipo</label><select id="aw-type">
       ${WEAPON_TYPES.map(w=>`<option value="${w}" ${existing.weaponType===w?"selected":""}>${w}</option>`).join("")}
@@ -16234,6 +16273,9 @@ function computeEffective(base, weap, arts) {
   let be  = base.breakEffect || 0;
   let hb  = base.healBonus  || 0;
   let hpPct=0, atkPct=0, defPct=0;
+  // Acumulador local para bônus elementais (relíquias + consts + arma)
+  // Começa com o elementBonus já calculado do personagem (constelações, etc.)
+  const _elemBonus = Object.assign({}, base.elementBonus || {});
 
   // ── Weapon bonus ──
   // Refinamento: R1=0% | R2=+8% | R3=+14% | R4=+20% | R5=+28% ATK%
@@ -16364,8 +16406,7 @@ function computeEffective(base, weap, arts) {
           const elMatch = statName.match(/(?:DMG\s+|_)(\w+)%?/i);
           if (elMatch) {
             const el = elMatch[1].toLowerCase();
-            if (!base.elementBonus) base.elementBonus = {};
-            base.elementBonus[el] = (base.elementBonus[el] || 0) + v;
+            _elemBonus[el] = (_elemBonus[el] || 0) + v;
           }
         }
         else if (sl.includes("heal"))    hb     += v;
@@ -16389,7 +16430,16 @@ function computeEffective(base, weap, arts) {
     // ── Main stat ──────────────────────────────────────────────────────────
     // Fonte 1 (preferida): mainStatObj.stat + mainStatObj.val (direto do jogo)
     if (art.mainStatObj && art.mainStatObj.stat != null && art.mainStatObj.val != null) {
-      applyArtStat(art.mainStatObj.stat, art.mainStatObj.val);
+      // Escala o main stat pelo nível do artefato — igual HSR
+      // mainStatObj.val é sempre o valor MÁXIMO (Lv.max); escalonamos para o nível atual
+      const _artLv  = art.level  || 0;
+      const _artRar = art.rarity || 3;
+      const _maxVal = art.mainStatObj.val;
+      const _isFlat = art.mainStatObj.isFlat || false;
+      const _scaledMain = (typeof mainStatAtLevel === 'function')
+        ? mainStatAtLevel(_maxVal, _artLv, _artRar, _isFlat)
+        : _maxVal; // fallback se a função não existir
+      applyArtStat(art.mainStatObj.stat, _scaledMain);
     } else {
       // Fonte 2 (fallback): parse da string mainStat = "ATK%: 43.2%"
       const ms = (art.mainStat || "").trim();
@@ -16424,7 +16474,7 @@ function computeEffective(base, weap, arts) {
     em:  Math.round(em),
     be:  Math.round(be*10)/10,
     healBonus: Math.round(hb*10)/10,
-    elementBonus: base.elementBonus || {},
+    elementBonus: _elemBonus,
   };
 }
 window.computeEffective = computeEffective;
