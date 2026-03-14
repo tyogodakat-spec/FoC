@@ -5595,6 +5595,10 @@ const BACKPACKER_PRESETS = {
     ]
   }
 };
+// CHAR_PRESETS é const local — exporta para window para que buildFighter,
+// modal de personagens e sistema elemental possam acessar via window.CHAR_PRESETS.
+// Sem isso, window.CHAR_PRESETS é undefined e constelações/elementBonus não funcionam.
+window.CHAR_PRESETS = CHAR_PRESETS;
 
 
 // ═══════════════════════════════════════════════════════════════
@@ -7774,15 +7778,12 @@ function buildItem(name, rarity, isChar, banner) {
   const catalogItems = catalog[catalogKey] || [];
   const found = catalogItems.find(x => x.name === name);
   if (found) {
-    // Para armas: garante que presetKey está presente para que a passiva funcione
-    // Procura no WEAPON_PRESETS pelo nome (case-insensitive) se não vier no catalog
     let weapPresetKey = found.presetKey || found.presetId || '';
     if (!isChar && !weapPresetKey) {
       const wpEntries = Object.entries(window.WEAPON_PRESETS || {});
       const wpMatch = wpEntries.find(([k, v]) => v.label && v.label.includes(name));
       if (wpMatch) weapPresetKey = wpMatch[0];
     }
-    // FIX: garante baseAtk do WEAPON_PRESETS quando admin salvou arma sem esse campo
     let resolvedStats = found.stats || {};
     if (!isChar && !resolvedStats.baseAtk) {
       const _wpFix = (window.WEAPON_PRESETS || {})[weapPresetKey] || {};
@@ -7800,7 +7801,58 @@ function buildItem(name, rarity, isChar, banner) {
       ultimate: found.ultimate || {name:name+" Ult",dmgMultiplier:200,scale:"atk",energyCost:100,hits:1},
     };
   }
-  // Fallback: não está no catalog — tenta achar no WEAPON_PRESETS pelo nome
+
+  // ── FALLBACK PARA PERSONAGENS: busca no CHAR_PRESETS pelo nome ──────────────
+  // Isso garante que mesmo sem o catalog carregado o personagem saia com os
+  // stats, elemento, imageUrl e presetKey corretos — nunca como "Herói Desconhecido".
+  if (isChar) {
+    const cpEntries = Object.entries(window.CHAR_PRESETS || {});
+    // Tenta match exato pelo label (ex: "Rukia Kuchiki") ou pelo primeiro token do nome
+    const cpMatch = cpEntries.find(([k, v]) =>
+      v.label && (
+        v.label.toLowerCase().includes(name.toLowerCase()) ||
+        name.toLowerCase().includes((v.label.split('—')[0].trim().split(' ')[0] || '').toLowerCase())
+      )
+    );
+    if (cpMatch) {
+      const [cpKey, cp] = cpMatch;
+      const cpStats = cp.suggestedStats || cp.stats || {};
+      const idTs = cpKey + '_' + Date.now();
+      return {
+        id: idTs,
+        name,
+        rarity,
+        element: cp.element || banner.element || els[Math.floor(Math.random()*els.length)],
+        presetKey: cpKey,
+        charRole: cp.charRole || 'main_dps',
+        icon: (ELEMENTS[cp.element] || '🌟'),
+        type: 'character',
+        imageUrl: found?.imageUrl || banner.charImageUrl || '',
+        weaponType: cp.weaponType || '',
+        level: 1, energy: 0,
+        stats: {
+          hp:               cpStats.hp               || 12000,
+          atk:              cpStats.atk              || 1200,
+          def:              cpStats.def              || 600,
+          critRate:         cpStats.critRate         || 10,
+          critDmg:          cpStats.critDmg          || 50,
+          energyRecharge:   cpStats.energyRecharge   || 100,
+          spd:              cpStats.spd              || 100,
+          elementalMastery: cpStats.elementalMastery || 0,
+          breakEffect:      cpStats.breakEffect      || 0,
+          elementBonus:     cpStats.elementBonus     || {},
+          healBonus:        cpStats.healBonus        || 0,
+          charRole:         cp.charRole              || 'main_dps',
+        },
+        skills:         cp.skills         || {},
+        constellations: cp.constellations || [],
+        dotEffects:     cp.dotEffects     || [],
+        ultimate: { name: name+' Ult', dmgMultiplier:200, scale:'atk', energyCost:100, hits:1 },
+      };
+    }
+  }
+
+  // Fallback armas: tenta WEAPON_PRESETS pelo nome
   let fallbackPresetKey = '';
   if (!isChar) {
     const wpEntries = Object.entries(window.WEAPON_PRESETS || {});
@@ -7810,7 +7862,6 @@ function buildItem(name, rarity, isChar, banner) {
     if (wpMatch) {
       fallbackPresetKey = wpMatch[0];
       const wp = wpMatch[1];
-      // Usa os stats do WEAPON_PRESETS diretamente se disponível
       return {
         id: fallbackPresetKey + '_' + Date.now(),
         name, rarity,
@@ -7826,6 +7877,8 @@ function buildItem(name, rarity, isChar, banner) {
       };
     }
   }
+
+  // Último recurso — retorna objeto básico (só chega aqui se o nome não existir em lugar algum)
   const elem = banner.element || els[Math.floor(Math.random()*els.length)];
   const id = name.toLowerCase().replace(/\s+/g,"_")+"_"+rarity;
   return {
@@ -8879,31 +8932,17 @@ function buildFighter(ch, profile) {
     scaledBase.elementBonus = _mergedEB;
   }
 
-  // FIX: mesma lógica do elementBonus — o preset é a fonte autoritativa.
-  // Problema: o admin pode ter salvado constelações com tipos legados/inválidos
-  // (ex: "skill_mult_up", "crit_rate_up") que o motor não reconhece, então os
-  // efeitos nunca se aplicam mesmo o personagem tendo C4/C5/C6 desbloqueado.
-  // Solução: se o preset tiver constellations com tipos válidos, usa o preset.
-  // Os tipos válidos são os que o motor realmente processa em buildFighter.
-  const _VALID_CON_TYPES = new Set([
-    'atk_up','hp_up','def_up','cr_up','cd_up','spd_up','er_up','em_up','be_up','break_up',
-    'flat_atk','flat_hp','flat_def','dmg_up','elem_dmg','elemental_up',
-    'ice_dmg_up','fire_dmg_up','water_dmg_up','wind_dmg_up','earth_dmg_up',
-    'nature_dmg_up','holy_dmg_up','chaos_dmg_up','quantum_dmg_up','dark_dmg_up',
-    'crit_dmg_up','dot_dmg','dot_duration','skill_up','ult_up','basic_up',
-    'heal_up','shield_up','energy_reduce','break_up',
-  ]);
-  // Conta quantas constelações salvas têm tipos válidos
-  const _savedCons   = ch.constellations || [];
-  const _presetCons  = _cpPreset.constellations || [];
-  const _savedValid  = _savedCons.filter(c => c && _VALID_CON_TYPES.has(c.type)).length;
-  const _presetValid = _presetCons.filter(c => c && _VALID_CON_TYPES.has(c.type)).length;
-  // Usa o preset se:
-  //   1. Não há constelações salvas, OU
-  //   2. O preset tem mais constelações válidas que as salvas (salvo está desatualizado/inválido)
-  const cons = (_presetValid > _savedValid || !_savedCons.length)
-    ? _presetCons
-    : _savedCons;
+  // ══════════════════════════════════════════════════════════════════════════
+  // CONSTELAÇÕES — FONTE DEFINITIVA: SEMPRE O CHAR_PRESETS
+  // ──────────────────────────────────────────────────────────────────────────
+  // O único dado que vem do perfil é `ch.unlockedConstellations` (quantas
+  // constelações o jogador desbloqueou). Os EFEITOS e VALORES das constelações
+  // vêm SEMPRE do CHAR_PRESETS — nunca do Firebase. Isso garante que:
+  //   1. Correções de preset se aplicam imediatamente sem re-salvar personagens
+  //   2. Tipos novos (lightning_dmg, skill_enhance, etc.) são reconhecidos
+  //   3. Nunca há divergência entre o que está salvo e o que o motor processa
+  // ══════════════════════════════════════════════════════════════════════════
+  const cons = _cpPreset.constellations || ch.constellations || [];
   const uc   = ch.unlockedConstellations || 0;
   cons.slice(0, uc).forEach(con => {
     if (!con || !con.type) return;
@@ -8950,6 +8989,11 @@ function buildFighter(ch, profile) {
     if (con.type === 'quantum_dmg_up') { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['quantum']  = (scaledBase.elementBonus['quantum'] ||0)+v; }
     if (con.type === 'dark_dmg_up')    { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['dark']     = (scaledBase.elementBonus['dark']    ||0)+v; }
     if (con.type === 'chaos_dmg_up')   { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['chaos']    = (scaledBase.elementBonus['chaos']   ||0)+v; }
+    // lightning_dmg é sinônimo de lightning_dmg_up — usado em Killua C2 e Kashimo C2
+    if (con.type === 'lightning_dmg' || con.type === 'lightning_dmg_up') {
+      scaledBase.elementBonus = scaledBase.elementBonus || {};
+      scaledBase.elementBonus['lightning'] = (scaledBase.elementBonus['lightning'] || 0) + v;
+    }
     // crit_dmg_up é sinônimo de cd_up (usado em alguns presets legados)
     if (con.type === 'crit_dmg_up')  scaledBase.critDmg += v;
     // Bônus de dano geral (+% em todos os ataques) — guardado separado para aplicar no calcDmg
@@ -9979,20 +10023,16 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   // ── SAKURA ────────────────────────────────────────────────────────────────
   if (pk === 'sakura_t5') {
     if (type === 'basic') {
+      // Basic cura o alvo selecionado (ou menor HP se auto)
       const t = resolveHealTarget(cs);
-      const h = healFighter(t, Math.round(f.maxHp * 0.12), f); // h = valor real após healBonus
-      triggerHitFlash('green');
-      showDamageFloat(h, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 40, 'heal', null);
+      const h = healFighter(t, Math.round(f.maxHp * 0.12), f);
       await combatLog('🌸 <b>Sakura</b> → <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>', 80);
     }
     if (type === 'ult') {
       const ha = Math.round(f.maxHp * 0.40), crb = cLevel(f)>=4?25:15, crt = cLevel(f)>=4?3:2;
-      triggerHitFlash('green');
       for (const t of cs.fighters.filter(x=>x.alive)) {
-        let raw = ha; if (cLevel(f)>=5 && t.hp<t.maxHp*0.3) raw=Math.round(raw*1.5);
-        const healed = healFighter(t, raw, f); // valor real após healBonus
-        if (cLevel(f)>=1 && t.dots?.length) t.dots.splice(0,1);
-        showDamageFloat(healed, getCombatCenter().x + (Math.random()-.5)*80, getCombatCenter().y - 50, 'heal', null);
+        let h = ha; if (cLevel(f)>=5 && t.hp<t.maxHp*0.3) h=Math.round(h*1.5);
+        const healed = healFighter(t,h,f); if (cLevel(f)>=1 && t.dots?.length) t.dots.splice(0,1);
         await combatLog('💚 <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(healed)+' HP</span>', 60);
       }
       cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'critRate',crb,crt));
@@ -10001,7 +10041,6 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     }
     if (type === 'charged') {
       const t=resolveHealTarget(cs), sv=Math.round(f.maxHp*0.18); addShield(t,sv);
-      triggerHitFlash('green');
       await combatLog('🛡 <b>Sakura</b> → <b>'+t.name+'</b>: '+fmtNum(sv)+' escudo', 120);
       if (cLevel(f)>=2) { const alive2=cs.fighters.filter(x=>x.alive&&x!==t); if(alive2.length){ addShield(alive2[0],sv); await combatLog('🛡 C2 → <b>'+alive2[0].name+'</b>', 80); }}
     }
@@ -10011,22 +10050,17 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   if (pk === 'shoko_t5') {
     if (cs.fighters.some(x=>x.alive&&x.hp<x.maxHp*0.5)) f.healBonus=(f.baseHealBonus||0)+20;
     if (type==='basic') {
+      // FIX: respeita o alvo selecionado; C1+ cura também o 2º com menos HP
       const t = resolveHealTarget(cs);
-      const h = healFighter(t, Math.round(f.maxHp*1.40), f); // valor real após healBonus
-      triggerHitFlash('green');
-      showDamageFloat(h, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 40, 'heal', null);
-      await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>', 80);
+      const h = healFighter(t, Math.round(f.maxHp*1.40), f);
+      await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +'+fmtNum(h)+' HP', 80);
       if (cLevel(f)>=1) {
         const others = cs.fighters.filter(x=>x.alive&&x!==t).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp));
-        if (others.length) {
-          const h2=healFighter(others[0],Math.round(f.maxHp*0.70),f);
-          showDamageFloat(h2, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 60, 'heal', null);
-          await combatLog('💚 C1 <b>Shoko</b>→<b>'+others[0].name+'</b> +<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',80);
-        }
+        if (others.length) { const h2=healFighter(others[0],Math.round(f.maxHp*0.70),f); await combatLog('💚 C1 <b>Shoko</b>→<b>'+others[0].name+'</b> +'+fmtNum(h2)+' HP',80); }
       }
     }
-    if (type==='charged'){const t=resolveHealTarget(cs);const h=healFighter(t,Math.round(f.maxHp*2.20),f);if(t.dots?.length)t.dots.splice(0,1);triggerHitFlash('green');showDamageFloat(h,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-40,'heal',null);await combatLog('💚 <b>Shoko</b> Inversão — <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span> + DOT limpo',120);if(cLevel(f)>=3){const tk=cs.fighters.filter(x=>x.alive).reduce((a,b)=>a.def>b.def?a:b);if(tk!==t){const h2=healFighter(tk,Math.round(f.maxHp*0.12),f);showDamageFloat(h2,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-60,'heal',null);await combatLog('💚 C3 → <b>'+tk.name+'</b> +<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',80);}}}
-    if (type==='ult'){triggerHitFlash('green');for(const t of cs.fighters.filter(x=>x.alive)){const h=healFighter(t,Math.round(f.maxHp*1.80),f);if(cLevel(f)>=5)t.dots=[];else if(t.dots?.length)t.dots.splice(0,1);showDamageFloat(h,getCombatCenter().x+(Math.random()-.5)*80,getCombatCenter().y-50,'heal',null);await combatLog('💚 <b>Shoko</b> Inversão Absoluta — <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>',80);}addShield(f,Math.round(f.maxHp*0.25));await combatLog('🛡 <b>Shoko</b> — Escudo 25% HP!',120);if(cLevel(f)>=2){f.energy=Math.min(f.maxEnergy,f.energy+25);await combatLog('⚡ C2 — +25E!',80);}}
+    if (type==='charged'){const t=resolveHealTarget(cs);const h=healFighter(t,Math.round(f.maxHp*2.20),f);if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão — <b>'+t.name+'</b> +'+fmtNum(h)+' HP + DOT limpo',120);if(cLevel(f)>=3){const tk=cs.fighters.filter(x=>x.alive).reduce((a,b)=>a.def>b.def?a:b);if(tk!==t){const h2=healFighter(tk,Math.round(f.maxHp*0.12),f);await combatLog('💚 C3 → <b>'+tk.name+'</b> +'+fmtNum(h2),80);}}}
+    if (type==='ult'){for(const t of cs.fighters.filter(x=>x.alive)){const h=healFighter(t,Math.round(f.maxHp*1.80),f);if(cLevel(f)>=5)t.dots=[];else if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão Absoluta — <b>'+t.name+'</b> +'+fmtNum(h)+' HP',80);}addShield(f,Math.round(f.maxHp*0.25));await combatLog('🛡 <b>Shoko</b> — Escudo 25% HP!',120);if(cLevel(f)>=2){f.energy=Math.min(f.maxEnergy,f.energy+25);await combatLog('⚡ C2 — +25E!',80);}}
   }
 
   // ── KUSAKABE ──────────────────────────────────────────────────────────────
@@ -10123,7 +10157,7 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     const cp=cLevel(f)>=5?0.50:0.35,af=Math.round(f.def*cp);
     cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t._uraumeAtkBonus=af;});
     if (type==='basic'){const dd=Math.round(f.def*0.12);boss.hp=Math.max(0,boss.hp-dd);await combatLog('❄ <b>Uraume</b> — Espinhos de Gelo! '+fmtNum(dd)+' (DEF)',100);}
-    if (type==='charged'){const t=resolveHealTarget(cs);addShield(t,Math.round(f.def*0.20));cs.fighters.filter(x=>x.alive).forEach(tt=>addBuff(tt,'defPct',10,2));await combatLog('❄ <b>Uraume</b> → <b>'+t.name+'</b> — Barreira Glacial! Escudo+DEF',120);}
+    if (type==='charged'){const t=lowestHpFighter(cs);addShield(t,Math.round(f.def*0.20));cs.fighters.filter(x=>x.alive).forEach(tt=>addBuff(tt,'defPct',10,2));await combatLog('❄ <b>Uraume</b> — Barreira Glacial! Escudo+DEF',120);}
     if (type==='ult'){const ud=Math.round(f.def*0.15);boss.hp=Math.max(0,boss.hp-ud);applyDot(boss,'freeze',cLevel(f)>=3?2:1,f.atk,f.dotDmgBonus,f.dotDmgByType);const ac=Math.round(f.def*(cLevel(f)>=5?0.50:cLevel(f)>=1?0.45:0.35));cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'flatAtk',ac,2));await combatLog('❄ <b>Uraume</b> — Chuva Congelada! Freeze+ATK!',150);if(isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su)addBuff(su,'critRate',15,3);f.energy=Math.min(f.maxEnergy,f.energy+30);await combatLog('❄ Lealdade! Sukuna +15% CR',80);}if(cLevel(f)>=6&&isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su){addBuff(su,'atkPct',25,3);addBuff(su,'critDmg',15,3);}await combatLog('❄ C6 — Sukuna: +25% ATK, +15% CD!',80);}}
   }
 
@@ -10227,8 +10261,8 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     const hasPhys=cs.fighters.some(x=>x.alive&&x!==f&&(x.element==='physical'||x.charRole==='main_dps'));
     if (hasPhys) f.healBonus=(f.baseHealBonus||0)+20;
     if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
-    if (type==='charged'){const aliveCount=cs.fighters.filter(x=>x.alive).length;const sv=Math.round(f.maxHp*(0.14+aliveCount*0.05));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));const t2=lowestHpFighter(cs);const h2=healFighter(t2,Math.round(f.maxHp*0.10),f);triggerHitFlash('green');showDamageFloat(h2,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-40,'heal',null);await combatLog('💧 <b>Juvia</b> Armadura! Escudo+<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',120);}
-    if (type==='ult'){triggerHitFlash('green');cs.fighters.filter(x=>x.alive).forEach(t=>{const hj=healFighter(t,Math.round(f.maxHp*0.18),f);addShield(t,Math.round(f.maxHp*0.20));showDamageFloat(hj,getCombatCenter().x+(Math.random()-.5)*80,getCombatCenter().y-50,'heal',null);});applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'waterDmg',wb,2));await combatLog('💧 <b>Juvia</b> Chuva Eterna! Cura+Escudo+Drown+'+wb+'% Água!',150);}
+    if (type==='charged'){const aliveCount=cs.fighters.filter(x=>x.alive).length;const sv=Math.round(f.maxHp*(0.14+aliveCount*0.05));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));const t2=lowestHpFighter(cs);const h2=healFighter(t2,Math.round(f.maxHp*0.10),f);await combatLog('💧 <b>Juvia</b> Armadura! Escudo+'+fmtNum(h2)+' HP',120);}
+    if (type==='ult'){cs.fighters.filter(x=>x.alive).forEach(t=>{healFighter(t,Math.round(f.maxHp*0.18),f);addShield(t,Math.round(f.maxHp*0.20));});applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'waterDmg',wb,2));await combatLog('💧 <b>Juvia</b> Chuva Eterna! Cura+Escudo+Drown+'+wb+'% Água!',150);}
   }
 
   // ── TEMARI ───────────────────────────────────────────────────────────────
@@ -10250,8 +10284,8 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
 
   // ── GAARA ────────────────────────────────────────────────────────────────
   if (pk === 'gaara_t5') {
-    addBuff(f,'dmgReduce',20,1);
-    if (boss.dots?.some(d=>d.key==='erosion')) cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'earthDmg',10,1));
+    addBuff(f,'dmgReduce',20,2); // auto-buff próprio — dura 2 turnos para cobrir reação
+    if (boss.dots?.some(d=>d.key==='erosion')) cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'earthDmg',10,2));
     if (type==='basic'){applyDot(boss,'erosion',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🪨 <b>Gaara</b> Areia! Erosion!',80);}
     if (type==='charged'){const sv=Math.round(f.maxHp*0.20);addShield(f,sv);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'defPct',cLevel(f)>=4?20:12,2));await combatLog('🪨 <b>Gaara</b> Armadura! Escudo+DEF ao time!',120);}
     if (type==='ult'){applyDot(boss,'erosion',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const eb=cLevel(f)>=5?25:18;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'earthDmg',eb,3));addDebuff(boss,'defPct',20,3);await combatLog('🪨 <b>Gaara</b> Areia do Deserto! +'+eb+'% Terra ao time!',150);}
@@ -10286,15 +10320,16 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
 
   // ── AIZEN ────────────────────────────────────────────────────────────────
   if (pk === 'aizen_t5') {
-    if (boss.dots?.some(d=>d.key==='spectral')||(boss._debuffs?.spectral?.turns>0)) addBuff(f,'critDmg',cLevel(f)>=4?30:20,1);
+    if (boss.dots?.some(d=>d.key==='spectral')||(boss._debuffs?.spectral?.turns>0)) addBuff(f,'critDmg',cLevel(f)>=4?30:20,2);
     if (type==='basic'){if(Math.random()<0.25)applyDot(boss,'timerot',1,f.atk,f.dotDmgBonus,f.dotDmgByType);}
     if (type==='charged'){applyDot(boss,'spectral',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'missChance',40,2);await combatLog('🌀 <b>Aizen</b> Kyoka Suigetsu! Spectral+-40% precisão!',120);}
-    if (type==='ult'){applyDot(boss,'timerot',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'spectral',3,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'atkDebuff',cLevel(f)>=5?35:25,3);const cb=cLevel(f)>=3?35:25;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'chaosDmg',cb,cLevel(f)>=3?4:3));await combatLog('🌀 <b>Aizen</b> Transcendência! Timerot+Spectral+'+cb+'% Caos!',150);if(cLevel(f)>=6){cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dmgBonus',50,1));await combatLog('🌀 C6 Time dobra dano próx turno!',150);}}
+    if (type==='ult'){applyDot(boss,'timerot',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'spectral',3,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'atkDebuff',cLevel(f)>=5?35:25,3);const cb=cLevel(f)>=3?35:25;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'chaosDmg',cb,cLevel(f)>=3?4:3));await combatLog('🌀 <b>Aizen</b> Transcendência! Timerot+Spectral+'+cb+'% Caos!',150);if(cLevel(f)>=6){cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dmgBonus',50,2));await combatLog('🌀 C6 Time dobra dano próx turno!',150);}}
   }
 
   // ── MIRIO ────────────────────────────────────────────────────────────────
   if (pk === 'mirio_t5') {
-    cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'critDmg',cLevel(f)>=6?16:8,1));
+    // Passiva: +CD a todos os aliados a cada turno (turns:2 para cobrir ação do aliado)
+    cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'critDmg',cLevel(f)>=6?16:8,2));
     if (type==='charged'){const topAtk=cs.fighters.filter(x=>x.alive&&x!==f).sort((a,b)=>b.atk-a.atk);const tgts=cLevel(f)>=3?topAtk.slice(0,2):topAtk.slice(0,1);const cr=cLevel(f)>=1?25:18,cd=cLevel(f)>=2?42:32;tgts.forEach(t=>{addBuff(t,'critRate',cr,2);addBuff(t,'critDmg',cd,2);});await combatLog('✨ <b>Mirio</b> Bênção! +'+cr+'% CR, +'+cd+'% CD!',120);}
     if (type==='ult'){const cr=cLevel(f)>=2?35:25,cd=cLevel(f)>=2?65:50;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'critRate',cr,3);addBuff(t,'critDmg',cd,3);t.energy=Math.min(t.maxEnergy,t.energy+20);});await combatLog('✨ <b>Mirio</b> EU SALVAREI TODOS! +'+cr+'% CR, +'+cd+'% CD ao time!',150);if(cLevel(f)>=4){cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t._nextAttackCrit=true;});await combatLog('✨ C4 Próx ataque de todos: crítico!',120);}}
   }
@@ -10409,6 +10444,13 @@ async function mechOnTurnStart(f, cs) {
   (cs.minions||[]).forEach(m => tickDebuffs(m));
   tickDebuffs(f);
 
+  // Decrementa buffs de todos os aliados vivos no início de cada turno.
+  // Isso garante que buffs de suporte (addBuff com turns:2) expirem corretamente
+  // independentemente de quem está agindo — sem isso, os buffs duram para sempre.
+  cs.fighters.forEach(ally => {
+    if (ally !== f && ally.alive) tickBuffs(ally);
+  });
+
   if ((f._shinjiReflect||0) > 0) f._shinjiReflect--;
   if ((f._pochitaFrenzy||0) > 0) f._pochitaFrenzy--;
 }
@@ -10491,16 +10533,9 @@ async function doPlayerAction(f, cs, type) {
   const weak   = elemM >= 1.5;
 
   const _fpk = fighterPresetKey(f);
-  // isHealerBasic: personagens cuja ação básica é cura/utilidade, não dano.
-  // Inclui todos os healer/support cujo skill básico tem mult <= 0 ou escala não é atk.
-  // Verificamos tanto pelo presetKey quanto pela role para cobrir novos personagens.
-  const _basicSkillMult = (f.skills?.basic?.mult || 0);
-  const isHealerBasic = type === 'basic' && (
-    // Lista explícita dos personagens conhecidos com basic de cura/suporte
-    ['shoko_t5','sakura_t5','uraume_t4','mirio_t5','mereoleona_t4','juvia_t4'].includes(_fpk)
-    // Fallback: qualquer healer/support cujo basic tem mult 0 (não causa dano)
-    || ((f.charRole === 'healer' || f.charRole === 'support') && _basicSkillMult <= 0)
-  );
+  const isHealerBasic = (f.charRole === 'healer' || f.charRole === 'support')
+    && type === 'basic'
+    && ['shoko_t5','sakura_t5','uraume_t4'].includes(_fpk);
 
   let actualDmg = 0;
   if (!immune && !isHealerBasic) {
@@ -10515,33 +10550,41 @@ async function doPlayerAction(f, cs, type) {
     boss.hp   = Math.max(0, boss.hp - actualDmg);
 
     // ── Dano Elemental Extra ──────────────────────────────────────────────────
-    // Personagem FOCADO em elemento (main_dps com elementBonus no preset):
-    //   Recebe um hit elemental adicional completo — passa pela DEF, pelo crítico,
-    //   pela fraqueza e pelo elemBonus. Multiplicador base = elementBonus% do personagem.
-    //   O propósito é que o dano elemental SUPERE o dano bruto quando bem buildado,
-    //   pois esse é o foco do personagem.
+    // DESIGN: o hit elemental deve ser MAIOR que o dano físico bruto em personagens
+    // focados em elemento. A fórmula correta é:
+    //   mult_elemental = skillMult × (1 + _eb / 100)
+    // Onde _eb é o elementBonus TOTAL do fighter (preset + relíquias + constelações).
+    // Exemplo real — Rukia com 46% preset + 20% relíquia = 66% total:
+    //   basic (mult 1.0) → hit elemental mult 1.0 × 1.66 = 1.66  (66% a mais que o físico)
+    //   ult   (mult 4.2) → hit elemental mult 4.2 × 1.66 = 6.97  (devastador)
+    // Sukuna com 42% chaos + 16% fire = hits elementais separados e pesados.
     //
-    // Personagem NÃO focado (support, sub_dps, tank, flex sem elementBonus no preset):
-    //   Recebe apenas 20% do dano bruto como bônus elemental flat (sem DEF, sem crít).
-    //   É um incremento pequeno, não o núcleo do dano.
+    // Para evitar duplo-count, zeramos temporariamente f.elementBonus durante o
+    // calcDmg elemental — o bônus já está embutido no mult elevado acima.
+    //
+    // Personagens SEM elementBonus no preset (healers, tanques) ficam com +20% flat.
     const _eb = (f.elementBonus || {})[f.element] || 0;
-    // "focado" = main_dps E tem elementBonus no preset base (não só em relíquias)
-    const _presetEb = (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0;
-    const _isFocused = (f.charRole === 'main_dps') && _presetEb > 0;
+    const _presetEb = (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.suggestedStats?.elementBonus || {})[f.element]
+                   || (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus        || {})[f.element]
+                   || 0;
+    const _isFocused = _presetEb > 0;
 
     if (_isFocused && _eb > 0) {
-      // Hit elemental completo: usa calcDmg com skillMult = elementBonus%/100
-      // Assim, com 46.6% DMG Gelo, o "hit elemental" tem mult = 0.466 × skillMult da skill,
-      // passa pela DEF e pelo multiplicador de fraqueza — pode critar também.
-      const savedAtk2 = f.atk, savedCd2 = f.cd;
+      const savedAtk2 = f.atk, savedCd2 = f.cd, savedEB2 = f.elementBonus;
       f.atk = Math.round((f.atk + bonuses.flatAtk) * bonuses.atkMult);
       f.cd  = f.cd + bonuses.cdBonus;
-      // Mult elemental: percentual do elementBonus aplicado sobre o skillMult
-      // (equivale a "o elementBonus% do personagem dispara um hit extra dessa proporção")
-      const _elemMult = (skill.mult || 1.0) * (_eb / 100);
-      const _elemCrit = rollCrit(f); // pode critar independente do hit principal
-      const _elemRaw  = calcDmg(f, boss, _elemMult, _elemCrit);
+
+      // mult elemental = skillMult × (1 + elementBonus_total / 100)
+      // Isso faz o hit elemental escalar diretamente com o investimento do jogador.
+      const _elemScaleMult = (skill.mult || 1.0) * (1.0 + _eb / 100);
+
+      // Zera elementBonus para evitar duplo-count no calcDmg (o bônus já está no mult)
+      f.elementBonus = {};
+      const _elemCrit = rollCrit(f);
+      const _elemRaw  = calcDmg(f, boss, _elemScaleMult, _elemCrit);
+      f.elementBonus = savedEB2; // restaura
       f.atk = savedAtk2; f.cd = savedCd2;
+
       const _elemDmgFocused = Math.round(_elemRaw * bonuses.dmgBonus);
       if (_elemDmgFocused > 0) {
         boss.hp = Math.max(0, boss.hp - _elemDmgFocused);
@@ -10549,7 +10592,7 @@ async function doPlayerAction(f, cs, type) {
         f._lastElemDmgCrit  = _elemCrit;
       }
     } else if (_eb > 0) {
-      // Não focado: bônus flat de 20% do dano bruto já causado
+      // Sem foco elemental no preset: bônus flat de 20% do dano bruto
       const _elemDmgFlat = Math.round(actualDmg * 0.20);
       if (_elemDmgFlat > 0) {
         boss.hp = Math.max(0, boss.hp - _elemDmgFlat);
@@ -10585,11 +10628,12 @@ async function doPlayerAction(f, cs, type) {
     }
     // Damage float — principal
     showDamageFloat(actualDmg, center.x + (Math.random()-.5)*80, center.y - 80, isCrit ? 'crit' : 'normal', f.element);
-    // Damage float elemental extra (só se relevante)
+    // Damage float elemental extra — mostra para qualquer personagem com foco elemental no preset
     if ((f._lastElemDmgExtra || 0) > 0) {
-      const _isFocVfx = (f.charRole === 'main_dps') && ((window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0) > 0;
-      if (_isFocVfx) {
-        // Float elemental maior, deslocado, com cor do elemento
+      const _presetEbVfx = (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.suggestedStats?.elementBonus || {})[f.element]
+                        || (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus        || {})[f.element]
+                        || 0;
+      if (_presetEbVfx > 0) {
         setTimeout(() => showDamageFloat(f._lastElemDmgExtra, center.x + (Math.random()-.5)*60, center.y - 110, f._lastElemDmgCrit ? 'crit' : 'normal', f.element), 120);
       }
     }
@@ -10621,13 +10665,18 @@ async function doPlayerAction(f, cs, type) {
       const _elIcon  = (window.ELEMENTS || {})[f.element] || '✨';
       const _elColor = (window.EL_COLORS || {})[f.element] || '#ffee44';
       const _elName  = f.element ? (f.element.charAt(0).toUpperCase() + f.element.slice(1)) : 'Elemental';
-      const _isFoc2  = (f.charRole === 'main_dps') && ((window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus || {})[f.element] || 0) > 0;
-      const _elemCritTag = (f._lastElemDmgCrit)
+      // _ebLog: elementBonus total do fighter para o log (o valor real que escala o dano)
+      const _ebLog = (f.elementBonus || {})[f.element] || 0;
+      const _presetEbLog = (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.suggestedStats?.elementBonus || {})[f.element]
+                        || (window.CHAR_PRESETS?.[fighterPresetKey(f)]?.stats?.elementBonus        || {})[f.element]
+                        || 0;
+      const _elemCritTag = f._lastElemDmgCrit
         ? `<span style="color:#ffcc00;font-weight:bold"> CRÍTICO!</span>`
         : '';
-      const _tip = _isFoc2
-        ? `<span style="font-size:.68rem;color:rgba(255,255,255,.38)"> (hit elemental focado)</span>`
-        : `<span style="font-size:.68rem;color:rgba(255,255,255,.28)"> (+20% elemental)</span>`;
+      // Mostra o elementBonus total real no log (não mais "20%" fixo)
+      const _tip = _presetEbLog > 0
+        ? `<span style="font-size:.68rem;color:rgba(255,255,255,.45)"> ✦ ${_ebLog}% elem</span>`
+        : `<span style="font-size:.68rem;color:rgba(255,255,255,.28)"> (+20% flat)</span>`;
       await combatLog(
         `&nbsp;&nbsp;<span style="color:${_elColor}">${_elIcon} <b>${_elName}: +${fmtNum(_ede)}</b></span>${_elemCritTag}${_tip}`,
         0
@@ -15883,7 +15932,7 @@ async function acceptFriendInvite(fromUid) {
   STATE.profile.foc = (STATE.profile.foc||0)+100;
   await saveProfile(STATE.user.uid, {foc:STATE.profile.foc});
   updateFocDisplay();
-  toast("?? Amizade aceita! +100 FoC de bônus!");
+  toast("🤝 Amizade aceita! +100 FoC de bônus!");
 }
 async function renderFriendSystem() {
   openModal("👥 Sistema de Amizade", `
@@ -17357,21 +17406,9 @@ function _renderCharModal(cid) {
   const _mCpPrs  = window.CHAR_PRESETS?.[_mCpRes] || window.CHAR_PRESETS?.[_mCpKey] ||
     Object.values(window.CHAR_PRESETS||{}).find(p=>p.label&&ch.name&&p.label.includes(ch.name.split(' ')[0]))||{};
 
-  // FIX: mesma lógica do buildFighter — elementBonus do preset sempre ganha se for maior
-  // que o salvo no banco, garantindo que as correções de preset apareçam na ficha.
-  // FIX: mesma lógica do buildFighter — preset ganha se tiver mais tipos válidos
-  const _VALID_M = new Set(['atk_up','hp_up','def_up','cr_up','cd_up','spd_up','er_up','em_up',
-    'be_up','break_up','flat_atk','flat_hp','flat_def','dmg_up','elem_dmg','elemental_up',
-    'ice_dmg_up','fire_dmg_up','water_dmg_up','wind_dmg_up','earth_dmg_up','nature_dmg_up',
-    'holy_dmg_up','chaos_dmg_up','quantum_dmg_up','dark_dmg_up','crit_dmg_up',
-    'dot_dmg','dot_duration','skill_up','ult_up','basic_up','heal_up','shield_up','energy_reduce']);
-  const _mSavedCons  = ch.constellations || [];
-  const _mPresetCons = _mCpPrs.constellations || [];
-  const _mSavedValid  = _mSavedCons.filter(c=>c&&_VALID_M.has(c.type)).length;
-  const _mPresetValid = _mPresetCons.filter(c=>c&&_VALID_M.has(c.type)).length;
-  const cons = (_mPresetValid > _mSavedValid || !_mSavedCons.length)
-    ? _mPresetCons
-    : _mSavedCons;
+  // Mesma lógica definitiva do buildFighter: constelações vêm SEMPRE do CHAR_PRESETS.
+  // Só `unlockedConstellations` (o número) vem do perfil salvo.
+  const cons = _mCpPrs.constellations || ch.constellations || [];
   const unlockedC = ch.unlockedConstellations || 0;
   const skills    = ch.skills   || {};
   const skillLevels = ch.skillLevels || {basic:1,charged:1,ult:1,passive:1};
@@ -17433,6 +17470,8 @@ function _renderCharModal(cid) {
     if (con.type==="quantum_dmg_up") { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['quantum'] =(scaledBase.elementBonus['quantum']||0)+v; }
     if (con.type==="dark_dmg_up")    { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['dark']    =(scaledBase.elementBonus['dark']   ||0)+v; }
     if (con.type==="chaos_dmg_up")   { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['chaos']   =(scaledBase.elementBonus['chaos']  ||0)+v; }
+    // lightning_dmg é sinônimo de lightning_dmg_up — Killua C2, Kashimo C2
+    if (con.type==="lightning_dmg" || con.type==="lightning_dmg_up") { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['lightning']=(scaledBase.elementBonus['lightning']||0)+v; }
   });
 
   // Find equipped weapon + artifacts
