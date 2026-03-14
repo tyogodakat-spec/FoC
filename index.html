@@ -1697,12 +1697,77 @@ body{font-family:'Crimson Pro',serif;color:var(--txt);}
   100% { transform: translateY(-100px) scale(0.8); opacity: 0; }
 }
 
+
+/* ── UPDATE LOG MODAL ── */
+#update-log-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:18px;}
+#update-log-overlay.open{display:flex;}
+.update-log-box{background:linear-gradient(160deg,#0a1020,#0e1830,#122040);border:1px solid rgba(212,168,67,.32);border-radius:18px;padding:0;max-width:480px;width:100%;max-height:88vh;overflow:hidden;box-shadow:0 0 100px rgba(0,0,0,.95),0 0 40px rgba(212,168,67,.08);position:relative;}
+.update-log-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),var(--gold),transparent);}
+.ulb-header{padding:26px 28px 18px;text-align:center;border-bottom:1px solid rgba(212,168,67,.12);}
+.ulb-badge{display:inline-block;background:rgba(212,168,67,.14);border:1px solid rgba(212,168,67,.35);color:var(--gold);font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;padding:3px 12px;border-radius:20px;text-transform:uppercase;margin-bottom:10px;}
+.ulb-title{font-family:'Cinzel Decorative',cursive;font-size:1.3rem;color:var(--gold);text-shadow:0 0 30px rgba(212,168,67,.4);line-height:1.3;}
+.ulb-subtitle{color:var(--txt3);font-size:.78rem;letter-spacing:1px;margin-top:5px;}
+.ulb-body{padding:20px 28px;overflow-y:auto;max-height:52vh;}
+.ulb-section{margin-bottom:16px;}
+.ulb-section-title{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.ulb-section-title::after{content:'';flex:1;height:1px;background:currentColor;opacity:.2;}
+.ulb-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:.82rem;color:var(--txt2);line-height:1.5;}
+.ulb-item::before{content:'◆';font-size:.45rem;margin-top:5px;flex-shrink:0;}
+.ulb-footer{padding:16px 28px;border-top:1px solid rgba(212,168,67,.1);display:flex;align-items:center;gap:10px;}
+.ulb-close{flex:1;padding:11px;background:linear-gradient(135deg,var(--gold4),var(--gold3),var(--gold));border:none;border-radius:9px;font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;color:#100800;cursor:pointer;letter-spacing:1px;transition:.25s;}
+.ulb-close:hover{filter:brightness(1.15);transform:translateY(-1px);}
+.ulb-no-show{background:none;border:none;color:var(--txt3);font-size:.7rem;cursor:pointer;transition:.2s;white-space:nowrap;}
+.ulb-no-show:hover{color:var(--txt);}
 </style>
 
 </head>
 <body>
 <div id="particles"></div>
 <div id="toast"></div>
+
+<div id="update-log-overlay">
+  <div class="update-log-box">
+    <div class="ulb-header">
+      <div class="ulb-badge">📜 Notas de Atualização</div>
+      <div class="ulb-title">Fate of Chronicles</div>
+      <div class="ulb-subtitle">Versão 1.4 — Março 2026</div>
+    </div>
+    <div class="ulb-body">
+
+      <div class="ulb-section">
+        <div class="ulb-section-title" style="color:#88ff88">⚔ Combate</div>
+        <div class="ulb-item">Todos os personagens agora têm suas skills e mecânicas únicas funcionando em batalha — incluindo os mais recentes como Esdeath, Omegamon, Mirio, Aizen e outros.</div>
+        <div class="ulb-item">Buffs elementais (Gelo, Fogo, Vento, Caos...) aplicados por habilidades agora aumentam o dano real de todos os aliados do mesmo elemento durante a batalha.</div>
+        <div class="ulb-item">O sistema de DOT foi refinado: constelações que aumentam dano de DOT específico (ex: só Bleed, só Freeze) agora se aplicam corretamente — sem afetar outros tipos.</div>
+      </div>
+
+      <div class="ulb-section">
+        <div class="ulb-section-title" style="color:#ffdd55">⭐ Constelações &amp; Personagens</div>
+        <div class="ulb-item">Constelações desatualizadas agora são corrigidas automaticamente — não é necessário que o administrador refaça os presets para que os efeitos funcionem.</div>
+        <div class="ulb-item">Personagens focados em elemento (Rukia, Sukuna, Omegamon, Esdeath e outros) tiveram seus bônus elementais base significativamente aumentados para refletir o foco de build.</div>
+        <div class="ulb-item">Buffs aplicados em combate agora aparecem como badges coloridos nos cards dos seus aliados em tempo real.</div>
+      </div>
+
+      <div class="ulb-section">
+        <div class="ulb-section-title" style="color:#ff88aa">💎 Artefatos &amp; Armas</div>
+        <div class="ulb-item">Artefatos agora respeitam a raridade: substats de itens ★★★ são mais fracos, ★★★★ oferece progressão média e ★★★★★ tem o maior potencial de build.</div>
+        <div class="ulb-item">Maestria Elemental agora pode aparecer como stat principal da Ampulheta — essencial para builds de personagens que escalam por elemento.</div>
+        <div class="ulb-item">Armas que exibiam ATK 0 ao upar foram corrigidas automaticamente — sem necessidade de novo pull.</div>
+      </div>
+
+      <div class="ulb-section">
+        <div class="ulb-section-title" style="color:#88aaff">🎒 Inventário</div>
+        <div class="ulb-item">O inventário de armas agora exibe as armas separadas por raridade, com seções que podem ser recolhidas para facilitar a navegação.</div>
+        <div class="ulb-item">A seleção de alvo de cura da Sakura e da Shoko foi corrigida — o alvo escolhido agora é respeitado em todos os tipos de ação.</div>
+      </div>
+
+    </div>
+    <div class="ulb-footer">
+      <button class="ulb-no-show" onclick="closeUpdateLog(true)">Não mostrar novamente</button>
+      <button class="ulb-close" onclick="closeUpdateLog(false)">✦ Entendido!</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ EPIC COMBAT EFFECTS ══ -->
 <div id="slash-container"></div>
@@ -7717,12 +7782,21 @@ function buildItem(name, rarity, isChar, banner) {
       const wpMatch = wpEntries.find(([k, v]) => v.label && v.label.includes(name));
       if (wpMatch) weapPresetKey = wpMatch[0];
     }
+    // FIX: garante baseAtk do WEAPON_PRESETS quando admin salvou arma sem esse campo
+    let resolvedStats = found.stats || {};
+    if (!isChar && !resolvedStats.baseAtk) {
+      const _wpFix = (window.WEAPON_PRESETS || {})[weapPresetKey] || {};
+      if (_wpFix.stats && _wpFix.stats.baseAtk) {
+        resolvedStats = Object.assign({}, _wpFix.stats, resolvedStats);
+        resolvedStats.baseAtk = _wpFix.stats.baseAtk;
+      }
+    }
     return {
       ...found,
       presetKey: weapPresetKey || found.id || '',
       type: isChar ? "character" : "weapon",
       level: 1, energy: 0,
-      stats: found.stats || {hp:1000,atk:100,def:80,critRate:10,critDmg:50,energyRecharge:100,spd:100,elementalMastery:0,breakEffect:0,elementBonus:{}},
+      stats: resolvedStats,
       ultimate: found.ultimate || {name:name+" Ult",dmgMultiplier:200,scale:"atk",energyCost:100,hits:1},
     };
   }
@@ -8024,51 +8098,92 @@ function renderInvWeapons() {
     $("inv-content").innerHTML=`<div class="empty-state">Nenhuma arma. Faça pulls no Gacha!</div>`;
     return;
   }
-  $("inv-content").innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px">
-  ${weapons.map((w,i)=>{
+
+  // Configuração visual de cada raridade — cor do header e do card
+  const RAR_CFG = {
+    5: { label:'★★★★★ Lendárias', color:'var(--gold)', bg:'rgba(212,168,67,.08)', border:'rgba(212,168,67,.35)', glow:'rgba(212,168,67,.18)' },
+    4: { label:'★★★★ Épicas',     color:'#b060e0',    bg:'rgba(163,80,210,.07)', border:'rgba(163,80,210,.35)', glow:'rgba(163,80,210,.12)' },
+    3: { label:'★★★ Raras',       color:'#5090d0',    bg:'rgba(80,144,208,.06)', border:'rgba(80,144,208,.28)', glow:'rgba(80,144,208,.08)'  },
+  };
+
+  // Função que renderiza o card de uma arma — idêntica à lógica anterior
+  function weapCard(w) {
     const equippedBy = chars.find(ch=>(ch.equippedWeapon||null)===w.id);
-    const st = w.stats || (window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||""]?.stats || {};
-    // ATK atual escalado
+    const st = (w.stats && w.stats.baseAtk) ? w.stats
+             : ((window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||'']?.stats || w.stats || {});
     const MAX_WEAP_MULT = {5:2.00,4:1.85,3:1.65,2:1.45,1:1.30};
     const wRar = Math.min(5,Math.max(1,w.rarity||3));
     const wLvl = Math.min(20,Math.max(1,w.level||1));
     const curMult = wLvl===1?1.0:1+(MAX_WEAP_MULT[wRar]-1)*Math.log(wLvl)/Math.log(20);
-    const curAtk = st.baseAtk ? Math.round(st.baseAtk*curMult) : (st.atk||0);
+    const curAtk  = st.baseAtk ? Math.round(st.baseAtk*curMult) : (st.atk||0);
     const sstLabel = {critRate:'CR',critDmg:'CDMG',energyRecharge:'ER',elementalMastery:'EM',
                       breakEffect:'BE',spd:'SPD',atkPct:'ATK%',hpPct:'HP%',defPct:'DEF%',hp:'HP',def:'DEF'};
     const subStr = (st.substatType&&st.substatVal)
       ? `${sstLabel[st.substatType]||st.substatType} +${st.substatVal}${['critRate','critDmg','energyRecharge','breakEffect','atkPct','hpPct','defPct'].includes(st.substatType)?'%':''}`
       : '';
-    return `<div class="ccard border-r${w.rarity}" style="border:1px solid rgba(212,168,67,.2)">
+    const cfg = RAR_CFG[wRar] || RAR_CFG[3];
+    const _wpInv = (window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||''];
+    const _pInv  = _wpInv?.passive || w.passive;
+    return `<div class="ccard" style="border:1px solid ${cfg.border};background:linear-gradient(135deg,var(--bg3),var(--bg4));box-shadow:0 0 12px ${cfg.glow}">
       <div style="display:flex;gap:8px;align-items:flex-start">
         ${w.imageUrl?`<img src="${w.imageUrl}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0" onerror="this.style.display='none'">`:`<span style="font-size:2rem">⚔</span>`}
         <div style="flex:1;min-width:0">
-          <div class="ccard-name" style="font-size:.82rem">${w.name}</div>
-          <div class="ccard-sub"><span class="r${w.rarity}">${"★".repeat(w.rarity)}</span><span style="font-size:.65rem">${w.weaponType||""}</span></div>
+          <div class="ccard-name" style="font-size:.82rem;color:${cfg.color}">${w.name}</div>
+          <div class="ccard-sub"><span class="r${wRar}">${"★".repeat(wRar)}</span><span style="font-size:.65rem">${w.weaponType||""}</span></div>
         </div>
       </div>
       <div style="font-size:.72rem;color:var(--txt3);margin:6px 0 4px">
-        ${curAtk?`<span style="color:var(--gold)">ATK Lv${wLvl}: ${curAtk}</span>`:""} ${subStr?`<span style="color:#88aaff">• ${subStr}</span>`:""}
+        ${curAtk?`<span style="color:${cfg.color}">ATK Lv${wLvl}: ${curAtk}</span>`:""} ${subStr?`<span style="color:#88aaff">• ${subStr}</span>`:""}
       </div>
-      ${/* FIX: busca passiva no WEAPON_PRESETS se não estiver inline na arma */
-        (() => { const _wpInv = (window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||'']; const _pInv = _wpInv?.passive || w.passive; return _pInv?.name ? `<div style="font-size:.68rem;color:#88aaff;margin-bottom:4px">✨ ${_pInv.name}</div>` : ''; })()
-      }
+      ${_pInv?.name?`<div style="font-size:.68rem;color:#88aaff;margin-bottom:4px">✨ ${_pInv.name}</div>`:""}
       ${equippedBy
-        ? `<div style="font-size:.68rem;background:rgba(212,168,67,.12);border:1px solid rgba(212,168,67,.3);border-radius:6px;padding:3px 7px;margin-bottom:5px;color:var(--gold2);display:flex;align-items:center;gap:5px">
-             ${equippedBy.imageUrl?`<img src="${equippedBy.imageUrl}" style="width:16px;height:16px;border-radius:3px;object-fit:cover" onerror="this.style.display='none'">`:``}
-             ⚔ ${equippedBy.name}
-           </div>`
-        : ``}
+        ?`<div style="font-size:.68rem;background:rgba(212,168,67,.12);border:1px solid rgba(212,168,67,.3);border-radius:6px;padding:3px 7px;margin-bottom:5px;color:var(--gold2);display:flex;align-items:center;gap:5px">
+            ${equippedBy.imageUrl?`<img src="${equippedBy.imageUrl}" style="width:16px;height:16px;border-radius:3px;object-fit:cover" onerror="this.style.display='none'">`:``}
+            ⚔ ${equippedBy.name}
+          </div>`:``}
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">
         ${equippedBy
-          ? `<button class="btn btn-ghost btn-xs" style="flex:1" onclick="unequipWeapon('${w.id}')">Desequipar</button>`
-          : `<button class="btn btn-blue btn-xs" style="flex:1" onclick="openEquipWeapon('${w.id}')">Equipar</button>`}
+          ?`<button class="btn btn-ghost btn-xs" style="flex:1" onclick="unequipWeapon('${w.id}')">Desequipar</button>`
+          :`<button class="btn btn-blue btn-xs" style="flex:1" onclick="openEquipWeapon('${w.id}')">Equipar</button>`}
         <button class="btn btn-xs" style="flex:1;background:rgba(255,170,0,.15);color:#ffcc44;border:1px solid rgba(255,170,0,.25)" onclick="openUpgradeWeaponPanel('${w.id}')">⬆ Lv.${wLvl}</button>
-        <button class="btn btn-xs" style="flex:1;background:rgba(100,180,255,.1);color:#88aaff;border:1px solid rgba(100,180,255,.2)" onclick="refineWeapon('${w.id}')" title="Refinar (requer 1 cópia duplicada)">✨ R${w.refinement||w.refine||1}${(w.dupes||0)>0?' 🔁'+w.dupes:''}</button>
+        <button class="btn btn-xs" style="flex:1;background:rgba(100,180,255,.1);color:#88aaff;border:1px solid rgba(100,180,255,.2)" onclick="refineWeapon('${w.id}')" title="Refinar">✨ R${w.refinement||w.refine||1}${(w.dupes||0)>0?' 🔁'+w.dupes:''}</button>
       </div>
     </div>`;
-  }).join("")}
-  </div>`;
+  }
+
+  // Agrupa armas por raridade e ordena cada grupo por nível desc
+  const byRarity = {5:[], 4:[], 3:[]};
+  weapons.forEach(w => {
+    const r = Math.min(5, Math.max(3, w.rarity||3));
+    (byRarity[r] = byRarity[r]||[]).push(w);
+  });
+  [5,4,3].forEach(r => byRarity[r].sort((a,b)=>(b.level||1)-(a.level||1)));
+
+  // Monta o HTML com seções colapsáveis por raridade
+  let html = '<div style="display:flex;flex-direction:column;gap:18px">';
+  [5,4,3].forEach(r => {
+    const group = byRarity[r] || [];
+    if (!group.length) return;
+    const cfg = RAR_CFG[r];
+    const sectionId = `weap-section-r${r}`;
+    const countEquipped = group.filter(w=>chars.some(c=>c.equippedWeapon===w.id)).length;
+    html += `
+    <div>
+      <!-- Header da seção clicável para colapsar/expandir -->
+      <div onclick="document.getElementById('${sectionId}').style.display=document.getElementById('${sectionId}').style.display==='none'?'grid':'none';this.querySelector('.sec-arrow').textContent=document.getElementById('${sectionId}').style.display==='none'?'▶':'▼'"
+           style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;border-radius:10px;background:${cfg.bg};border:1px solid ${cfg.border};margin-bottom:8px;user-select:none">
+        <span class="sec-arrow" style="font-size:.7rem;color:${cfg.color}">▼</span>
+        <span style="font-family:'Cinzel',serif;color:${cfg.color};font-size:.88rem;letter-spacing:1px">${cfg.label}</span>
+        <span style="font-size:.72rem;color:${cfg.color};opacity:.7;margin-left:4px">(${group.length})</span>
+        ${countEquipped?`<span style="font-size:.65rem;color:var(--gold2);margin-left:auto;background:rgba(212,168,67,.12);padding:2px 8px;border-radius:10px;border:1px solid rgba(212,168,67,.25)">⚔ ${countEquipped} equipada${countEquipped>1?'s':''}</span>`:''}
+      </div>
+      <div id="${sectionId}" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px">
+        ${group.map(weapCard).join("")}
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  $("inv-content").innerHTML = html;
 }
 
 function openEquipWeapon(weapId) {
@@ -8221,39 +8336,61 @@ function artRevealed(a) {
 
 // Cada stat: { flat, tiers:[baixo,medio,alto], weight, maxRolls:5 (1 inicial + 4 UPs) }
 // tiers = os 3 valores possíveis por rolo (HSR: T1/T2/T3)
+// ══════════════════════════════════════════════════════════════════
+//  SUBSTAT CAPS POR RARIDADE
+//  T3 (★★★) = básico, valores baixos  — primeiros artefatos do jogador
+//  T4 (★★★★)= médio, progressão sólida — mid-game
+//  T5 (★★★★★)= máximo potencial        — end-game, builds otimizadas
+//
+//  Cada entry: { flat, tiers por raridade { 3, 4, 5 }, initialTiers idem, weight, maxRolls }
+// ══════════════════════════════════════════════════════════════════
 const ART_SUB_CAPS = {
-  // ── Flat stats ──────────────────────────────────────────────────
-  "HP":             { flat:true,  tiers:[33,  38,  44 ], weight:10, maxRolls:5 },
-  "ATK":            { flat:true,  tiers:[14,  17,  19 ], weight:10, maxRolls:5 },
-  "DEF":            { flat:true,  tiers:[14,  17,  19 ], weight:10, maxRolls:5 },
-  // ── Percent stats ───────────────────────────────────────────────
-  "HP%":            { flat:false, tiers:[2.0, 2.5, 3.0], weight:8, maxRolls:5 },
-  "ATK%":           { flat:false, tiers:[2.0, 2.5, 3.0], weight:8, maxRolls:5 },
-  "DEF%":           { flat:false, tiers:[2.5, 3.1, 3.8], weight:8, maxRolls:5 },
-  // ── Crit ─────────────────────────────────────────────────────────
-  // CR inicial: 3~8% (initialTiers) | upgrades: 4.5/6/7% | 4 UPs máx = 28% ✓
-  // CD inicial: ~dobro do CR (initialTiers) | upgrades: 9/12/14% | 4 UPs máx = 56% ✓
-  "Crit Rate%":     { flat:false, initialTiers:[3.0,5.5,8.0], tiers:[4.5,6.0,7.0], weight:6, maxRolls:5 },
-  "Crit DMG%":      { flat:false, initialTiers:[6.0,11.0,16.0], tiers:[9.0,12.0,14.0], weight:6, maxRolls:5 },
-  // ── Outros stats ────────────────────────────────────────────────
-  "Energy Recharge%":{ flat:false, tiers:[4.5, 5.0, 5.8], weight:5, maxRolls:5 }, // Genshin: 4.5~5.8%
-  "Effect Hit%":    { flat:false, tiers:[2.16,2.70,3.24], weight:5, maxRolls:5 },
-  "Effect RES%":    { flat:false, tiers:[2.16,2.70,3.24], weight:5, maxRolls:5 },
-  "Break Effect%":  { flat:false, tiers:[3.24,4.05,4.86], weight:5, maxRolls:5 },
-  "SPD":            { flat:true,  tiers:[1,   2,   3  ], weight:4, maxRolls:5 },
-  "Elem. Mastery":  { flat:true,  tiers:[16,  20,  24 ], weight:6, maxRolls:5 },
+  // ── Flat stats ──────────────────────────────────────────────────────────
+  "HP":  { flat:true, tiers:{3:[14,18,22], 4:[24,30,36], 5:[33,38,44]}, weight:10, maxRolls:5 },
+  "ATK": { flat:true, tiers:{3:[5, 7,  9], 4:[10,13,16], 5:[14,17,19]}, weight:10, maxRolls:5 },
+  "DEF": { flat:true, tiers:{3:[5, 7,  9], 4:[10,13,16], 5:[14,17,19]}, weight:10, maxRolls:5 },
+  // ── Percent stats ────────────────────────────────────────────────────────
+  "HP%":  { flat:false, tiers:{3:[0.8,1.0,1.2], 4:[1.4,1.8,2.2], 5:[2.0,2.5,3.0]}, weight:8, maxRolls:5 },
+  "ATK%": { flat:false, tiers:{3:[0.8,1.0,1.2], 4:[1.4,1.8,2.2], 5:[2.0,2.5,3.0]}, weight:8, maxRolls:5 },
+  "DEF%": { flat:false, tiers:{3:[1.0,1.3,1.6], 4:[1.8,2.2,2.8], 5:[2.5,3.1,3.8]}, weight:8, maxRolls:5 },
+  // ── Crit ─────────────────────────────────────────────────────────────────
+  //  T3: muito baixo, praticamente simbólico
+  //  T4: jogável, dá para construir um build médio
+  //  T5: end-game — CR 28~35% e CD 56~70% possível com UPs perfeitos
+  "Crit Rate%": {
+    flat:false,
+    initialTiers:{3:[0.8,1.5,2.2], 4:[2.0,3.5,5.0], 5:[3.0,5.5,8.0]},
+    tiers:       {3:[1.0,1.5,2.0], 4:[2.5,3.5,4.5], 5:[4.5,6.0,7.0]},
+    weight:6, maxRolls:5
+  },
+  "Crit DMG%": {
+    flat:false,
+    initialTiers:{3:[1.6,3.0,4.4], 4:[4.0,7.0,10.0], 5:[6.0,11.0,16.0]},
+    tiers:       {3:[2.0,3.0,4.0], 4:[5.0,7.0, 9.0], 5:[9.0,12.0,14.0]},
+    weight:6, maxRolls:5
+  },
+  // ── Outros stats ────────────────────────────────────────────────────────
+  "Energy Recharge%": { flat:false, tiers:{3:[1.5,2.0,2.5], 4:[3.0,3.8,4.5], 5:[4.5,5.0,5.8]}, weight:5, maxRolls:5 },
+  "Effect Hit%":      { flat:false, tiers:{3:[0.8,1.1,1.4], 4:[1.5,2.0,2.5], 5:[2.16,2.70,3.24]}, weight:5, maxRolls:5 },
+  "Effect RES%":      { flat:false, tiers:{3:[0.8,1.1,1.4], 4:[1.5,2.0,2.5], 5:[2.16,2.70,3.24]}, weight:5, maxRolls:5 },
+  "Break Effect%":    { flat:false, tiers:{3:[1.2,1.6,2.0], 4:[2.2,2.8,3.4], 5:[3.24,4.05,4.86]}, weight:5, maxRolls:5 },
+  "SPD":              { flat:true,  tiers:{3:[1,  1,  1  ], 4:[1,  2,  2  ], 5:[1,   2,   3  ]}, weight:4, maxRolls:5 },
+  "Elem. Mastery":    { flat:true,  tiers:{3:[4,  6,  8  ], 4:[10, 13, 16 ], 5:[16,  20,  24 ]}, weight:6, maxRolls:5 },
 };
 
 // Pool de substats com pesos para seleção weighted (igual HSR)
 const SUB_STAT_POOL = Object.entries(ART_SUB_CAPS).map(([stat,d])=>({stat,weight:d.weight}));
 
-// Rola 1 dos 3 tiers com igual probabilidade (HSR: T1/T2/T3 igual chance)
-// isInitial=true usa initialTiers (valor de nascimento) — ex: CR 3~8%
-// isInitial=false (default) usa tiers (upgrades)
-function rollSubValue(stat, isInitial) {
+// Rola 1 dos 3 tiers com igual probabilidade, respeitando a raridade do artefato.
+// tiers agora é um objeto { 3:[...], 4:[...], 5:[...] } — fallback para T5 se omitido.
+// isInitial=true usa initialTiers (valor de nascimento), isInitial=false usa upgrades.
+function rollSubValue(stat, isInitial, rarity) {
   const cap = ART_SUB_CAPS[stat];
   if (!cap) return 0;
-  const pool = (isInitial && cap.initialTiers) ? cap.initialTiers : cap.tiers;
+  const r = Math.min(5, Math.max(3, rarity || 5)); // normaliza para 3/4/5
+  // Suporta tanto o formato legado (array) quanto o novo (objeto por raridade)
+  const rawPool = (isInitial && cap.initialTiers) ? cap.initialTiers : cap.tiers;
+  const pool = Array.isArray(rawPool) ? rawPool : (rawPool[r] || rawPool[5] || [1,1,1]);
   const tier = pool[Math.floor(Math.random()*3)];
   return cap.flat ? tier : +tier.toFixed(2);
 }
@@ -8275,7 +8412,7 @@ function rollSubUpgrade(sub) {
   const cap = ART_SUB_CAPS[sub.stat];
   if (!cap) return;
   if ((sub.upgrades||0) >= cap.maxRolls-1) return; // -1 pq o inicial já conta como 1 roll
-  const add = rollSubValue(sub.stat);
+  const add = rollSubValue(sub.stat, false, sub.rarity||5);
   sub.val = cap.flat
     ? Math.round(sub.val + add)
     : +((sub.val + add).toFixed(2));
@@ -8725,10 +8862,48 @@ function buildFighter(ch, profile) {
   const _cpPreset = window.CHAR_PRESETS?.[_cpResolved] ||
     window.CHAR_PRESETS?.[_cpKey] ||
     Object.values(window.CHAR_PRESETS || {}).find(p => p.label && ch.name && p.label.includes(ch.name.split(' ')[0])) || {};
-  // Usa constellations do objeto salvo se existirem e tiverem dados; senão cai para o preset
-  const cons = (ch.constellations && ch.constellations.some(c => c && c.type))
-    ? ch.constellations
-    : (_cpPreset.constellations || []);
+
+  // FIX: sempre usa o maior elementBonus entre o salvo (banco) e o preset (código).
+  // Isso garante que correções de preset (ex: Rukia ice 20→46) se aplicam
+  // retroativamente sem precisar que o admin re-salve o personagem.
+  if (_cpPreset.suggestedStats && _cpPreset.suggestedStats.elementBonus) {
+    const _presetEB = _cpPreset.suggestedStats.elementBonus;
+    const _savedEB  = scaledBase.elementBonus || {};
+    const _mergedEB = {};
+    // Coleta todos os elementos de ambas as fontes
+    const _allElemKeys = new Set([...Object.keys(_presetEB), ...Object.keys(_savedEB)]);
+    _allElemKeys.forEach(el => {
+      // Usa o maior valor entre preset e salvo (preset ganha se salvo estiver desatualizado)
+      _mergedEB[el] = Math.max(_presetEB[el] || 0, _savedEB[el] || 0);
+    });
+    scaledBase.elementBonus = _mergedEB;
+  }
+
+  // FIX: mesma lógica do elementBonus — o preset é a fonte autoritativa.
+  // Problema: o admin pode ter salvado constelações com tipos legados/inválidos
+  // (ex: "skill_mult_up", "crit_rate_up") que o motor não reconhece, então os
+  // efeitos nunca se aplicam mesmo o personagem tendo C4/C5/C6 desbloqueado.
+  // Solução: se o preset tiver constellations com tipos válidos, usa o preset.
+  // Os tipos válidos são os que o motor realmente processa em buildFighter.
+  const _VALID_CON_TYPES = new Set([
+    'atk_up','hp_up','def_up','cr_up','cd_up','spd_up','er_up','em_up','be_up','break_up',
+    'flat_atk','flat_hp','flat_def','dmg_up','elem_dmg','elemental_up',
+    'ice_dmg_up','fire_dmg_up','water_dmg_up','wind_dmg_up','earth_dmg_up',
+    'nature_dmg_up','holy_dmg_up','chaos_dmg_up','quantum_dmg_up','dark_dmg_up',
+    'crit_dmg_up','dot_dmg','dot_duration','skill_up','ult_up','basic_up',
+    'heal_up','shield_up','energy_reduce','break_up',
+  ]);
+  // Conta quantas constelações salvas têm tipos válidos
+  const _savedCons   = ch.constellations || [];
+  const _presetCons  = _cpPreset.constellations || [];
+  const _savedValid  = _savedCons.filter(c => c && _VALID_CON_TYPES.has(c.type)).length;
+  const _presetValid = _presetCons.filter(c => c && _VALID_CON_TYPES.has(c.type)).length;
+  // Usa o preset se:
+  //   1. Não há constelações salvas, OU
+  //   2. O preset tem mais constelações válidas que as salvas (salvo está desatualizado/inválido)
+  const cons = (_presetValid > _savedValid || !_savedCons.length)
+    ? _presetCons
+    : _savedCons;
   const uc   = ch.unlockedConstellations || 0;
   cons.slice(0, uc).forEach(con => {
     if (!con || !con.type) return;
@@ -9804,16 +9979,20 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   // ── SAKURA ────────────────────────────────────────────────────────────────
   if (pk === 'sakura_t5') {
     if (type === 'basic') {
-      // Basic cura o alvo selecionado (ou menor HP se auto)
       const t = resolveHealTarget(cs);
-      const h = healFighter(t, Math.round(f.maxHp * 0.12), f);
+      const h = healFighter(t, Math.round(f.maxHp * 0.12), f); // h = valor real após healBonus
+      triggerHitFlash('green');
+      showDamageFloat(h, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 40, 'heal', null);
       await combatLog('🌸 <b>Sakura</b> → <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>', 80);
     }
     if (type === 'ult') {
       const ha = Math.round(f.maxHp * 0.40), crb = cLevel(f)>=4?25:15, crt = cLevel(f)>=4?3:2;
+      triggerHitFlash('green');
       for (const t of cs.fighters.filter(x=>x.alive)) {
-        let h = ha; if (cLevel(f)>=5 && t.hp<t.maxHp*0.3) h=Math.round(h*1.5);
-        const healed = healFighter(t,h,f); if (cLevel(f)>=1 && t.dots?.length) t.dots.splice(0,1);
+        let raw = ha; if (cLevel(f)>=5 && t.hp<t.maxHp*0.3) raw=Math.round(raw*1.5);
+        const healed = healFighter(t, raw, f); // valor real após healBonus
+        if (cLevel(f)>=1 && t.dots?.length) t.dots.splice(0,1);
+        showDamageFloat(healed, getCombatCenter().x + (Math.random()-.5)*80, getCombatCenter().y - 50, 'heal', null);
         await combatLog('💚 <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(healed)+' HP</span>', 60);
       }
       cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'critRate',crb,crt));
@@ -9822,6 +10001,7 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     }
     if (type === 'charged') {
       const t=resolveHealTarget(cs), sv=Math.round(f.maxHp*0.18); addShield(t,sv);
+      triggerHitFlash('green');
       await combatLog('🛡 <b>Sakura</b> → <b>'+t.name+'</b>: '+fmtNum(sv)+' escudo', 120);
       if (cLevel(f)>=2) { const alive2=cs.fighters.filter(x=>x.alive&&x!==t); if(alive2.length){ addShield(alive2[0],sv); await combatLog('🛡 C2 → <b>'+alive2[0].name+'</b>', 80); }}
     }
@@ -9831,17 +10011,22 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   if (pk === 'shoko_t5') {
     if (cs.fighters.some(x=>x.alive&&x.hp<x.maxHp*0.5)) f.healBonus=(f.baseHealBonus||0)+20;
     if (type==='basic') {
-      // FIX: respeita o alvo selecionado; C1+ cura também o 2º com menos HP
       const t = resolveHealTarget(cs);
-      const h = healFighter(t, Math.round(f.maxHp*1.40), f);
-      await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +'+fmtNum(h)+' HP', 80);
+      const h = healFighter(t, Math.round(f.maxHp*1.40), f); // valor real após healBonus
+      triggerHitFlash('green');
+      showDamageFloat(h, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 40, 'heal', null);
+      await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>', 80);
       if (cLevel(f)>=1) {
         const others = cs.fighters.filter(x=>x.alive&&x!==t).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp));
-        if (others.length) { const h2=healFighter(others[0],Math.round(f.maxHp*0.70),f); await combatLog('💚 C1 <b>Shoko</b>→<b>'+others[0].name+'</b> +'+fmtNum(h2)+' HP',80); }
+        if (others.length) {
+          const h2=healFighter(others[0],Math.round(f.maxHp*0.70),f);
+          showDamageFloat(h2, getCombatCenter().x + (Math.random()-.5)*60, getCombatCenter().y - 60, 'heal', null);
+          await combatLog('💚 C1 <b>Shoko</b>→<b>'+others[0].name+'</b> +<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',80);
+        }
       }
     }
-    if (type==='charged'){const t=resolveHealTarget(cs);const h=healFighter(t,Math.round(f.maxHp*2.20),f);if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão — <b>'+t.name+'</b> +'+fmtNum(h)+' HP + DOT limpo',120);if(cLevel(f)>=3){const tk=cs.fighters.filter(x=>x.alive).reduce((a,b)=>a.def>b.def?a:b);if(tk!==t){const h2=healFighter(tk,Math.round(f.maxHp*0.12),f);await combatLog('💚 C3 → <b>'+tk.name+'</b> +'+fmtNum(h2),80);}}}
-    if (type==='ult'){for(const t of cs.fighters.filter(x=>x.alive)){const h=healFighter(t,Math.round(f.maxHp*1.80),f);if(cLevel(f)>=5)t.dots=[];else if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão Absoluta — <b>'+t.name+'</b> +'+fmtNum(h)+' HP',80);}addShield(f,Math.round(f.maxHp*0.25));await combatLog('🛡 <b>Shoko</b> — Escudo 25% HP!',120);if(cLevel(f)>=2){f.energy=Math.min(f.maxEnergy,f.energy+25);await combatLog('⚡ C2 — +25E!',80);}}
+    if (type==='charged'){const t=resolveHealTarget(cs);const h=healFighter(t,Math.round(f.maxHp*2.20),f);if(t.dots?.length)t.dots.splice(0,1);triggerHitFlash('green');showDamageFloat(h,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-40,'heal',null);await combatLog('💚 <b>Shoko</b> Inversão — <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span> + DOT limpo',120);if(cLevel(f)>=3){const tk=cs.fighters.filter(x=>x.alive).reduce((a,b)=>a.def>b.def?a:b);if(tk!==t){const h2=healFighter(tk,Math.round(f.maxHp*0.12),f);showDamageFloat(h2,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-60,'heal',null);await combatLog('💚 C3 → <b>'+tk.name+'</b> +<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',80);}}}
+    if (type==='ult'){triggerHitFlash('green');for(const t of cs.fighters.filter(x=>x.alive)){const h=healFighter(t,Math.round(f.maxHp*1.80),f);if(cLevel(f)>=5)t.dots=[];else if(t.dots?.length)t.dots.splice(0,1);showDamageFloat(h,getCombatCenter().x+(Math.random()-.5)*80,getCombatCenter().y-50,'heal',null);await combatLog('💚 <b>Shoko</b> Inversão Absoluta — <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>',80);}addShield(f,Math.round(f.maxHp*0.25));await combatLog('🛡 <b>Shoko</b> — Escudo 25% HP!',120);if(cLevel(f)>=2){f.energy=Math.min(f.maxEnergy,f.energy+25);await combatLog('⚡ C2 — +25E!',80);}}
   }
 
   // ── KUSAKABE ──────────────────────────────────────────────────────────────
@@ -9938,7 +10123,7 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     const cp=cLevel(f)>=5?0.50:0.35,af=Math.round(f.def*cp);
     cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t._uraumeAtkBonus=af;});
     if (type==='basic'){const dd=Math.round(f.def*0.12);boss.hp=Math.max(0,boss.hp-dd);await combatLog('❄ <b>Uraume</b> — Espinhos de Gelo! '+fmtNum(dd)+' (DEF)',100);}
-    if (type==='charged'){const t=lowestHpFighter(cs);addShield(t,Math.round(f.def*0.20));cs.fighters.filter(x=>x.alive).forEach(tt=>addBuff(tt,'defPct',10,2));await combatLog('❄ <b>Uraume</b> — Barreira Glacial! Escudo+DEF',120);}
+    if (type==='charged'){const t=resolveHealTarget(cs);addShield(t,Math.round(f.def*0.20));cs.fighters.filter(x=>x.alive).forEach(tt=>addBuff(tt,'defPct',10,2));await combatLog('❄ <b>Uraume</b> → <b>'+t.name+'</b> — Barreira Glacial! Escudo+DEF',120);}
     if (type==='ult'){const ud=Math.round(f.def*0.15);boss.hp=Math.max(0,boss.hp-ud);applyDot(boss,'freeze',cLevel(f)>=3?2:1,f.atk,f.dotDmgBonus,f.dotDmgByType);const ac=Math.round(f.def*(cLevel(f)>=5?0.50:cLevel(f)>=1?0.45:0.35));cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'flatAtk',ac,2));await combatLog('❄ <b>Uraume</b> — Chuva Congelada! Freeze+ATK!',150);if(isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su)addBuff(su,'critRate',15,3);f.energy=Math.min(f.maxEnergy,f.energy+30);await combatLog('❄ Lealdade! Sukuna +15% CR',80);}if(cLevel(f)>=6&&isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su){addBuff(su,'atkPct',25,3);addBuff(su,'critDmg',15,3);}await combatLog('❄ C6 — Sukuna: +25% ATK, +15% CD!',80);}}
   }
 
@@ -10042,8 +10227,8 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     const hasPhys=cs.fighters.some(x=>x.alive&&x!==f&&(x.element==='physical'||x.charRole==='main_dps'));
     if (hasPhys) f.healBonus=(f.baseHealBonus||0)+20;
     if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
-    if (type==='charged'){const aliveCount=cs.fighters.filter(x=>x.alive).length;const sv=Math.round(f.maxHp*(0.14+aliveCount*0.05));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));const t2=lowestHpFighter(cs);const h2=healFighter(t2,Math.round(f.maxHp*0.10),f);await combatLog('💧 <b>Juvia</b> Armadura! Escudo+'+fmtNum(h2)+' HP',120);}
-    if (type==='ult'){cs.fighters.filter(x=>x.alive).forEach(t=>{healFighter(t,Math.round(f.maxHp*0.18),f);addShield(t,Math.round(f.maxHp*0.20));});applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'waterDmg',wb,2));await combatLog('💧 <b>Juvia</b> Chuva Eterna! Cura+Escudo+Drown+'+wb+'% Água!',150);}
+    if (type==='charged'){const aliveCount=cs.fighters.filter(x=>x.alive).length;const sv=Math.round(f.maxHp*(0.14+aliveCount*0.05));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));const t2=lowestHpFighter(cs);const h2=healFighter(t2,Math.round(f.maxHp*0.10),f);triggerHitFlash('green');showDamageFloat(h2,getCombatCenter().x+(Math.random()-.5)*60,getCombatCenter().y-40,'heal',null);await combatLog('💧 <b>Juvia</b> Armadura! Escudo+<span style="color:#88ff88">'+fmtNum(h2)+' HP</span>',120);}
+    if (type==='ult'){triggerHitFlash('green');cs.fighters.filter(x=>x.alive).forEach(t=>{const hj=healFighter(t,Math.round(f.maxHp*0.18),f);addShield(t,Math.round(f.maxHp*0.20));showDamageFloat(hj,getCombatCenter().x+(Math.random()-.5)*80,getCombatCenter().y-50,'heal',null);});applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'waterDmg',wb,2));await combatLog('💧 <b>Juvia</b> Chuva Eterna! Cura+Escudo+Drown+'+wb+'% Água!',150);}
   }
 
   // ── TEMARI ───────────────────────────────────────────────────────────────
@@ -10306,9 +10491,16 @@ async function doPlayerAction(f, cs, type) {
   const weak   = elemM >= 1.5;
 
   const _fpk = fighterPresetKey(f);
-  const isHealerBasic = (f.charRole === 'healer' || f.charRole === 'support')
-    && type === 'basic'
-    && ['shoko_t5','sakura_t5','uraume_t4'].includes(_fpk);
+  // isHealerBasic: personagens cuja ação básica é cura/utilidade, não dano.
+  // Inclui todos os healer/support cujo skill básico tem mult <= 0 ou escala não é atk.
+  // Verificamos tanto pelo presetKey quanto pela role para cobrir novos personagens.
+  const _basicSkillMult = (f.skills?.basic?.mult || 0);
+  const isHealerBasic = type === 'basic' && (
+    // Lista explícita dos personagens conhecidos com basic de cura/suporte
+    ['shoko_t5','sakura_t5','uraume_t4','mirio_t5','mereoleona_t4','juvia_t4'].includes(_fpk)
+    // Fallback: qualquer healer/support cujo basic tem mult 0 (não causa dano)
+    || ((f.charRole === 'healer' || f.charRole === 'support') && _basicSkillMult <= 0)
+  );
 
   let actualDmg = 0;
   if (!immune && !isHealerBasic) {
@@ -10865,8 +11057,8 @@ async function runDungeon(did, diff) {
     }
     const subStats = pickedStats.map(stat => {
       const cap = ART_SUB_CAPS[stat];
-      const val = rollSubValue(stat, true);
-      return { stat, val, flat: cap.flat||false, upgrades:0, display:`${stat}: ${cap.flat ? val : val+"%"}` };
+      const val = rollSubValue(stat, true, rarity);  // rarity-scaled tiers
+      return { stat, val, flat: cap.flat||false, upgrades:0, rarity,  display:`${stat}: ${cap.flat ? val : val+"%"}` };
     });
     const artifact = {
       id:"art_"+Date.now(), name:slot+" de "+setName,
@@ -15691,7 +15883,7 @@ async function acceptFriendInvite(fromUid) {
   STATE.profile.foc = (STATE.profile.foc||0)+100;
   await saveProfile(STATE.user.uid, {foc:STATE.profile.foc});
   updateFocDisplay();
-  toast("🤝 Amizade aceita! +100 FoC de bônus!");
+  toast("?? Amizade aceita! +100 FoC de bônus!");
 }
 async function renderFriendSystem() {
   openModal("👥 Sistema de Amizade", `
@@ -15789,6 +15981,19 @@ function openUpgradeWeaponPanel(weapId) {
   const xpLvlNd  = xpNeeded - xpPrev;
   const xpPct    = level >= MAX_WEAP_LEVEL ? 100 : Math.round((xpInLvl / Math.max(1, xpLvlNd)) * 100);
   const canLevel = level < MAX_WEAP_LEVEL && xp >= xpNeeded;
+  // FIX retroativo: se a arma foi salva sem baseAtk (admin criou sem esse campo),
+  // corrige o objeto salvo agora para que computeEffective e o inventário funcionem.
+  if (!weap.stats?.baseAtk) {
+    const _wpPatch = (window.WEAPON_PRESETS||{})[weap.presetKey||weap.presetId||''];
+    if (!_wpPatch) {
+      // Tenta achar pelo nome
+      const _wpByName = Object.entries(window.WEAPON_PRESETS||{}).find(([,v])=>v.label&&weap.name&&v.label.includes(weap.name.split(' ')[0]));
+      if (_wpByName) { weap.presetKey = _wpByName[0]; if (_wpByName[1].stats?.baseAtk) { weap.stats = Object.assign({}, _wpByName[1].stats, weap.stats||{}); weap.stats.baseAtk = _wpByName[1].stats.baseAtk; } }
+    } else if (_wpPatch.stats?.baseAtk) {
+      weap.stats = Object.assign({}, _wpPatch.stats, weap.stats||{});
+      weap.stats.baseAtk = _wpPatch.stats.baseAtk;
+    }
+  }
   const ws = (weap.stats && weap.stats.baseAtk) ? weap.stats
              : ((window.WEAPON_PRESETS||{})[weap.presetKey||weap.presetId||""]?.stats || weap.stats || {});
   const bAtk = ws.baseAtk || ws.atk || 0;
@@ -17151,8 +17356,22 @@ function _renderCharModal(cid) {
   const _mCpRes  = _mCpLim[_mCpNorm] || _mCpNorm;
   const _mCpPrs  = window.CHAR_PRESETS?.[_mCpRes] || window.CHAR_PRESETS?.[_mCpKey] ||
     Object.values(window.CHAR_PRESETS||{}).find(p=>p.label&&ch.name&&p.label.includes(ch.name.split(' ')[0]))||{};
-  const cons      = (ch.constellations && ch.constellations.some(c=>c&&c.type))
-    ? ch.constellations : (_mCpPrs.constellations || [{},{},{},{},{},{}]);
+
+  // FIX: mesma lógica do buildFighter — elementBonus do preset sempre ganha se for maior
+  // que o salvo no banco, garantindo que as correções de preset apareçam na ficha.
+  // FIX: mesma lógica do buildFighter — preset ganha se tiver mais tipos válidos
+  const _VALID_M = new Set(['atk_up','hp_up','def_up','cr_up','cd_up','spd_up','er_up','em_up',
+    'be_up','break_up','flat_atk','flat_hp','flat_def','dmg_up','elem_dmg','elemental_up',
+    'ice_dmg_up','fire_dmg_up','water_dmg_up','wind_dmg_up','earth_dmg_up','nature_dmg_up',
+    'holy_dmg_up','chaos_dmg_up','quantum_dmg_up','dark_dmg_up','crit_dmg_up',
+    'dot_dmg','dot_duration','skill_up','ult_up','basic_up','heal_up','shield_up','energy_reduce']);
+  const _mSavedCons  = ch.constellations || [];
+  const _mPresetCons = _mCpPrs.constellations || [];
+  const _mSavedValid  = _mSavedCons.filter(c=>c&&_VALID_M.has(c.type)).length;
+  const _mPresetValid = _mPresetCons.filter(c=>c&&_VALID_M.has(c.type)).length;
+  const cons = (_mPresetValid > _mSavedValid || !_mSavedCons.length)
+    ? _mPresetCons
+    : _mSavedCons;
   const unlockedC = ch.unlockedConstellations || 0;
   const skills    = ch.skills   || {};
   const skillLevels = ch.skillLevels || {basic:1,charged:1,ult:1,passive:1};
@@ -17171,6 +17390,16 @@ function _renderCharModal(cid) {
     breakEffect: base.breakEffect||0,
     elementBonus: base.elementBonus||{},
   };
+
+  // FIX: aplica o mesmo merge de elementBonus do buildFighter no modal
+  if (_mCpPrs.suggestedStats && _mCpPrs.suggestedStats.elementBonus) {
+    const _mPresetEB = _mCpPrs.suggestedStats.elementBonus;
+    const _mSavedEB  = scaledBase.elementBonus || {};
+    const _mMergedEB = {};
+    const _mAllKeys  = new Set([...Object.keys(_mPresetEB), ...Object.keys(_mSavedEB)]);
+    _mAllKeys.forEach(el => { _mMergedEB[el] = Math.max(_mPresetEB[el]||0, _mSavedEB[el]||0); });
+    scaledBase.elementBonus = _mMergedEB;
+  }
 
   // Apply constellation stat buffs — espelho exato do buildFighter
   cons.slice(0, unlockedC).forEach(con => {
@@ -18164,6 +18393,35 @@ window.showDamageFloatEpic = function(dmg, x, y, type, isCrit) {
   
   document.body.appendChild(float);
   setTimeout(() => float.remove(), 1200);
+};
+
+
+// ── UPDATE LOG ─────────────────────────────────────────────────────────────
+const UPDATE_LOG_VERSION = 'foc_v1.4_mar2026';
+
+function showUpdateLog() {
+  // Só mostra se o player não clicou em "não mostrar novamente" para esta versão
+  const dismissed = localStorage.getItem('updateLog_dismissed');
+  if (dismissed === UPDATE_LOG_VERSION) return;
+  const el = document.getElementById('update-log-overlay');
+  if (el) el.classList.add('open');
+}
+
+function closeUpdateLog(dontShowAgain) {
+  const el = document.getElementById('update-log-overlay');
+  if (el) el.classList.remove('open');
+  if (dontShowAgain) {
+    localStorage.setItem('updateLog_dismissed', UPDATE_LOG_VERSION);
+  }
+}
+window.closeUpdateLog = closeUpdateLog;
+
+// Hook: mostra o update log alguns instantes após o app carregar
+// (espera 1.2s para o app terminar de renderizar antes de abrir o modal)
+const _origShowApp_UL = window.showApp;
+window.showApp = function() {
+  if (_origShowApp_UL) _origShowApp_UL.apply(this, arguments);
+  setTimeout(showUpdateLog, 1200);
 };
 
 </script>
