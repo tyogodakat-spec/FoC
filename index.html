@@ -2179,12 +2179,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Instinto do Andarilho",  description:"Cada hit crítico aumenta ATK% em +4% (acumula até 4×, dura 2 turnos). A experiência em mil batalhas se traduz em crescimento constante em combate." },
     },
     constellations:[
-      { name:"Cicatriz do Caminho",        type:"crit_rate_up",  value:5,  description:"Crit Rate +5%. Cada inimigo derrotado durante a batalha concede +2% Crit Rate permanente (máx +10% acumulado)." },
+      { name:"Cicatriz do Caminho",        type:"cr_up",  value:5,  description:"Crit Rate +5%. Cada inimigo derrotado durante a batalha concede +2% Crit Rate permanente (máx +10% acumulado)." },
       { name:"Lâmina Afiada pela Jornada", type:"atk_up",        value:12, description:"ATK% +12%. Ataques básicos passam a ter 20% de chance de aplicar Bleed por 2 turnos automaticamente." },
       { name:"Rastro de Sangue",           type:"dot_dmg_up",    value:30, description:"Dano de Bleed e Shatter +30%. Inimigos com Bleed ativo recebem +15% de dano de todas as fontes." },
-      { name:"Impulso Selvagem",           type:"skill_mult_up", value:20, description:"Multiplicador da Skill +20%. Quando a Skill crítica, regenera 15 de energia imediatamente." },
+      { name:"Impulso Selvagem",           type:"skill_up", value:20, description:"Multiplicador da Skill +20%. Quando a Skill crítica, regenera 15 de energia imediatamente." },
       { name:"Instinto Afiado",            type:"break_up",      value:25, description:"Break Effect +25%. Quando o inimigo entra em estado Quebrado, o Mochileiro causa um Shatter gratuito sem custo de turno." },
-      { name:"Corte Final do Nômade",      type:"ult_mult_up",   value:35, description:"Ult +35% de dano. Os 3 hits do Ult agora aplicam Bleed individual — até 3 stacks simultâneos no mesmo inimigo." },
+      { name:"Corte Final do Nômade",      type:"ult_up",   value:35, description:"Ult +35% de dano. Os 3 hits do Ult agora aplicam Bleed individual — até 3 stacks simultâneos no mesmo inimigo." },
     ],
   },
 
@@ -2201,12 +2201,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Médica de Campo",        description:"Toda vez que um aliado receberia um golpe fatal, Sakura intervém e cura 20% do HP máximo desse aliado (1× por batalha por aliado)." },
     },
     constellations:[
-      { name:"Pétala do Primeiro Selo",    type:"heal_bonus_up", value:10, description:"Heal Bonus +10%. A cura do Ult agora também remove 1 DOT de cada aliado ao ser ativada." },
+      { name:"Pétala do Primeiro Selo",    type:"heal_up", value:10, description:"Heal Bonus +10%. A cura do Ult agora também remove 1 DOT de cada aliado ao ser ativada." },
       { name:"Punho que Protege",          type:"hp_up",         value:15, description:"HP% +15%. O escudo da Skill passa a durar 2 turnos e se estende para um segundo aliado além do com menos HP." },
       { name:"Chakra Refinado",            type:"er_up",         value:20, description:"Energy Recharge +20%. Após usar o Ult, Sakura regenera 20 de energia automaticamente no turno seguinte." },
       { name:"Flor da Determinação",       type:"crit_rate_buff",value:10, description:"O buff de Crit Rate do Ult aumenta de +15% para +25% e passa a durar 3 turnos em vez de 2." },
-      { name:"Cem Selos Completos",        type:"heal_bonus_up", value:20, description:"Heal Bonus +20%. A cura escala inversamente com o HP atual do aliado: aliados abaixo de 30% HP recebem até +50% de cura." },
-      { name:"Haruno Imparável",           type:"ult_mult_up",   value:0,  description:"O Ult ressuscita o primeiro aliado morto com 30% HP (1× por batalha). A cura geral de todas as fontes de Sakura aumenta +30%." },
+      { name:"Cem Selos Completos",        type:"heal_up", value:20, description:"Heal Bonus +20%. A cura escala inversamente com o HP atual do aliado: aliados abaixo de 30% HP recebem até +50% de cura." },
+      { name:"Haruno Imparável",           type:"ult_up",   value:0,  description:"O Ult ressuscita o primeiro aliado morto com 30% HP (1× por batalha). A cura geral de todas as fontes de Sakura aumenta +30%." },
     ],
   },
 
@@ -2215,7 +2215,7 @@ const CHAR_PRESETS = {
     charRole:"sub_dps", rarity:5, element:"fire", weaponType:"Espada",
     dotEffects:["burn"],
     scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS de fogo. Priorize ATK%→ER→Crit. Alta ER para Ults frequentes que bufam o time." },
-    suggestedStats:{ hp:13000, atk:1500, def:680, atkPct:20, critRate:10, critDmg:50, energyRecharge:130, spd:102, elementalMastery:60, breakEffect:0, elementBonus:{fire:15}, healBonus:0 },
+    suggestedStats:{ hp:13000, atk:1500, def:680, atkPct:20, critRate:10, critDmg:50, energyRecharge:130, spd:102, elementalMastery:60, breakEffect:0, elementBonus:{fire:32}, healBonus:0 },
     skills:{
       basic:{   name:"Corte New Shadow",         mult:1.0, hits:1, energyCost:0,   scale:"atk", description:"A técnica básica da New Shadow Style — rápida, direta e com maldição de fogo na lâmina." },
       charged:{ name:"Chama Revelada",           mult:1.6, hits:2, energyCost:0,   scale:"atk", description:"Dois cortes de fogo com 40% de chance de aplicar Burn por 2 turnos em cada hit." },
@@ -2225,10 +2225,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Primeira Lição da Sombra",   type:"fire_dmg_up",   value:10, description:"Dano de Fogo +10%. Burn agora causa dano no turno do portador também — não apenas no turno do inimigo." },
       { name:"Chama do Juramento",         type:"atk_up",        value:12, description:"ATK% +12%. Ao aplicar Burn com sucesso, Kusakabe ganha +8% Crit Rate temporário por 2 turnos." },
-      { name:"New Shadow — Forma Oculta",  type:"skill_mult_up", value:25, description:"Dano da Skill +25%. A Chama Revelada passa a ter 2 hits garantidos e ambos podem aplicar Burn independentemente." },
+      { name:"New Shadow — Forma Oculta",  type:"skill_up", value:25, description:"Dano da Skill +25%. A Chama Revelada passa a ter 2 hits garantidos e ambos podem aplicar Burn independentemente." },
       { name:"Soldado da Chama",           type:"er_up",         value:15, description:"ER +15%. O buff de ATK do Ult aumenta de +15% para +22% e inclui +10% de Dano Elemental de Fogo." },
-      { name:"Kata Perfeita",              type:"crit_dmg_up",   value:20, description:"Crit DMG +20%. Se o Ult crítico, o buff do time dura 3 turnos em vez de 2 e o bônus de ATK aumenta +5%." },
-      { name:"Mestre da New Shadow Style", type:"ult_mult_up",   value:40, description:"Ult +40% de dano. Após o Ult, Kusakabe entra em modo Chama por 2 turnos: todos os ataques ganham +25% DMG de Fogo e Burn se propaga." },
+      { name:"Kata Perfeita",              type:"cd_up",   value:20, description:"Crit DMG +20%. Se o Ult crítico, o buff do time dura 3 turnos em vez de 2 e o bônus de ATK aumenta +5%." },
+      { name:"Mestre da New Shadow Style", type:"ult_up",   value:40, description:"Ult +40% de dano. Após o Ult, Kusakabe entra em modo Chama por 2 turnos: todos os ataques ganham +25% DMG de Fogo e Burn se propaga." },
     ],
   },
 
@@ -2237,7 +2237,7 @@ const CHAR_PRESETS = {
     charRole:"sub_dps", rarity:5, element:"wind", weaponType:"Espada",
     dotEffects:["void"],
     scale:{ primary:"atk", secondary:"energy", desc:"Sub-DPS versátil. Alta SPD para agir mais vezes. ER para rotação de Ults frequentes." },
-    suggestedStats:{ hp:13500, atk:1550, def:640, atkPct:22, critRate:10, critDmg:50, energyRecharge:140, spd:110, elementalMastery:60, breakEffect:15, elementBonus:{wind:12}, healBonus:0 },
+    suggestedStats:{ hp:13500, atk:1550, def:640, atkPct:22, critRate:10, critDmg:50, energyRecharge:140, spd:110, elementalMastery:60, breakEffect:15, elementBonus:{wind:28}, healBonus:0 },
     skills:{
       basic:{   name:"Rasengan Mini",           mult:1.1, hits:1, energyCost:0,   scale:"atk", description:"Versão compacta do Rasengan — rápida como a velocidade do Modo Sennin. Dano de vento concentrado." },
       charged:{ name:"Lança de Sábio",          mult:1.7, hits:2, energyCost:0,   scale:"atk", description:"Naruto incorpora chakra da natureza em uma lança dupla. Aplica Void com 20% de chance." },
@@ -2247,10 +2247,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Primeiro Passo do Sennin",   type:"spd_up",        value:8,  description:"SPD +8. O buff de SPD do Ult aumenta de +20% para +28% do time inteiro." },
       { name:"Chakra Expandido",           type:"er_up",         value:18, description:"ER +18%. Após usar o Ult, o próximo ataque básico é garantido crítico independente da Crit Rate." },
-      { name:"Rasengan Amplificado",       type:"skill_mult_up", value:22, description:"Dano da Skill +22%. A Lança de Sábio passa a regenerar +5 de energia além do normal ao acertar." },
+      { name:"Rasengan Amplificado",       type:"skill_up", value:22, description:"Dano da Skill +22%. A Lança de Sábio passa a regenerar +5 de energia além do normal ao acertar." },
       { name:"Amigos de Todos os Mundos",  type:"atk_buff_team", value:10, description:"O Ult agora também aumenta ATK% do time em +10% além do bônus de SPD já existente." },
-      { name:"Modo Sennin Perfeito",       type:"crit_rate_up",  value:8,  description:"Crit Rate +8% enquanto em Modo Sennin ativo. Void aplicado pela Skill dura +1 turno extra." },
-      { name:"Rasenshuriken Supremo",      type:"ult_mult_up",   value:50, description:"Ult +50% de dano. O Rasenshuriken ricocheteia — se o inimigo principal morrer, 60% do dano restante vai para o próximo alvo." },
+      { name:"Modo Sennin Perfeito",       type:"cr_up",  value:8,  description:"Crit Rate +8% enquanto em Modo Sennin ativo. Void aplicado pela Skill dura +1 turno extra." },
+      { name:"Rasenshuriken Supremo",      type:"ult_up",   value:50, description:"Ult +50% de dano. O Rasenshuriken ricocheteia — se o inimigo principal morrer, 60% do dano restante vai para o próximo alvo." },
     ],
   },
 
@@ -2267,12 +2267,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Médica do Jujutsu",               description:"Enquanto qualquer aliado estiver abaixo de 50% HP, Shoko ganha +20% Heal Bonus permanentemente durante essa batalha." },
     },
     constellations:[
-      { name:"Técnica Inata — Inversão",   type:"heal_bonus_up", value:12, description:"Heal Bonus +12%. A cura básica passa a atingir os 2 aliados com menos HP simultaneamente." },
+      { name:"Técnica Inata — Inversão",   type:"heal_up", value:12, description:"Heal Bonus +12%. A cura básica passa a atingir os 2 aliados com menos HP simultaneamente." },
       { name:"Cigarro e Determinação",     type:"er_up",         value:20, description:"ER +20%. Após usar o Ult, Shoko regenera 25 de energia automaticamente no turno seguinte." },
       { name:"Cura Contínua",             type:"hp_up",         value:15, description:"HP% +15%. A Skill Charged passa a curar também o aliado com maior DEF na linha de frente." },
-      { name:"Inversão Refinada",          type:"heal_bonus_up", value:18, description:"Heal Bonus +18%. Shoko pode usar a Charged sem custo de turno se qualquer aliado estiver abaixo de 25% HP." },
+      { name:"Inversão Refinada",          type:"heal_up", value:18, description:"Heal Bonus +18%. Shoko pode usar a Charged sem custo de turno se qualquer aliado estiver abaixo de 25% HP." },
       { name:"Olhos que Veem a Vida",      type:"dot_cleanse",   value:0,  description:"O Ult remove TODOS os DOTs do time (antes removia apenas 1). A cura total do Ult aumenta +15%." },
-      { name:"A Melhor Médica",            type:"ult_mult_up",   value:0,  description:"O Ult ressuscita o último aliado morto com 40% HP (1× por batalha). O Heal Bonus de Shoko é dobrado durante a ressurreição." },
+      { name:"A Melhor Médica",            type:"ult_up",   value:0,  description:"O Ult ressuscita o último aliado morto com 40% HP (1× por batalha). O Heal Bonus de Shoko é dobrado durante a ressurreição." },
     ],
   },
 
@@ -2291,12 +2291,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Nen de Transformação",               description:"A cada hit crítico, +3% Crit Rate (acumula até 5×). Após 5 acúmulos, o próximo ataque causa +50% de dano." },
     },
     constellations:[
-      { name:"Assassino desde a Infância",  type:"crit_rate_up",  value:5,  description:"Crit Rate +5%. Ao entrar em combate, +5 SPD durante os primeiros 3 turnos da batalha." },
+      { name:"Assassino desde a Infância",  type:"cr_up",  value:5,  description:"Crit Rate +5%. Ao entrar em combate, +5 SPD durante os primeiros 3 turnos da batalha." },
       { name:"Raio que não Perdoa",         type:"lightning_dmg", value:12, description:"Dano de Relâmpago +12%. Electro aplicado causa +20% de dano no turno seguinte ao aplicar." },
       { name:"Velocidade Inumana",          type:"spd_up",        value:10, description:"SPD +10. O buff de SPD do Ult dura 3 turnos em vez de 2." },
-      { name:"God Speed — Nível 2",         type:"skill_mult_up", value:20, description:"Dano da Skill +20%. O Thunderbolt passa de 3 para 4 hits de relâmpago." },
+      { name:"God Speed — Nível 2",         type:"skill_up", value:20, description:"Dano da Skill +20%. O Thunderbolt passa de 3 para 4 hits de relâmpago." },
       { name:"Narukami Perfeito",           type:"break_up",      value:20, description:"Break Effect +20%. Cada hit do Ult tem 30% de chance de aplicar Electro individualmente." },
-      { name:"Zoldyck Supremo",             type:"ult_mult_up",   value:30, description:"Ult +30% de dano. Killua age novamente imediatamente após o Ult (turno duplo bônus, 1× por batalha)." },
+      { name:"Zoldyck Supremo",             type:"ult_up",   value:30, description:"Ult +30% de dano. Killua age novamente imediatamente após o Ult (turno duplo bônus, 1× por batalha)." },
     ],
   },
 
@@ -2305,7 +2305,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:4, element:"fire", weaponType:"Espada",
     dotEffects:["burn"],
     scale:{ primary:"atk", secondary:"elemental", desc:"DPS agressivo de fogo com Burn. Alta SPD e ATK. Priorize ATK%→Crit→EM para maximizar DOTs." },
-    suggestedStats:{ hp:10500, atk:1350, def:560, atkPct:25, critRate:10, critDmg:50, energyRecharge:108, spd:115, elementalMastery:50, breakEffect:10, elementBonus:{fire:14}, healBonus:0 },
+    suggestedStats:{ hp:10500, atk:1350, def:560, atkPct:25, critRate:10, critDmg:50, energyRecharge:108, spd:115, elementalMastery:50, breakEffect:10, elementBonus:{fire:36}, healBonus:0 },
     skills:{
       basic:{   name:"Kick de Fogo",                  mult:1.0, hits:1, energyCost:0,   scale:"atk", description:"O Diable Jambe básico — a perna de Sanji incandescente corta como faca." },
       charged:{ name:"Diable Jambe — Flambage Shot",  mult:1.9, hits:2, energyCost:0,   scale:"atk", description:"Golpe rotacional de Sanji — 2 chutes de fogo com Burn garantido por 2 turnos." },
@@ -2315,10 +2315,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"All Blue — Cozinheiro Perfeito",     type:"fire_dmg_up",  value:10, description:"Dano de Fogo +10%. Burn dura +1 turno em todos os ataques de Sanji." },
       { name:"Diable Jambe — Aquecimento",         type:"atk_up",       value:12, description:"ATK% +12%. Ao aplicar Burn, Sanji ganha +10% Crit DMG por 2 turnos." },
-      { name:"Perna que Não Esfria",               type:"skill_mult_up",value:22, description:"Dano da Skill +22%. O Flambage Shot passa a ter 3 hits e o terceiro tem 50% de chance de 2 stacks de Burn." },
+      { name:"Perna que Não Esfria",               type:"skill_up",value:22, description:"Dano da Skill +22%. O Flambage Shot passa a ter 3 hits e o terceiro tem 50% de chance de 2 stacks de Burn." },
       { name:"Chefe da Cozinha de Batalha",        type:"em_up",        value:30, description:"EM +30. O buff de EM do Ult sobe de +15% para +25% e dura 3 turnos." },
-      { name:"Ifrit — Primeira Chama",             type:"crit_dmg_up",  value:18, description:"Crit DMG +18%. O Ult garante crítico automaticamente se o inimigo tiver Burn ativo." },
-      { name:"Sanji — O Cavaleiro do Mar",         type:"ult_mult_up",  value:40, description:"Ult +40% de dano. Após o Ifrit Jambe, Sanji entra em modo Inferno por 3 turnos: todos os ataques têm AoE de fogo." },
+      { name:"Ifrit — Primeira Chama",             type:"cd_up",  value:18, description:"Crit DMG +18%. O Ult garante crítico automaticamente se o inimigo tiver Burn ativo." },
+      { name:"Sanji — O Cavaleiro do Mar",         type:"ult_up",  value:40, description:"Ult +40% de dano. Após o Ifrit Jambe, Sanji entra em modo Inferno por 3 turnos: todos os ataques têm AoE de fogo." },
     ],
   },
 
@@ -2337,10 +2337,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Sonho de Ser Rei dos Piratas", type:"hp_up",        value:15, description:"HP% +15%. O efeito de sobrevivência da Passiva ativa também quando HP abaixo de 20% (segunda vez)." },
       { name:"Gear 2 — Temperatura Máxima", type:"spd_up",       value:10, description:"SPD +10. Em Gear 2, cada hit da Charged aumenta SPD em +2 no turno atual." },
-      { name:"Punho de Borracha Expandido",  type:"skill_mult_up",value:18, description:"Dano da Skill +18%. O Jet Pistol passa a ter 4 hits e aplica Shatter no último." },
+      { name:"Punho de Borracha Expandido",  type:"skill_up",value:18, description:"Dano da Skill +18%. O Jet Pistol passa a ter 4 hits e aplica Shatter no último." },
       { name:"Capitão do Chapéu de Palha",   type:"atk_up",      value:10, description:"ATK% +10%. Enquanto Luffy estiver em campo, todos os aliados ganham +5% de ATK." },
-      { name:"Vontade do Rei — Haki",        type:"crit_rate_up",value:8,  description:"Crit Rate +8%. Luffy pode usar o Ult com 80 de energia (custo reduzido de 100 para 80)." },
-      { name:"Nika Despertado",              type:"ult_mult_up",  value:35, description:"Ult +35% de dano. O Jet Gatling agora tem 8 hits e o último é garantido crítico." },
+      { name:"Vontade do Rei — Haki",        type:"cr_up",value:8,  description:"Crit Rate +8%. Luffy pode usar o Ult com 80 de energia (custo reduzido de 100 para 80)." },
+      { name:"Nika Despertado",              type:"ult_up",  value:35, description:"Ult +35% de dano. O Jet Gatling agora tem 8 hits e o último é garantido crítico." },
     ],
   },
 
@@ -2349,7 +2349,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:4, element:"water", weaponType:"Espada",
     dotEffects:["drown"],
     scale:{ primary:"elemental", secondary:"atk", desc:"DPS de Respiração Total. EM alta maximiza dano de água. Priorize EM→ATK%→Crit." },
-    suggestedStats:{ hp:11000, atk:1200, def:580, atkPct:14, critRate:10, critDmg:50, energyRecharge:115, spd:108, elementalMastery:120, breakEffect:0, elementBonus:{water:16}, healBonus:0 },
+    suggestedStats:{ hp:11000, atk:1200, def:580, atkPct:14, critRate:10, critDmg:50, energyRecharge:115, spd:108, elementalMastery:120, breakEffect:0, elementBonus:{water:36}, healBonus:0 },
     skills:{
       basic:{   name:"Respiração da Água — 1ª Forma",             mult:1.0, hits:1,  energyCost:0,   scale:"elemental", description:"A primeira forma — golpe fluido em arco descendente. Limpa e perfeita." },
       charged:{ name:"Respiração da Água — 6ª Forma",             mult:1.8, hits:2,  energyCost:0,   scale:"elemental", description:"Tornado de Giro de Água — 2 ondas que envolvem o inimigo. 30% de aplicar Drown." },
@@ -2359,10 +2359,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Respiração da Água — Domínio", type:"water_dmg_up",value:12, description:"Dano de Água +12%. Drown causa dano por turno = 8% do EM de Tanjiro enquanto ativo." },
       { name:"Família Kamado",               type:"em_up",        value:25, description:"EM +25. O buff de EM do Ult sobe de +20% para +30% e dura 3 turnos." },
-      { name:"Marca do Sol",                 type:"crit_rate_up", value:7,  description:"Crit Rate +7%. A Respiração Total passa a ter 15 hits (eram 13)." },
-      { name:"Cheiro da Vitória",            type:"skill_mult_up",value:20, description:"Dano da Skill +20%. A 6ª Forma passa a ter 3 ondas e a chance de Drown vai para 60%." },
-      { name:"Dança do Deus do Fogo",        type:"ult_mult_up",  value:25, description:"Ult +25% dano. Após a Respiração Total, o próximo ataque é de elemento Fogo com +40% de dano." },
-      { name:"Tanjiro — Décima Quarta Forma",type:"ult_mult_up",  value:50, description:"Ult +50% adicional. A Respiração Total causa Drown em todos os hits e o último é garantido crítico com +100% Crit DMG." },
+      { name:"Marca do Sol",                 type:"cr_up", value:7,  description:"Crit Rate +7%. A Respiração Total passa a ter 15 hits (eram 13)." },
+      { name:"Cheiro da Vitória",            type:"skill_up",value:20, description:"Dano da Skill +20%. A 6ª Forma passa a ter 3 ondas e a chance de Drown vai para 60%." },
+      { name:"Dança do Deus do Fogo",        type:"ult_up",  value:25, description:"Ult +25% dano. Após a Respiração Total, o próximo ataque é de elemento Fogo com +40% de dano." },
+      { name:"Tanjiro — Décima Quarta Forma",type:"ult_up",  value:50, description:"Ult +50% adicional. A Respiração Total causa Drown em todos os hits e o último é garantido crítico com +100% Crit DMG." },
     ],
   },
 
@@ -2384,7 +2384,7 @@ const CHAR_PRESETS = {
       { name:"Nova Flame Amplificada",type:"fire_dmg_up",  value:20, description:"Dano de Fogo +20%. O Ult agora causa Burn garantido por 3 turnos." },
       { name:"Provocador Absoluto",   type:"taunt_up",     value:0,  description:"A provocação do Basic dura 2 turnos. Enquanto provocado, o inimigo tem -20% Crit Rate." },
       { name:"Evolução Suprema",      type:"hp_up",        value:20, description:"HP% +20%. O Ult passa a dar imunidade a Greymon E reduzir -30% dano dos aliados nesse turno." },
-      { name:"MetalGreymon",          type:"ult_mult_up",  value:0,  description:"O Ult causa dano = 35% do HP máximo de Greymon (ignora DEF). Após o Ult, Greymon regenera 30% do próprio HP." },
+      { name:"MetalGreymon",          type:"ult_up",  value:0,  description:"O Ult causa dano = 35% do HP máximo de Greymon (ignora DEF). Após o Ult, Greymon regenera 30% do próprio HP." },
     ],
   },
 
@@ -2402,11 +2402,11 @@ const CHAR_PRESETS = {
     },
     constellations:[
       { name:"Runa do Herói",             type:"break_up",     value:18, description:"Break Effect +18%. O Ult causa 2 stacks de Shatter além do dano principal." },
-      { name:"Lança que Corta o Destino", type:"crit_rate_up", value:7,  description:"Crit Rate +7%. O Ult é sempre crítico E causa +20% de dano se Break ≥70%." },
+      { name:"Lança que Corta o Destino", type:"cr_up", value:7,  description:"Crit Rate +7%. O Ult é sempre crítico E causa +20% de dano se Break ≥70%." },
       { name:"Velocidade de Raio",        type:"spd_up",       value:8,  description:"SPD +8. O Gáe Bolg — Avanço passa a ter 3 hits." },
       { name:"Amor Proibido",             type:"atk_up",       value:14, description:"ATK% +14%. Após o Ult, Lancer fica imune a Electro próprio por 1 turno e causa +20% dano de relâmpago." },
-      { name:"Caçador Mágico",            type:"ult_mult_up",  value:25, description:"Ult +25% dano. Ignora 50% da DEF (era 30%)." },
-      { name:"Cú Chulainn — Forma Bestial",type:"ult_mult_up", value:40, description:"Ult +40% adicional. Após o Ult, Lancer ganha 2 ataques básicos extras garantidos no mesmo turno." },
+      { name:"Caçador Mágico",            type:"ult_up",  value:25, description:"Ult +25% dano. Ignora 50% da DEF (era 30%)." },
+      { name:"Cú Chulainn — Forma Bestial",type:"ult_up", value:40, description:"Ult +40% adicional. Após o Ult, Lancer ganha 2 ataques básicos extras garantidos no mesmo turno." },
     ],
   },
 
@@ -2423,12 +2423,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Neto do Mestre do Trovão",               description:"Crit DMG +20% base permanente. Se o Ult crítico, o próximo Ult custa apenas 50 de energia." },
     },
     constellations:[
-      { name:"Primeira Forma Perfeita",  type:"crit_dmg_up",  value:15, description:"Crit DMG +15%. O Ult agora causa Electro garantido no inimigo principal." },
+      { name:"Primeira Forma Perfeita",  type:"cd_up",  value:15, description:"Crit DMG +15%. O Ult agora causa Electro garantido no inimigo principal." },
       { name:"Velocidade do Relâmpago",  type:"spd_up",       value:12, description:"SPD +12. O turno duplo do Ult agora ocorre com 75% de chance (era apenas se crítico)." },
-      { name:"Trovão que Corta Sete",    type:"ult_mult_up",  value:20, description:"Ult +20% dano. Com Electro no inimigo, o multiplicador aumenta para +40%." },
-      { name:"Legado de Jii-chan",       type:"crit_rate_up", value:8,  description:"Crit Rate +8%. A Charged garante crítico se usada após o Ult no mesmo turno." },
+      { name:"Trovão que Corta Sete",    type:"ult_up",  value:20, description:"Ult +20% dano. Com Electro no inimigo, o multiplicador aumenta para +40%." },
+      { name:"Legado de Jii-chan",       type:"cr_up", value:8,  description:"Crit Rate +8%. A Charged garante crítico se usada após o Ult no mesmo turno." },
       { name:"Zenitsu Desperto",         type:"atk_up",       value:15, description:"ATK% +15%. A Passiva agora concede também +10% Crit Rate base (além do Crit DMG)." },
-      { name:"Deus do Trovão",           type:"ult_mult_up",  value:50, description:"Ult +50% adicional. O turno duplo é garantido (não precisa de crítico). O segundo Ult tem +30% dano." },
+      { name:"Deus do Trovão",           type:"ult_up",  value:50, description:"Ult +50% adicional. O turno duplo é garantido (não precisa de crítico). O segundo Ult tem +30% dano." },
     ],
   },
 
@@ -2450,9 +2450,9 @@ const CHAR_PRESETS = {
       { name:"Manto do Cavaleiro Real",    type:"hp_up",        value:18, description:"HP% +18%. A Passiva começa a acumular a partir de 10.000 HP (era 15.000)." },
       { name:"Espada dos Dez Mandamentos", type:"break_up",     value:25, description:"Break Effect +25%. O Ult ignora 100% da DEF mesmo fora do estado Quebrado." },
       { name:"Dados Negros — Evolução",    type:"dark_dmg_up",  value:18, description:"Dano de Escuridão +18%. Darkness dura +1 turno e causa dano extra = 5% HP de Alphamon." },
-      { name:"Ouryuken Materializado",     type:"ult_mult_up",  value:15, description:"Ult passa para 55% HP de dano total. Shatter garantido após o Ult." },
-      { name:"Lorde dos Cavaleiros",       type:"crit_dmg_up",  value:20, description:"Crit DMG +20%. A Passiva acumula +5% Crit DMG por 10% HP (era +3%)." },
-      { name:"Alphamon — Forma Perfeita",  type:"ult_mult_up",  value:0,  description:"Ult passa para 60% HP como dano. Após o Ult, Alphamon regenera 20% do HP gasto no ataque." },
+      { name:"Ouryuken Materializado",     type:"ult_up",  value:15, description:"Ult passa para 55% HP de dano total. Shatter garantido após o Ult." },
+      { name:"Lorde dos Cavaleiros",       type:"cd_up",  value:20, description:"Crit DMG +20%. A Passiva acumula +5% Crit DMG por 10% HP (era +3%)." },
+      { name:"Alphamon — Forma Perfeita",  type:"ult_up",  value:0,  description:"Ult passa para 60% HP como dano. Após o Ult, Alphamon regenera 20% do HP gasto no ataque." },
     ],
   },
 
@@ -2461,7 +2461,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:5, element:"chaos", weaponType:"Adaga",
     dotEffects:["curse","burn"],
     scale:{ primary:"atk", secondary:"elemental", desc:"O DPS de maior teto do jogo. Priorize CR→CD→ATK%→EM. Devastador com Uraume no time." },
-    suggestedStats:{ hp:16000, atk:2000, def:680, atkPct:32, critRate:10, critDmg:50, energyRecharge:100, spd:118, elementalMastery:90, breakEffect:20, elementBonus:{chaos:22,fire:8}, healBonus:0 },
+    suggestedStats:{ hp:16000, atk:2000, def:680, atkPct:32, critRate:10, critDmg:50, energyRecharge:100, spd:118, elementalMastery:90, breakEffect:20, elementBonus:{chaos:42,fire:16}, healBonus:0 },
     skills:{
       basic:{   name:"Corte Divino",         mult:1.2, hits:1, energyCost:0,   scale:"atk", description:"Sukuna corta com uma das quatro mãos — casual, mas mais letal que o Ult de qualquer outro. 40% de aplicar Curse." },
       charged:{ name:"Abertura Maliciosa",   mult:2.0, hits:2, energyCost:0,   scale:"atk", description:"2 cortes que ignoram 20% da DEF. Curse garantido. +15% EM por 1 turno. O domínio se abre." },
@@ -2469,12 +2469,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Rei das Maldições",   description:"Crit Rate +8% base. Após o Ult, garante crítico nos 2 próximos ataques. Curse ativo aumenta dano recebido pelo inimigo em +20%." },
     },
     constellations:[
-      { name:"Quatro Braços, Uma Vontade",  type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. A Passiva sobe de +8% para +15% Crit Rate base. Todos os hits da Charged ignoram 30% da DEF." },
+      { name:"Quatro Braços, Uma Vontade",  type:"cr_up",  value:8,  description:"Crit Rate +8%. A Passiva sobe de +8% para +15% Crit Rate base. Todos os hits da Charged ignoram 30% da DEF." },
       { name:"Corte do Rei",               type:"atk_up",        value:15, description:"ATK% +15%. Cada vez que Curse é aplicado, +5% dano de Caos por 2 turnos (acumula até 3×)." },
-      { name:"Domínio — Abertura Máxima",  type:"skill_mult_up", value:25, description:"Dano da Skill +25%. A Charged passa a ter 3 hits e o terceiro usa EM como escala adicional." },
-      { name:"Santuário Maligno Expandido",type:"ult_mult_up",   value:20, description:"Ult +20% dano. O Malevolent Shrine agora tem AoE — 60% do dano principal atinge todos." },
+      { name:"Domínio — Abertura Máxima",  type:"skill_up", value:25, description:"Dano da Skill +25%. A Charged passa a ter 3 hits e o terceiro usa EM como escala adicional." },
+      { name:"Santuário Maligno Expandido",type:"ult_up",   value:20, description:"Ult +20% dano. O Malevolent Shrine agora tem AoE — 60% do dano principal atinge todos." },
       { name:"Cem Olhos do Rei",           type:"em_up",         value:40, description:"EM +40. Curse de Sukuna causa dano extra = 5% do EM por turno." },
-      { name:"Sukuna — Forma Completa",    type:"ult_mult_up",   value:50, description:"Ult +50% adicional. Modo Rei por 3 turnos: imune a interrupções, Crit Rate +20%, ignora 50% da DEF." },
+      { name:"Sukuna — Forma Completa",    type:"ult_up",   value:50, description:"Ult +50% adicional. Modo Rei por 3 turnos: imune a interrupções, Crit Rate +20%, ignora 50% da DEF." },
     ],
   },
 
@@ -2483,7 +2483,7 @@ const CHAR_PRESETS = {
     charRole:"sub_dps", rarity:5, element:"ice", weaponType:"Espada",
     dotEffects:["freeze"],
     scale:{ primary:"elemental", secondary:"atk", desc:"Sub-DPS de Freeze. EM alta = mais dano de gelo. Priorize EM→ATK%→Crit. Bloqueia inimigos." },
-    suggestedStats:{ hp:13000, atk:1400, def:680, atkPct:15, critRate:10, critDmg:50, energyRecharge:120, spd:112, elementalMastery:90, breakEffect:0, elementBonus:{ice:20}, healBonus:0 },
+    suggestedStats:{ hp:13000, atk:1400, def:680, atkPct:15, critRate:10, critDmg:50, energyRecharge:120, spd:112, elementalMastery:90, breakEffect:0, elementBonus:{ice:46}, healBonus:0 },
     skills:{
       basic:{   name:"Sode no Shirayuki — 1ª Dança",  mult:1.0, hits:1, energyCost:0,   scale:"elemental", description:"Arco branco que congela tudo que toca. 30% de Freeze por 1 turno." },
       charged:{ name:"Algumas Flores — 3ª Dança",    mult:1.8, hits:2, energyCost:0,   scale:"elemental", description:"Flores de gelo congelam completamente o alvo. Freeze garantido (1 turno). +10% EM ao time." },
@@ -2491,12 +2491,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Nobreza de Kuchiki",            description:"Inimigos Frozen recebem +20% dano de gelo de todos os aliados. A cada Skill usada, EM +5 permanente (acumula até 25)." },
     },
     constellations:[
-      { name:"Dança de Kuchiki",           type:"em_up",        value:20, description:"EM +20. A Passiva acumula +8 EM por Skill (era +5), cap aumenta para 40." },
-      { name:"Gelo Absoluto",              type:"ice_dmg_up",   value:15, description:"Dano de Gelo +15%. Freeze dura +1 turno em todos os ataques de Rukia." },
-      { name:"Sode no Shirayuki Desperta", type:"skill_mult_up",value:22, description:"Dano da Skill +22%. A 3ª Dança passa a ter 3 hits e o último é garantido crítico." },
-      { name:"Aristocracia do Gelo",       type:"crit_rate_up", value:8,  description:"Crit Rate +8%. Inimigos Frozen recebem +30% dano (era +20%)." },
-      { name:"Hakka — Forma Completa",     type:"ult_mult_up",  value:25, description:"Ult +25% dano. A imunidade de Rukia após o Ult estende-se para 2 turnos." },
-      { name:"Rukia — Espírito do Gelo",   type:"ult_mult_up",  value:40, description:"Ult +40% adicional. Após o Hakka, avalanche de EM: todos inimigos Frozen recebem 20% do EM de Rukia como dano." },
+      { name:"Dança de Kuchiki",           type:"em_up",       value:20,  description:"EM +20. A Passiva acumula +8 EM por Skill (era +5), cap aumenta para 40." },
+      { name:"Gelo Absoluto",              type:"ice_dmg_up",  value:15,  description:"Dano de Gelo +15%. Freeze dura +1 turno em todos os ataques de Rukia." },
+      { name:"Sode no Shirayuki Desperta", type:"skill_up",    value:22,  description:"Dano da Skill +22%. A 3ª Dança passa a ter 3 hits e o último é garantido crítico." },
+      { name:"Aristocracia do Gelo",       type:"cr_up",       value:8,   description:"Crit Rate +8%. Inimigos Frozen recebem +30% dano (era +20%)." },
+      { name:"Hakka — Forma Completa",     type:"ult_up",      value:25,  description:"Ult +25% dano. A imunidade de Rukia após o Ult estende-se para 2 turnos." },
+      { name:"Rukia — Espírito do Gelo",   type:"ult_up",      value:40,  description:"Ult +40% adicional. Após o Hakka, avalanche de EM: todos inimigos Frozen recebem 20% do EM de Rukia como dano." },
     ],
   },
 
@@ -2515,10 +2515,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Planeta Sayajin",         type:"spd_up",       value:12, description:"SPD +12. O buff de SPD do Ult sobe de +30% para +40% do time." },
       { name:"Kamehameha Aprimorado",   type:"atk_up",       value:15, description:"ATK% +15%. O Kamehameha básico passa a ter 2 hits com 30% de Electro no segundo." },
-      { name:"SSJ — Nível 2",           type:"crit_rate_up", value:8,  description:"Crit Rate +8%. Após o Ult, todos os crits têm +15% Crit DMG por 2 turnos." },
-      { name:"Poder de um Sayajin",     type:"skill_mult_up",value:20, description:"Dano da Skill +20%. A Charged passa a ter 4 hits com AoE de relâmpago no último." },
-      { name:"Instinto Superior",       type:"ult_mult_up",  value:25, description:"Ult +25% dano. O buff de ATK do time sobe de +15% para +22%." },
-      { name:"Goku — Ultra Instinct",   type:"ult_mult_up",  value:50, description:"Ult +50% adicional. Modo Ultra por 2 turnos após o Ult: esquiva automaticamente do primeiro ataque do boss." },
+      { name:"SSJ — Nível 2",           type:"cr_up", value:8,  description:"Crit Rate +8%. Após o Ult, todos os crits têm +15% Crit DMG por 2 turnos." },
+      { name:"Poder de um Sayajin",     type:"skill_up",value:20, description:"Dano da Skill +20%. A Charged passa a ter 4 hits com AoE de relâmpago no último." },
+      { name:"Instinto Superior",       type:"ult_up",  value:25, description:"Ult +25% dano. O buff de ATK do time sobe de +15% para +22%." },
+      { name:"Goku — Ultra Instinct",   type:"ult_up",  value:50, description:"Ult +50% adicional. Modo Ultra por 2 turnos após o Ult: esquiva automaticamente do primeiro ataque do boss." },
     ],
   },
 
@@ -2527,7 +2527,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:5, element:"lightning", weaponType:"Lança",
     dotEffects:["electro","curse"],
     scale:{ primary:"energy", secondary:"atk", desc:"DPS que escala por ER. Garanta 160%+ ER antes de investir em Crit. Burst devastador." },
-    suggestedStats:{ hp:15000, atk:1700, def:660, atkPct:20, critRate:10, critDmg:50, energyRecharge:165, spd:128, elementalMastery:70, breakEffect:35, elementBonus:{lightning:20}, healBonus:0 },
+    suggestedStats:{ hp:15000, atk:1700, def:660, atkPct:20, critRate:10, critDmg:50, energyRecharge:165, spd:128, elementalMastery:70, breakEffect:35, elementBonus:{lightning:30}, healBonus:0 },
     skills:{
       basic:{   name:"Raio Maldito",           mult:1.0, hits:1, energyCost:0,   scale:"atk",    description:"Relâmpago de maldição — cada toque elétrico. 35% de Electro." },
       charged:{ name:"Corpo Arma",             mult:1.8, hits:2, energyCost:0,   scale:"energy", description:"2 hits que escalam por ER. Quanto maior a ER, mais dano. Kashimo É o relâmpago." },
@@ -2537,10 +2537,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"400 Anos de Espera",          type:"er_up",        value:20, description:"ER +20%. O bônus de Crit Rate da Passiva ativa a partir de 130% ER (era 150%)." },
       { name:"Lança que Parte o Céu",       type:"lightning_dmg",value:15, description:"Dano de Relâmpago +15%. Electro causa dano por turno = 3% da ER% de Kashimo." },
-      { name:"Corpo Arma — Forma Avançada", type:"skill_mult_up",value:25, description:"Dano da Skill +25%. A Charged tem 3 hits e o bônus de ER escala +50% mais forte." },
-      { name:"Guerreiro da Era Primitiva",  type:"crit_rate_up", value:8,  description:"Crit Rate +8%. O cap de cargas de raio vai de 5 para 8, cada uma dando +5% Crit DMG." },
-      { name:"Relâmpago dos Deuses",        type:"ult_mult_up",  value:20, description:"Ult +20% dano. O multiplicador de ER% sobe de 35 para 42 por ponto. Buff de ER do time vai para +30%." },
-      { name:"Kashimo — O Último Guerreiro",type:"ult_mult_up",  value:0,  description:"Ult escala também por EM: +1.5× EM como dano adicional. Após o Ult, Kashimo age novamente com 80% do poder normal." },
+      { name:"Corpo Arma — Forma Avançada", type:"skill_up",value:25, description:"Dano da Skill +25%. A Charged tem 3 hits e o bônus de ER escala +50% mais forte." },
+      { name:"Guerreiro da Era Primitiva",  type:"cr_up", value:8,  description:"Crit Rate +8%. O cap de cargas de raio vai de 5 para 8, cada uma dando +5% Crit DMG." },
+      { name:"Relâmpago dos Deuses",        type:"ult_up",  value:20, description:"Ult +20% dano. O multiplicador de ER% sobe de 35 para 42 por ponto. Buff de ER do time vai para +30%." },
+      { name:"Kashimo — O Último Guerreiro",type:"ult_up",  value:0,  description:"Ult escala também por EM: +1.5× EM como dano adicional. Após o Ult, Kashimo age novamente com 80% do poder normal." },
     ],
   },
 
@@ -2549,7 +2549,7 @@ const CHAR_PRESETS = {
     charRole:"support", rarity:4, element:"ice", weaponType:"Cajado",
     dotEffects:["freeze"],
     scale:{ primary:"def", secondary:"er", desc:"Suporte que converte DEF em ATK para o time. DEF e ER são prioridade. ATK próprio irrelevante." },
-    suggestedStats:{ hp:17000, atk:350, def:2600, atkPct:0, critRate:10, critDmg:50, energyRecharge:175, spd:96, elementalMastery:80, breakEffect:0, elementBonus:{ice:10}, healBonus:14 },
+    suggestedStats:{ hp:17000, atk:350, def:2600, atkPct:0, critRate:10, critDmg:50, energyRecharge:175, spd:96, elementalMastery:80, breakEffect:0, elementBonus:{ice:35}, healBonus:14 },
     defToAtkConversion:0.35,
     skills:{
       basic:{   name:"Espinhos de Gelo",         mult:0.0, hits:1, energyCost:0,   scale:"def",  description:"Dano de gelo baseado em DEF (12% DEF como dano). Cristais finos e letais." },
@@ -2562,8 +2562,8 @@ const CHAR_PRESETS = {
       { name:"Fidelidade Glacial",        type:"er_up",        value:22, description:"ER +22%. Enquanto Sukuna estiver no time, Uraume regenera 5 de energia por turno automaticamente." },
       { name:"Espinhos Infinitos",        type:"ice_dmg_up",   value:15, description:"Dano de Gelo +15%. Freeze do Ult dura 2 turnos e impede o boss de usar Ult enquanto Frozen." },
       { name:"Barreira do Eterno Frio",   type:"def_up",       value:20, description:"DEF% +20%. O escudo da Charged dura 3 turnos e protege TODOS os aliados." },
-      { name:"Chuva de Cristal",          type:"ult_mult_up",  value:0,  description:"Inimigos Frozen após o Ult têm -20% DEF por 2 turnos. Buff de ATK sobe de +35% para +50% da DEF." },
-      { name:"Servo do Rei Absoluto",     type:"ult_mult_up",  value:0,  description:"O Ult buffeia Sukuna especificamente: +25% ATK e +15% Crit DMG por 3 turnos. A conversão DEF→ATK funciona permanentemente para Sukuna." },
+      { name:"Chuva de Cristal",          type:"ult_up",  value:0,  description:"Inimigos Frozen após o Ult têm -20% DEF por 2 turnos. Buff de ATK sobe de +35% para +50% da DEF." },
+      { name:"Servo do Rei Absoluto",     type:"ult_up",  value:0,  description:"O Ult buffeia Sukuna especificamente: +25% ATK e +15% Crit DMG por 3 turnos. A conversão DEF→ATK funciona permanentemente para Sukuna." },
     ],
   },
 
@@ -2572,7 +2572,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:5, element:"chaos", weaponType:"Grimório",
     dotEffects:["curse","darkness"],
     scale:{ primary:"atk", secondary:"elemental", desc:"DPS de multi-hit e Caos. Alta EM para reações. Priorize ATK%→EM→Crit." },
-    suggestedStats:{ hp:14000, atk:1800, def:620, atkPct:28, critRate:10, critDmg:50, energyRecharge:115, spd:110, elementalMastery:100, breakEffect:15, elementBonus:{chaos:22}, healBonus:0 },
+    suggestedStats:{ hp:14000, atk:1800, def:620, atkPct:28, critRate:10, critDmg:50, energyRecharge:115, spd:110, elementalMastery:100, breakEffect:15, elementBonus:{chaos:32}, healBonus:0 },
     skills:{
       basic:{   name:"Tentáculo do Olho",       mult:0.6, hits:3, energyCost:0,   scale:"atk", description:"3 hits de caos via tentáculos. 20% de Darkness em cada hit — rápidos e imprevisíveis." },
       charged:{ name:"Visão do Vazio",          mult:1.2, hits:5, energyCost:0,   scale:"atk", description:"5 hits de caos + EM. 40% de Curse por hit. O olho enxerga o vazio." },
@@ -2581,11 +2581,11 @@ const CHAR_PRESETS = {
     },
     constellations:[
       { name:"Primeiro Olho Aberto",     type:"em_up",        value:25, description:"EM +25. A Passiva aciona reações com 25% de chance (era 15%)." },
-      { name:"Tentáculos Multiplicados", type:"skill_mult_up",value:20, description:"Dano da Skill +20%. A Visão do Vazio passa a ter 6 hits." },
+      { name:"Tentáculos Multiplicados", type:"skill_up",value:20, description:"Dano da Skill +20%. A Visão do Vazio passa a ter 6 hits." },
       { name:"Caos Absoluto",            type:"chaos_dmg_up", value:18, description:"Dano de Caos +18%. Darkness e Curse causam dano extra = 6% do EM por turno." },
-      { name:"Escritura Proibida",       type:"crit_rate_up", value:8,  description:"Crit Rate +8%. O bônus de Crit Rate da Passiva sobe de +10% para +18% com 4+ hits." },
-      { name:"Olho Insaciável",          type:"ult_mult_up",  value:25, description:"Ult +25% dano. Passa a ter 10 hits (eram 8)." },
-      { name:"Lily — Visão Infinita",    type:"ult_mult_up",  value:40, description:"Ult +40% adicional. Após o Ult, cada aliado que atacar nesse turno ganha +1 hit extra de caos (= 15% EM de Lily)." },
+      { name:"Escritura Proibida",       type:"cr_up", value:8,  description:"Crit Rate +8%. O bônus de Crit Rate da Passiva sobe de +10% para +18% com 4+ hits." },
+      { name:"Olho Insaciável",          type:"ult_up",  value:25, description:"Ult +25% dano. Passa a ter 10 hits (eram 8)." },
+      { name:"Lily — Visão Infinita",    type:"ult_up",  value:40, description:"Ult +40% adicional. Após o Ult, cada aliado que atacar nesse turno ganha +1 hit extra de caos (= 15% EM de Lily)." },
     ],
   },
 
@@ -2602,12 +2602,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Diabo Primordial",                      description:"Crit DMG +25% base. Com Bleed ativo, +15% Crit DMG adicional. Cada Shatter regenera 8 de energia." },
     },
     constellations:[
-      { name:"Corrente Primordial",           type:"crit_dmg_up",  value:20, description:"Crit DMG +20%. A Passiva sobe de +25% para +35% de Crit DMG base permanente." },
+      { name:"Corrente Primordial",           type:"cd_up",  value:20, description:"Crit DMG +20%. A Passiva sobe de +25% para +35% de Crit DMG base permanente." },
       { name:"Sangue da Motosserra",          type:"break_up",     value:22, description:"Break Effect +22%. O Shatter do Ult aplica 3 stacks de Bleed simultaneamente." },
-      { name:"Giro que Apaga Diabos",         type:"skill_mult_up",value:25, description:"Dano da Skill +25%. O Giro Devastador passa a ter 4 hits e o último garante Shatter." },
+      { name:"Giro que Apaga Diabos",         type:"skill_up",value:25, description:"Dano da Skill +25%. O Giro Devastador passa a ter 4 hits e o último garante Shatter." },
       { name:"Correntes Infinitas",           type:"atk_up",       value:15, description:"ATK% +15%. A recuperação de energia por Shatter sobe de 8 para 12." },
-      { name:"Forma Plena — Despertar",       type:"ult_mult_up",  value:30, description:"Ult +30% dano. O bônus de Crit DMG do Ult sobe de +50% para +80%." },
-      { name:"Pochita — O Diabo Verdadeiro",  type:"ult_mult_up",  value:50, description:"Ult +50% adicional. Frenesi por 2 turnos: +40% Crit DMG em todos os ataques e Bleed com dano dobrado." },
+      { name:"Forma Plena — Despertar",       type:"ult_up",  value:30, description:"Ult +30% dano. O bônus de Crit DMG do Ult sobe de +50% para +80%." },
+      { name:"Pochita — O Diabo Verdadeiro",  type:"ult_up",  value:50, description:"Ult +50% adicional. Frenesi por 2 turnos: +40% Crit DMG em todos os ataques e Bleed com dano dobrado." },
     ],
   },
 
@@ -2616,7 +2616,7 @@ const CHAR_PRESETS = {
     charRole:"sub_dps", rarity:5, element:"dark", weaponType:"Espada",
     dotEffects:["darkness","void"],
     scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS de ilusão e DOTs. EM alta para reações. Priorize ATK%→EM→Crit." },
-    suggestedStats:{ hp:14000, atk:1650, def:720, atkPct:22, critRate:10, critDmg:50, energyRecharge:115, spd:112, elementalMastery:95, breakEffect:12, elementBonus:{dark:20}, healBonus:0 },
+    suggestedStats:{ hp:14000, atk:1650, def:720, atkPct:22, critRate:10, critDmg:50, energyRecharge:115, spd:112, elementalMastery:95, breakEffect:12, elementBonus:{dark:30}, healBonus:0 },
     skills:{
       basic:{   name:"Sakanade — Inversão",          mult:1.0, hits:1, energyCost:0,   scale:"atk", description:"Aroma da inversão: inverte os sentidos por 1 turno. Aplica Darkness com 30%." },
       charged:{ name:"Espelho da Ilusão",            mult:1.6, hits:2, energyCost:0,   scale:"atk", description:"Espelhos de ilusão — inimigo ataca reflexos. -15% precisão por 2 turnos. Aplica Void (25%)." },
@@ -2626,10 +2626,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"5º Esquadrão — Capitão",    type:"dark_dmg_up",  value:12, description:"Dano de Escuridão +12%. A inversão da Passiva sobe de +20% para +30% de dano." },
       { name:"Máscara Visored",           type:"em_up",        value:30, description:"EM +30. Ao usar a Skill, equipar a máscara Hollow: +20% Crit Rate por 2 turnos." },
-      { name:"Sakanade Aprimorada",       type:"skill_mult_up",value:22, description:"Dano da Skill +22%. A inversão de precisão sobe de -15% para -25% e dura 3 turnos." },
-      { name:"Espelho que Consome Almas", type:"crit_rate_up", value:8,  description:"Crit Rate +8%. Void de Shinji drena 5 energia do boss por turno." },
-      { name:"Bankai — Inversão Total",   type:"ult_mult_up",  value:25, description:"Ult +25% dano. Debuff de ATK sobe de -20% para -35% e precisão vai para -40%." },
-      { name:"O Ilusionista Supremo",     type:"ult_mult_up",  value:40, description:"Ult +40% adicional. O Bankai reflete 30% do dano que o boss causaria no time de volta ao próprio boss por 2 turnos." },
+      { name:"Sakanade Aprimorada",       type:"skill_up",value:22, description:"Dano da Skill +22%. A inversão de precisão sobe de -15% para -25% e dura 3 turnos." },
+      { name:"Espelho que Consome Almas", type:"cr_up", value:8,  description:"Crit Rate +8%. Void de Shinji drena 5 energia do boss por turno." },
+      { name:"Bankai — Inversão Total",   type:"ult_up",  value:25, description:"Ult +25% dano. Debuff de ATK sobe de -20% para -35% e precisão vai para -40%." },
+      { name:"O Ilusionista Supremo",     type:"ult_up",  value:40, description:"Ult +40% adicional. O Bankai reflete 30% do dano que o boss causaria no time de volta ao próprio boss por 2 turnos." },
     ],
   },
 
@@ -2646,12 +2646,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Rei dos Espadachins", description:"Crit Rate +6% base. No Ult, os 9 hits têm +20% Crit DMG individual. Com Bleed ativo, +10% ATK." },
     },
     constellations:[
-      { name:"Enma que Drena Haki",          type:"crit_rate_up", value:7,  description:"Crit Rate +7%. Enma drena Haki: ATK +8% permanente, em troca de 2% HP máximo por turno." },
+      { name:"Enma que Drena Haki",          type:"cr_up", value:7,  description:"Crit Rate +7%. Enma drena Haki: ATK +8% permanente, em troca de 2% HP máximo por turno." },
       { name:"Wado — Promessa de Kuina",     type:"atk_up",       value:15, description:"ATK% +15%. Após o Ult, próximo ataque básico causa +100% dano (1× por batalha)." },
-      { name:"Kitetsu — Maldição",           type:"crit_dmg_up",  value:22, description:"Crit DMG +22%. Cada crítico tem 20% de chance de causar um hit extra de dano físico." },
-      { name:"Asura — Terceiro Olho",        type:"ult_mult_up",  value:20, description:"Ult +20% dano. Asura passa a ter 12 hits (eram 9)." },
-      { name:"Santoryu Supremo",             type:"skill_mult_up",value:25, description:"Dano da Skill +25%. Tora Gari passa a ter 4 hits e o último garante Shatter além do Bleed." },
-      { name:"Futuro Rei dos Espadachins",   type:"ult_mult_up",  value:50, description:"Ult +50% adicional. Asura passa a 15 hits e os últimos 3 ignoram 100% da DEF do inimigo." },
+      { name:"Kitetsu — Maldição",           type:"cd_up",  value:22, description:"Crit DMG +22%. Cada crítico tem 20% de chance de causar um hit extra de dano físico." },
+      { name:"Asura — Terceiro Olho",        type:"ult_up",  value:20, description:"Ult +20% dano. Asura passa a ter 12 hits (eram 9)." },
+      { name:"Santoryu Supremo",             type:"skill_up",value:25, description:"Dano da Skill +25%. Tora Gari passa a ter 4 hits e o último garante Shatter além do Bleed." },
+      { name:"Futuro Rei dos Espadachins",   type:"ult_up",  value:50, description:"Ult +50% adicional. Asura passa a 15 hits e os últimos 3 ignoram 100% da DEF do inimigo." },
     ],
   },
 
@@ -2671,9 +2671,9 @@ const CHAR_PRESETS = {
       { name:"Sonho do Rei dos Piratas",   type:"spd_up",       value:15, description:"SPD +15. O buff de SPD do Ult sobe de +30% para +45% do time." },
       { name:"Gear 5 — Despertar Completo",type:"atk_up",       value:15, description:"ATK% +15%. O buff de ATK do Ult sobe de +20% para +30% e dura 3 turnos." },
       { name:"Borracha que Distorce",      type:"hp_up",        value:18, description:"HP% +18%. O efeito de sobrevivência ativa também abaixo de 20% HP (segunda vez)." },
-      { name:"Bajrang Gun Aprimorado",     type:"skill_mult_up",value:22, description:"Dano da Skill +22%. O Bajrang Gun passa a ter 2 hits com Shatter no segundo." },
-      { name:"Nika — Segunda Forma",       type:"ult_mult_up",  value:25, description:"Ult +25% dano. O debuff de Crit Rate do inimigo sobe de -25% para -40%." },
-      { name:"Luffy — O Rei dos Piratas",  type:"ult_mult_up",  value:50, description:"Ult +50% adicional. Após o Gear 5, Luffy age novamente com 60% do poder (turno bônus completo)." },
+      { name:"Bajrang Gun Aprimorado",     type:"skill_up",value:22, description:"Dano da Skill +22%. O Bajrang Gun passa a ter 2 hits com Shatter no segundo." },
+      { name:"Nika — Segunda Forma",       type:"ult_up",  value:25, description:"Ult +25% dano. O debuff de Crit Rate do inimigo sobe de -25% para -40%." },
+      { name:"Luffy — O Rei dos Piratas",  type:"ult_up",  value:50, description:"Ult +50% adicional. Após o Gear 5, Luffy age novamente com 60% do poder (turno bônus completo)." },
     ],
   },
 
@@ -2682,7 +2682,7 @@ const CHAR_PRESETS = {
     charRole:"main_dps", rarity:5, element:"physical", weaponType:"Espada",
     dotEffects:["bleed","curse"],
     scale:{ primary:"atk", secondary:"elemental", desc:"Main DPS de combos rápidos. Priorize ATK%→Crit→EM. Black Flash amplifica tudo." },
-    suggestedStats:{ hp:17000, atk:1900, def:740, atkPct:26, critRate:10, critDmg:50, energyRecharge:108, spd:124, elementalMastery:70, breakEffect:20, elementBonus:{physical:20}, healBonus:0 },
+    suggestedStats:{ hp:17000, atk:1900, def:740, atkPct:26, critRate:10, critDmg:50, energyRecharge:108, spd:124, elementalMastery:70, breakEffect:20, elementBonus:{physical:28}, healBonus:0 },
     skills:{
       basic:{   name:"Divergent Fist",      mult:1.0, hits:2, energyCost:0,   scale:"atk", description:"Soco com delay de energia maldita — o segundo pulso causa dano duplo." },
       charged:{ name:"Manji Kick",          mult:1.8, hits:3, energyCost:0,   scale:"atk", description:"2 socos e 1 chute — impossível de defender. Aplica Curse com 35%." },
@@ -2691,11 +2691,11 @@ const CHAR_PRESETS = {
     },
     constellations:[
       { name:"Corpo Maldito",               type:"atk_up",       value:14, description:"ATK% +14%. A cada rodada sem levar crítico, acumula +3% ATK (máx +15%)." },
-      { name:"Divergent Fist — Aprimorado", type:"skill_mult_up",value:20, description:"Dano da Skill +20%. O Manji Kick passa a ter 4 hits e o último é garantido crítico." },
-      { name:"Black Flash Contínuo",         type:"crit_rate_up", value:8,  description:"Crit Rate +8%. O contador da Passiva reduz de 3 para 2 ataques para ativar o Black Flash." },
+      { name:"Divergent Fist — Aprimorado", type:"skill_up",value:20, description:"Dano da Skill +20%. O Manji Kick passa a ter 4 hits e o último é garantido crítico." },
+      { name:"Black Flash Contínuo",         type:"cr_up", value:8,  description:"Crit Rate +8%. O contador da Passiva reduz de 3 para 2 ataques para ativar o Black Flash." },
       { name:"Herança de Sukuna",            type:"em_up",        value:30, description:"EM +30. Curse de Itadori escala com EM: dano extra = 8% EM por turno." },
-      { name:"Recipiente Completo",          type:"ult_mult_up",  value:25, description:"Ult +25% dano. O buff de ATK ao time sobe de +15% para +25% e dura 2 turnos." },
-      { name:"Black Flash Supremo",          type:"ult_mult_up",  value:50, description:"Ult +50% adicional. O Black Flash automático ativa a cada 1 ataque (sempre). O Ult sempre conta como Black Flash." },
+      { name:"Recipiente Completo",          type:"ult_up",  value:25, description:"Ult +25% dano. O buff de ATK ao time sobe de +15% para +25% e dura 2 turnos." },
+      { name:"Black Flash Supremo",          type:"ult_up",  value:50, description:"Ult +50% adicional. O Black Flash automático ativa a cada 1 ataque (sempre). O Ult sempre conta como Black Flash." },
     ],
   },
 
@@ -2704,7 +2704,7 @@ const CHAR_PRESETS = {
     charRole:"sub_dps", rarity:5, element:"dark", weaponType:"Adaga",
     dotEffects:["darkness","poison","curse"],
     scale:{ primary:"atk", secondary:"elemental", desc:"Sub-DPS de DOTs massivos. Dano contínuo. EM alta para mais dano de veneno. Priorize EM→ATK%→Crit." },
-    suggestedStats:{ hp:19000, atk:1600, def:800, atkPct:20, critRate:10, critDmg:50, energyRecharge:120, spd:112, elementalMastery:105, breakEffect:15, elementBonus:{dark:22}, healBonus:0 },
+    suggestedStats:{ hp:19000, atk:1600, def:800, atkPct:20, critRate:10, critDmg:50, energyRecharge:120, spd:112, elementalMastery:105, breakEffect:15, elementBonus:{dark:32}, healBonus:0 },
     skills:{
       basic:{   name:"Sangue Demoníaco",        mult:0.8, hits:1, energyCost:0,   scale:"atk", description:"Muzan injeta sangue demoníaco — veneno que começa a trabalhar imediatamente. 35% de Poison por 3 turnos." },
       charged:{ name:"Transformação Demoníaca", mult:1.4, hits:2, energyCost:0,   scale:"atk", description:"2 hits de escuridão + veneno. Aplica Darkness e Curse simultaneamente em cada hit." },
@@ -2714,10 +2714,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Imperador dos Demônios",    type:"dark_dmg_up",  value:14, description:"Dano de Escuridão +14%. A Passiva sobe para +8% por DOT (era +6%), máx vai para +24%." },
       { name:"Veneno de Mil Anos",        type:"em_up",        value:30, description:"EM +30. Poison de Muzan causa dano extra = 7% do EM por turno." },
-      { name:"Sombra Absoluta",           type:"skill_mult_up",value:20, description:"Dano da Skill +20%. A Transformação aplica 2 stacks de Poison simultaneamente." },
-      { name:"Sangue que Transforma",     type:"crit_rate_up", value:10, description:"Crit Rate +10%. Com 3 DOTs ativos, Muzan entra em Frenesi Demoníaco: +20% ATK por 2 turnos." },
-      { name:"Forma Primordial",          type:"ult_mult_up",  value:25, description:"Ult +25% dano. O buff de DOTs do time sobe de +20% para +35% e dura 4 turnos." },
-      { name:"Muzan — A Maldição Eterna", type:"ult_mult_up",  value:40, description:"Ult +40% adicional. Após o Ult, Muzan regenera HP = 5% por DOT ativo (máx 15% HP). DOTs duram +2 turnos extras." },
+      { name:"Sombra Absoluta",           type:"skill_up",value:20, description:"Dano da Skill +20%. A Transformação aplica 2 stacks de Poison simultaneamente." },
+      { name:"Sangue que Transforma",     type:"cr_up", value:10, description:"Crit Rate +10%. Com 3 DOTs ativos, Muzan entra em Frenesi Demoníaco: +20% ATK por 2 turnos." },
+      { name:"Forma Primordial",          type:"ult_up",  value:25, description:"Ult +25% dano. O buff de DOTs do time sobe de +20% para +35% e dura 4 turnos." },
+      { name:"Muzan — A Maldição Eterna", type:"ult_up",  value:40, description:"Ult +40% adicional. Após o Ult, Muzan regenera HP = 5% por DOT ativo (máx 15% HP). DOTs duram +2 turnos extras." },
     ],
   },
 
@@ -2780,7 +2780,7 @@ const CHAR_PRESETS = {
       desc:"O MELHOR DPS do jogo. Sem contestação. Priorize CR→CD→ATK%→EM." },
     suggestedStats:{ hp:15000,atk:2100,def:680,critRate:68,critDmg:145,
       energyRecharge:100,spd:122,elementalMastery:95,breakEffect:22,
-      elementBonus:{ chaos:25, fire:10 } },
+      elementBonus:{ chaos:42, fire:16 } },
     skills:{
       basic:{ name:"Lâminas Flamejantes", effect:"dmg_atk", mult:220, hits:2,
         energyCost:0, scale:"atk", dotApply:"curse", dotDuration:2,
@@ -2830,7 +2830,7 @@ const CHAR_PRESETS = {
       desc:"Sub-DPS de Freeze. Bloqueia inimigos. EM→ATK%→CR→CD." },
     suggestedStats:{ hp:12000,atk:1400,def:680,critRate:50,critDmg:100,
       energyRecharge:122,spd:115,elementalMastery:95,breakEffect:0,
-      elementBonus:{ ice:22 } },
+      elementBonus:{ ice:46 } },
     skills:{
       basic:{ name:"Corte de Gelo", effect:"dmg_elemental", mult:180, hits:1,
         energyCost:0, scale:"elemental", dotApply:"", dotDuration:0,
@@ -3337,12 +3337,12 @@ const CHAR_PRESETS = {
       passive:{  name:"General do Império",        description:"Com Freeze ativo no inimigo, todos os ataques de Esdeath ganham +25% Crit DMG. Frostbite empilha até 3× — cada stack adiciona +8% dano de gelo." },
     },
     constellations:[
-      { name:"Disciplina Absoluta",        type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Freeze dura 1 turno extra e o inimigo fica com -20% ATK após descongelar." },
+      { name:"Disciplina Absoluta",        type:"cr_up",  value:8,  description:"Crit Rate +8%. Freeze dura 1 turno extra e o inimigo fica com -20% ATK após descongelar." },
       { name:"Soldados do Gelo",           type:"ice_dmg_up",    value:15, description:"Dano de Gelo +15%. Frostbite causa dano por turno = 12% ATK de Esdeath por stack." },
-      { name:"Lança Glacial Refinada",     type:"skill_mult_up", value:28, description:"Skill +28% dano. O 3º hit da Charged ignora 20% adicional de DEF enquanto Freeze estiver ativo." },
-      { name:"Trono de Gelo",              type:"crit_dmg_up",   value:25, description:"Crit DMG +25%. Com 3 stacks de Frostbite, o próximo ataque é garantido crítico." },
-      { name:"Extinção Glaciar",           type:"ult_mult_up",   value:30, description:"Ult +30% dano. O buff de DMG Gelo do Ult sobe para +55% e dura 3 turnos." },
-      { name:"Imperadora do Fim",          type:"ult_mult_up",   value:50, description:"Ult +50% adicional. Após o Ult, Esdeath age imediatamente de novo (turno duplo) com +60% Crit DMG nesse turno extra." },
+      { name:"Lança Glacial Refinada",     type:"skill_up", value:28, description:"Skill +28% dano. O 3º hit da Charged ignora 20% adicional de DEF enquanto Freeze estiver ativo." },
+      { name:"Trono de Gelo",              type:"cd_up",   value:25, description:"Crit DMG +25%. Com 3 stacks de Frostbite, o próximo ataque é garantido crítico." },
+      { name:"Extinção Glaciar",           type:"ult_up",   value:30, description:"Ult +30% dano. O buff de DMG Gelo do Ult sobe para +55% e dura 3 turnos." },
+      { name:"Imperadora do Fim",          type:"ult_up",   value:50, description:"Ult +50% adicional. Após o Ult, Esdeath age imediatamente de novo (turno duplo) com +60% Crit DMG nesse turno extra." },
     ],
   },
 
@@ -3361,12 +3361,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Cavaleiro Supremo",          description:"Omegamon ignora resistências elementais inimigas permanentemente. Com Holy Burn ativo: +20% Crit DMG. Ao crítico, regenera 15 de energia." },
     },
     constellations:[
-      { name:"Espada Sagrada Afiada",       type:"crit_rate_up",  value:10, description:"Crit Rate +10%. O Basic ignora 25% da DEF (era 15%)." },
+      { name:"Espada Sagrada Afiada",       type:"cr_up",  value:10, description:"Crit Rate +10%. O Basic ignora 25% da DEF (era 15%)." },
       { name:"Canhão Divino",               type:"holy_dmg_up",   value:18, description:"Dano Holy +18%. Holy Burn causa dano = 18% ATK por turno (era 12%)." },
-      { name:"All Delete Amplificado",      type:"ult_mult_up",   value:25, description:"Ult +25% dano. O buff de DMG Holy do Ult sobe para +70% e dura 4 turnos." },
-      { name:"Dois Cavaleiros em Um",       type:"skill_mult_up", value:22, description:"Skill +22%. A Charged passa a ter 3 hits — o 3º é garantido crítico." },
-      { name:"Julgamento Além do Limite",   type:"crit_dmg_up",   value:30, description:"Crit DMG +30%. Com Holy Burn ativo no inimigo, Ult causa dano adicional = 20% do HP máximo inimigo (true damage)." },
-      { name:"Omega — Forma Perfeita",      type:"ult_mult_up",   value:60, description:"Ult +60% adicional. All Delete agora atinge todos os inimigos (AoE total) e remove 2 buffs de cada um. Omegamon age imediatamente após o Ult." },
+      { name:"All Delete Amplificado",      type:"ult_up",   value:25, description:"Ult +25% dano. O buff de DMG Holy do Ult sobe para +70% e dura 4 turnos." },
+      { name:"Dois Cavaleiros em Um",       type:"skill_up", value:22, description:"Skill +22%. A Charged passa a ter 3 hits — o 3º é garantido crítico." },
+      { name:"Julgamento Além do Limite",   type:"cd_up",   value:30, description:"Crit DMG +30%. Com Holy Burn ativo no inimigo, Ult causa dano adicional = 20% do HP máximo inimigo (true damage)." },
+      { name:"Omega — Forma Perfeita",      type:"ult_up",   value:60, description:"Ult +60% adicional. All Delete agora atinge todos os inimigos (AoE total) e remove 2 buffs de cada um. Omegamon age imediatamente após o Ult." },
     ],
   },
 
@@ -3404,10 +3404,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Magia Herdada de Igneel",  type:"fire_dmg_up",   value:12, description:"Dano de Fogo +12%. Burn de Natsu dura +1 turno." },
       { name:"Amigo Acima de Tudo",      type:"atk_up",        value:14, description:"ATK% +14%. Ult com aliados abaixo de 50% HP ganha +20% de dano." },
-      { name:"Rugido Amplificado",       type:"skill_mult_up", value:25, description:"Skill +25%. Rugido passa a ter 2 hits — ambos podem aplicar Burn." },
+      { name:"Rugido Amplificado",       type:"skill_up", value:25, description:"Skill +25%. Rugido passa a ter 2 hits — ambos podem aplicar Burn." },
       { name:"Fogo de Dragao Apurado",   type:"em_up",         value:35, description:"EM +35. Come Fogo ativa com qualquer ataque aliado de fogo." },
-      { name:"Modo Dragao Ampliado",     type:"ult_mult_up",   value:30, description:"Ult +30%. Os 3 hits causam Burn individual por 3 turnos cada." },
-      { name:"Filho de Igneel",          type:"ult_mult_up",   value:50, description:"Ult +50%. Em Modo Dragao, Natsu e imune a dano por 1 turno e ganha +60% Crit DMG." },
+      { name:"Modo Dragao Ampliado",     type:"ult_up",   value:30, description:"Ult +30%. Os 3 hits causam Burn individual por 3 turnos cada." },
+      { name:"Filho de Igneel",          type:"ult_up",   value:50, description:"Ult +50%. Em Modo Dragao, Natsu e imune a dano por 1 turno e ganha +60% Crit DMG." },
     ],
   },
 
@@ -3428,10 +3428,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Samehada Faminta",          type:"break_up",      value:15, description:"Break Effect +15%. Samehada drena +15 de energia por hit (era 10)." },
       { name:"Parceiro de Itachi",        type:"atk_up",        value:12, description:"ATK% +12%. Com Manavoid ativo, Kisame ganha +12% Crit Rate." },
-      { name:"Esfera Ampliada",           type:"skill_mult_up", value:20, description:"Skill +20%. Esfera de Tubarao passa a ter 3 hits — o 3 aplica Drown garantido." },
+      { name:"Esfera Ampliada",           type:"skill_up", value:20, description:"Skill +20%. Esfera de Tubarao passa a ter 3 hits — o 3 aplica Drown garantido." },
       { name:"Fusao Total",               type:"water_dmg_up",  value:12, description:"Dano de Agua +12%. Na fusao, Kisame ganha +20% de todos os stats por 2 turnos." },
-      { name:"Tubarao Supremo",           type:"ult_mult_up",   value:25, description:"Ult +25%. Passa a ter 4 hits, cada um com 35% de chance de Drown." },
-      { name:"O Monstro das Nuvens",      type:"ult_mult_up",   value:40, description:"Ult +40%. Com 4 stacks de ATK da Passiva, causa dano extra = 20% do proprio HP maximo (true damage)." },
+      { name:"Tubarao Supremo",           type:"ult_up",   value:25, description:"Ult +25%. Passa a ter 4 hits, cada um com 35% de chance de Drown." },
+      { name:"O Monstro das Nuvens",      type:"ult_up",   value:40, description:"Ult +40%. Com 4 stacks de ATK da Passiva, causa dano extra = 20% do proprio HP maximo (true damage)." },
     ],
   },
 
@@ -3451,9 +3451,9 @@ const CHAR_PRESETS = {
       { name:"Amor de Fairy Tail",        type:"hp_up",         value:15, description:"HP% +15%. Escudo da Charged sobe para 20% HP de Juvia." },
       { name:"Chuva Constante",           type:"er_up",         value:18, description:"ER +18%. Apos o Ult, regenera 15 de energia a cada aliado." },
       { name:"Armadura Aprimorada",       type:"shield_up",     value:20, description:"Escudo +20%. A Charged tambem aplica Drown com 50% de chance." },
-      { name:"Guarda do Gray",            type:"heal_bonus_up", value:15, description:"Heal Bonus +15%. Passiva ativa com qualquer aliado (nao so fisico)." },
-      { name:"Chuva Eterna Ampliada",     type:"ult_mult_up",   value:0,  description:"Cura do Ult sobe para 26% HP. Escudo dura 3 turnos. Buff de agua sobe para +22%." },
-      { name:"Corpo d Agua",              type:"ult_mult_up",   value:0,  description:"Apos o Ult, Juvia e imune a dano por 1 turno. Ao voltar, explode causando dano = 28% HP em todos os inimigos." },
+      { name:"Guarda do Gray",            type:"heal_up", value:15, description:"Heal Bonus +15%. Passiva ativa com qualquer aliado (nao so fisico)." },
+      { name:"Chuva Eterna Ampliada",     type:"ult_up",   value:0,  description:"Cura do Ult sobe para 26% HP. Escudo dura 3 turnos. Buff de agua sobe para +22%." },
+      { name:"Corpo d Agua",              type:"ult_up",   value:0,  description:"Apos o Ult, Juvia e imune a dano por 1 turno. Ao voltar, explode causando dano = 28% HP em todos os inimigos." },
     ],
   },
 
@@ -3473,11 +3473,11 @@ const CHAR_PRESETS = {
     },
     constellations:[
       { name:"Filha do Kazekage",         type:"wind_dmg_up",   value:12, description:"Dano de Vento +12%. Void de Temari reduz SPD em 35% (era 25%)." },
-      { name:"Kamatari Evoluido",         type:"skill_mult_up", value:22, description:"Skill +22%. Kamatari passa a ter 3 cortes — o 3 ignora 20% da DEF." },
-      { name:"Leque Reforcado",           type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Ult passa a ter 2 hits e o 2 e garantido critico." },
+      { name:"Kamatari Evoluido",         type:"skill_up", value:22, description:"Skill +22%. Kamatari passa a ter 3 cortes — o 3 ignora 20% da DEF." },
+      { name:"Leque Reforcado",           type:"cr_up",  value:8,  description:"Crit Rate +8%. Ult passa a ter 2 hits e o 2 e garantido critico." },
       { name:"Irma de Gaara",             type:"atk_up",        value:14, description:"ATK% +14%. Com Gaara no time, +15% DMG vento adicional para Temari." },
-      { name:"Tempestade de Areia",       type:"ult_mult_up",   value:30, description:"Ult +30%. Reducao de DEF sobe para 30% e dura 4 turnos." },
-      { name:"Vento da Aldeia da Areia",  type:"ult_mult_up",   value:50, description:"Ult +50%. Apos o Ult, Temari invoca Kamatari por 2 turnos automaticamente — 40% ATK de dano por turno." },
+      { name:"Tempestade de Areia",       type:"ult_up",   value:30, description:"Ult +30%. Reducao de DEF sobe para 30% e dura 4 turnos." },
+      { name:"Vento da Aldeia da Areia",  type:"ult_up",   value:50, description:"Ult +50%. Apos o Ult, Temari invoca Kamatari por 2 turnos automaticamente — 40% ATK de dano por turno." },
     ],
   },
 
@@ -3496,10 +3496,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Tessaiga Transformada",     type:"wind_dmg_up",   value:10, description:"Dano de Vento +10%. Kaze no Kizu ignora 35% da DEF (era 25%)." },
       { name:"Modo Yokai Liberado",       type:"atk_up",        value:12, description:"ATK% +12%. Modo Yokai ativa com menos de 55% HP (era 40%)." },
-      { name:"Sankon Tesso Aprimorado",   type:"skill_mult_up", value:20, description:"Skill +20%. Sankon Tesso passa a ter 4 hits — o 4 aplica Void garantido." },
-      { name:"Meio Demonio Orgulhoso",    type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Em modo Yokai, Crit Rate adicional +12%." },
-      { name:"Kaze no Kizu Supremo",      type:"ult_mult_up",   value:25, description:"Ult +25%. Void do Ult reduz SPD inimiga em 35%." },
-      { name:"Bakuryuha",                 type:"ult_mult_up",   value:40, description:"Ult +40%. Apos o Ult, Inuyasha reflete 30% do dano recebido no proximo turno de volta ao inimigo como dano de vento." },
+      { name:"Sankon Tesso Aprimorado",   type:"skill_up", value:20, description:"Skill +20%. Sankon Tesso passa a ter 4 hits — o 4 aplica Void garantido." },
+      { name:"Meio Demonio Orgulhoso",    type:"cr_up",  value:8,  description:"Crit Rate +8%. Em modo Yokai, Crit Rate adicional +12%." },
+      { name:"Kaze no Kizu Supremo",      type:"ult_up",   value:25, description:"Ult +25%. Void do Ult reduz SPD inimiga em 35%." },
+      { name:"Bakuryuha",                 type:"ult_up",   value:40, description:"Ult +40%. Apos o Ult, Inuyasha reflete 30% do dano recebido no proximo turno de volta ao inimigo como dano de vento." },
     ],
   },
 
@@ -3520,10 +3520,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Areia do Deserto",          type:"def_up",        value:15, description:"DEF +15%. Erosion de Gaara reduz DEF inimiga em -10% por stack (era -8%)." },
       { name:"Kazekage da Areia",         type:"earth_dmg_up",  value:14, description:"Dano de Terra +14%. Com 4 stacks de Erosion, proximo ataque ignora 50% da DEF." },
-      { name:"Caixao Aprimorado",         type:"skill_mult_up", value:22, description:"Skill +22%. Cercado passa a ter 3 hits — o 3 aplica Erosion adicional." },
+      { name:"Caixao Aprimorado",         type:"skill_up", value:22, description:"Skill +22%. Cercado passa a ter 3 hits — o 3 aplica Erosion adicional." },
       { name:"Protecao da Mae Areia",     type:"hp_up",         value:15, description:"HP% +15%. Reducao de dano da Passiva sobe para 28%." },
-      { name:"Kazekage Supremo",          type:"ult_mult_up",   value:28, description:"Ult +28%. Break sobe para +65%. Shatter causa dano extra = 20% da DEF de Gaara." },
-      { name:"Gaara — Quinto Kazekage",   type:"ult_mult_up",   value:45, description:"Ult +45%. Com 4 stacks de Erosion, o Ult ignora resistencias e causa dano extra = 35% da DEF. Apos o Ult, Gaara regenera 25% do proprio HP." },
+      { name:"Kazekage Supremo",          type:"ult_up",   value:28, description:"Ult +28%. Break sobe para +65%. Shatter causa dano extra = 20% da DEF de Gaara." },
+      { name:"Gaara — Quinto Kazekage",   type:"ult_up",   value:45, description:"Ult +45%. Com 4 stacks de Erosion, o Ult ignora resistencias e causa dano extra = 35% da DEF. Apos o Ult, Gaara regenera 25% do proprio HP." },
     ],
   },
 
@@ -3542,10 +3542,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Gigante da Aldeia das Fadas",type:"hp_up",        value:15, description:"HP% +15%. Escudo da Charged sobe para 20% HP de Diane." },
       { name:"Shesher Dominado",          type:"def_up",        value:15, description:"DEF +15%. A reducao de dano da Passiva sobe para 30%." },
-      { name:"Gideon Refinado",           type:"ult_mult_up",   value:22, description:"Ult +22%. A cura sobe para 28% HP. DEF buff do time sobe para +25%." },
+      { name:"Gideon Refinado",           type:"ult_up",   value:22, description:"Ult +22%. A cura sobe para 28% HP. DEF buff do time sobe para +25%." },
       { name:"Amor pelo Meliodas",        type:"hp_up",         value:18, description:"HP% +18%. Contra-ataque da Passiva passa a ocorrer com 65% de chance." },
-      { name:"Gigante Evoluida",          type:"ult_mult_up",   value:28, description:"Ult +28%. Com Shatter e Erosion simultaneos, dano adicional = 18% HP de Diane." },
-      { name:"Diane — Serpente do Pecado",type:"ult_mult_up",   value:0,  description:"Apos o Ult, Diane e imune a dano por 1 turno. O contra-ataque da Passiva passa a causar dano = 80% HP de Diane (ignorando DEF inimiga)." },
+      { name:"Gigante Evoluida",          type:"ult_up",   value:28, description:"Ult +28%. Com Shatter e Erosion simultaneos, dano adicional = 18% HP de Diane." },
+      { name:"Diane — Serpente do Pecado",type:"ult_up",   value:0,  description:"Apos o Ult, Diane e imune a dano por 1 turno. O contra-ataque da Passiva passa a causar dano = 80% HP de Diane (ignorando DEF inimiga)." },
     ],
   },
 
@@ -3566,10 +3566,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Pecado da Avareza",         type:"atk_up",        value:14, description:"ATK% +14%. Snatch cura 15% do dano causado (era 10%)." },
       { name:"Elaine Protegida",          type:"hp_up",         value:15, description:"HP% +15%. A ressurreicao da Passiva passa a ocorrer com 50% HP (era 30%)." },
-      { name:"Physical Hunt Supremo",     type:"skill_mult_up", value:22, description:"Skill +22%. Physical Hunt passa a ter 4 hits — o 4 drena 20 de energia do inimigo." },
+      { name:"Physical Hunt Supremo",     type:"skill_up", value:22, description:"Skill +22%. Physical Hunt passa a ter 4 hits — o 4 drena 20 de energia do inimigo." },
       { name:"Fonte Sagrada Dominada",    type:"nature_dmg_up", value:14, description:"Dano de Natureza +14%. A cura do Ult sobe para 55% do dano causado." },
-      { name:"Banishing Kill Aprimorado", type:"ult_mult_up",   value:28, description:"Ult +28%. Bloodpact converte 130% de qualquer cura inimiga em dano." },
-      { name:"Ban — O Imortal",           type:"ult_mult_up",   value:45, description:"Ult +45%. A Passiva ativa 2 vezes por batalha. Apos ressuscitar, Ban entra em Furia — +40% ATK e +30% DMG Natureza por 3 turnos." },
+      { name:"Banishing Kill Aprimorado", type:"ult_up",   value:28, description:"Ult +28%. Bloodpact converte 130% de qualquer cura inimiga em dano." },
+      { name:"Ban — O Imortal",           type:"ult_up",   value:45, description:"Ult +45%. A Passiva ativa 2 vezes por batalha. Apos ressuscitar, Ban entra em Furia — +40% ATK e +30% DMG Natureza por 3 turnos." },
     ],
   },
 
@@ -3588,10 +3588,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Lamina Envenenada",         type:"nature_dmg_up", value:10, description:"Dano de Natureza +10%. Poison de Shinobu dura +1 turno." },
       { name:"Borboleta da Morte",        type:"em_up",         value:28, description:"EM +28. Withering reduz curas em 85% (era 70%)." },
-      { name:"Danca Refinada",            type:"skill_mult_up", value:20, description:"Skill +20%. A Charged passa a ter 4 hits — o 4 aplica Poison e Withering simultaneamente." },
-      { name:"Veneno Fatal",              type:"crit_rate_up",  value:8,  description:"Crit Rate +8%. Dano passivo de Poison sobe para 12% EM por turno." },
-      { name:"Forma Final Aprimorada",    type:"ult_mult_up",   value:25, description:"Ult +25%. Com Poison E Withering simultaneos, dano adicional = 12% HP maximo inimigo." },
-      { name:"Pilar Inseto",              type:"ult_mult_up",   value:40, description:"Ult +40%. Apos o Ult, Shinobu aplica Poison automaticamente a cada turno por 3 turnos sem precisar atacar." },
+      { name:"Danca Refinada",            type:"skill_up", value:20, description:"Skill +20%. A Charged passa a ter 4 hits — o 4 aplica Poison e Withering simultaneamente." },
+      { name:"Veneno Fatal",              type:"cr_up",  value:8,  description:"Crit Rate +8%. Dano passivo de Poison sobe para 12% EM por turno." },
+      { name:"Forma Final Aprimorada",    type:"ult_up",   value:25, description:"Ult +25%. Com Poison E Withering simultaneos, dano adicional = 12% HP maximo inimigo." },
+      { name:"Pilar Inseto",              type:"ult_up",   value:40, description:"Ult +40%. Apos o Ult, Shinobu aplica Poison automaticamente a cada turno por 3 turnos sem precisar atacar." },
     ],
   },
 
@@ -3612,10 +3612,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Plano dos 100 Anos",        type:"chaos_dmg_up",  value:12, description:"Dano de Caos +12%. Timerot remove 2 turnos dos buffs inimigos por tick (era 1)." },
       { name:"Kyoka Suigetsu Perfeito",   type:"atk_up",        value:14, description:"ATK% +14%. Spectral aumenta miss para 55% (era 40%)." },
-      { name:"Transcendencia Refinada",   type:"ult_mult_up",   value:22, description:"Ult +22%. Buff de time sobe para +35% DMG Caos por 4 turnos." },
+      { name:"Transcendencia Refinada",   type:"ult_up",   value:22, description:"Ult +22%. Buff de time sobe para +35% DMG Caos por 4 turnos." },
       { name:"Acima dos Deuses",          type:"er_up",         value:18, description:"ER +18%. A Passiva estende buffs aliados em +2 turnos ao usar o Ult." },
-      { name:"Ilusao Suprema",            type:"skill_mult_up", value:20, description:"Skill +20%. A Charged passa a ter 3 hits — o 3 aplica Timerot garantido." },
-      { name:"Aizen — Rei do Hueco Mundo",type:"ult_mult_up",   value:50, description:"Ult +50%. Com Timerot + Spectral simultaneos, Aizen duplica o dano do proximo ataque de cada aliado no turno seguinte." },
+      { name:"Ilusao Suprema",            type:"skill_up", value:20, description:"Skill +20%. A Charged passa a ter 3 hits — o 3 aplica Timerot garantido." },
+      { name:"Aizen — Rei do Hueco Mundo",type:"ult_up",   value:50, description:"Ult +50%. Com Timerot + Spectral simultaneos, Aizen duplica o dano do proximo ataque de cada aliado no turno seguinte." },
     ],
   },
 
@@ -3635,11 +3635,11 @@ const CHAR_PRESETS = {
     },
     constellations:[
       { name:"Heroi em Treinamento",      type:"er_up",         value:20, description:"ER +20%. Bencao de Lemillion sobe para +25% Crit Rate e +42% Crit DMG." },
-      { name:"Quirk — Permeabilidade",    type:"crit_dmg_up",   value:15, description:"Crit DMG proprio +15%. Ult sobe para +35% Crit Rate e +65% Crit DMG ao time." },
+      { name:"Quirk — Permeabilidade",    type:"cd_up",   value:15, description:"Crit DMG proprio +15%. Ult sobe para +35% Crit Rate e +65% Crit DMG ao time." },
       { name:"Protecao Absoluta",         type:"er_up",         value:18, description:"ER +18%. A Charged passa a afetar os 2 aliados com maior ATK." },
-      { name:"Lemillion Verdadeiro",      type:"crit_rate_up",  value:8,  description:"Crit Rate proprio +8%. Apos o Ult, o proximo ataque de qualquer aliado e garantido critico." },
-      { name:"Eu Carrego o Time",         type:"ult_mult_up",   value:0,  description:"Ult dura 4 turnos. Adiciona +15% DMG geral ao time durante a duracao." },
-      { name:"O Melhor Heroi",            type:"ult_mult_up",   value:0,  description:"Apos o Ult, Mirio aplica +45% Crit DMG individual ao aliado com maior ATK (dura 3 turnos). A imunidade a golpe fatal funciona 2 vezes por batalha." },
+      { name:"Lemillion Verdadeiro",      type:"cr_up",  value:8,  description:"Crit Rate proprio +8%. Apos o Ult, o proximo ataque de qualquer aliado e garantido critico." },
+      { name:"Eu Carrego o Time",         type:"ult_up",   value:0,  description:"Ult dura 4 turnos. Adiciona +15% DMG geral ao time durante a duracao." },
+      { name:"O Melhor Heroi",            type:"ult_up",   value:0,  description:"Apos o Ult, Mirio aplica +45% Crit DMG individual ao aliado com maior ATK (dura 3 turnos). A imunidade a golpe fatal funciona 2 vezes por batalha." },
     ],
   },
 
@@ -3658,10 +3658,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Capitao Real",              type:"er_up",         value:18, description:"ER +18%. Buff de ATK da Charged sobe para +36%." },
       { name:"Mana Zone Ampliada",        type:"spd_up",        value:10, description:"SPD +10. A Charged passa a afetar os 2 aliados com maior ATK." },
-      { name:"Purgatorio Refinado",       type:"ult_mult_up",   value:0,  description:"Buff do Ult dura 4 turnos. +35% ATK sobe para +45%." },
+      { name:"Purgatorio Refinado",       type:"ult_up",   value:0,  description:"Buff do Ult dura 4 turnos. +35% ATK sobe para +45%." },
       { name:"Brigada Crimson",           type:"atk_up",        value:12, description:"ATK% +12%. Bonus especial do Ult sobe de +18% para +30% para o aliado com maior ATK." },
       { name:"Capitao Invicta",           type:"spd_up",        value:8,  description:"SPD +8. Passiva concede +9 SPD base aos aliados (era +6)." },
-      { name:"Mereoleona — Fera Real",    type:"ult_mult_up",   value:0,  description:"Apos o Ult, Mereoleona concede turno extra ao aliado com maior ATK (age imediatamente). O escudo da Passiva agora vale +8% DEF ao time permanentemente." },
+      { name:"Mereoleona — Fera Real",    type:"ult_up",   value:0,  description:"Apos o Ult, Mereoleona concede turno extra ao aliado com maior ATK (age imediatamente). O escudo da Passiva agora vale +8% DEF ao time permanentemente." },
     ],
   },
 
@@ -3680,12 +3680,12 @@ const CHAR_PRESETS = {
       passive:{  name:"Amor Absoluto",               description:"Com Bloodpact ativo, qualquer cura do inimigo e convertida em dano. Rem nao pode morrer com HP acima de 1, uma vez por batalha." },
     },
     constellations:[
-      { name:"Pela Subaru-kun",           type:"crit_dmg_up",   value:18, description:"Crit DMG +18%. Bloodpact converte 120% do valor de cura em dano (era 100%)." },
+      { name:"Pela Subaru-kun",           type:"cd_up",   value:18, description:"Crit DMG +18%. Bloodpact converte 120% do valor de cura em dano (era 100%)." },
       { name:"Oni da Nevoa",              type:"break_up",      value:18, description:"Break Effect +18%. Shatter de Rem ignora 20% da DEF inimiga." },
-      { name:"Modo Oni Refinado",         type:"skill_mult_up", value:25, description:"Skill +25%. A Charged passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
+      { name:"Modo Oni Refinado",         type:"skill_up", value:25, description:"Skill +25%. A Charged passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
       { name:"Manguail Quantico Supremo", type:"quantum_dmg_up",value:15, description:"Dano Quantum +15%. Cada hit do Ult tem 40% de chance individual de Shatter." },
-      { name:"Furia Oni Suprema",         type:"ult_mult_up",   value:30, description:"Ult +30%. Os 4 hits aumentam para 5 e o 5 causa dano = 30% HP de Rem (ignora DEF)." },
-      { name:"Rem — A Oni Verdadeira",    type:"ult_mult_up",   value:50, description:"Ult +50%. Em modo Oni, Rem e imune a dano no primeiro turno apos o Ult e ganha +70% Crit DMG durante esses hits." },
+      { name:"Furia Oni Suprema",         type:"ult_up",   value:30, description:"Ult +30%. Os 4 hits aumentam para 5 e o 5 causa dano = 30% HP de Rem (ignora DEF)." },
+      { name:"Rem — A Oni Verdadeira",    type:"ult_up",   value:50, description:"Ult +50%. Em modo Oni, Rem e imune a dano no primeiro turno apos o Ult e ganha +70% Crit DMG durante esses hits." },
     ],
   },
 
@@ -3704,10 +3704,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Servo de Hellsing",         type:"quantum_dmg_up",value:12, description:"Dano Quantum +12%. Bloodpact drena 12% do dano como cura (era 8%)." },
       { name:"Mar Infindavel de Almas",   type:"atk_up",        value:14, description:"ATK% +14%. Spectral de Alucard aumenta miss para 55% (era 40%)." },
-      { name:"Modo Zero Aprimorado",      type:"ult_mult_up",   value:22, description:"Ult +22%. A drenagem de HP sobe para 28% do HP maximo inimigo." },
-      { name:"Vampiro Ancestral",         type:"crit_dmg_up",   value:18, description:"Crit DMG +18%. A ressurreicao da Passiva agora ocorre com 55% HP." },
-      { name:"Schrodinger Dominado",      type:"skill_mult_up", value:20, description:"Skill +20%. Mar de Almas passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
-      { name:"Alucard — Deus Imortal",    type:"ult_mult_up",   value:45, description:"Ult +45%. Apos ressuscitar, Alucard entra em Modo Zero automaticamente — +50% ATK e +35% DMG Quantum por 3 turnos." },
+      { name:"Modo Zero Aprimorado",      type:"ult_up",   value:22, description:"Ult +22%. A drenagem de HP sobe para 28% do HP maximo inimigo." },
+      { name:"Vampiro Ancestral",         type:"cd_up",   value:18, description:"Crit DMG +18%. A ressurreicao da Passiva agora ocorre com 55% HP." },
+      { name:"Schrodinger Dominado",      type:"skill_up", value:20, description:"Skill +20%. Mar de Almas passa a ter 3 hits — o 3 aplica Bloodpact garantido." },
+      { name:"Alucard — Deus Imortal",    type:"ult_up",   value:45, description:"Ult +45%. Apos ressuscitar, Alucard entra em Modo Zero automaticamente — +50% ATK e +35% DMG Quantum por 3 turnos." },
     ],
   },
 
@@ -3726,10 +3726,10 @@ const CHAR_PRESETS = {
     constellations:[
       { name:"Papel Sagrado de Deus",     type:"er_up",         value:18, description:"ER +18%. A armadilha da Charged regenera 22 de energia ao time (era 15)." },
       { name:"Angel de Nagato",           type:"atk_up",        value:12, description:"ATK% +12%. Spectral de Konan aumenta miss para 50% (era 40%)." },
-      { name:"Mar de Papel Aprimorado",   type:"ult_mult_up",   value:20, description:"Ult +20%. Regenera 30 de energia para cada aliado (era 22)." },
+      { name:"Mar de Papel Aprimorado",   type:"ult_up",   value:20, description:"Ult +20%. Regenera 30 de energia para cada aliado (era 22)." },
       { name:"Origami Sagrado",           type:"quantum_dmg_up",value:10, description:"Dano Quantum +10%. A Passiva concede +8% Crit Rate bonus (era +6%)." },
-      { name:"600 Bilhoes Refinado",      type:"ult_mult_up",   value:22, description:"Ult +22%. Passa a ter 3 hits — o 3 aplica Spectral adicional com duração renovada." },
-      { name:"Konan — Deusa do Papel",    type:"ult_mult_up",   value:0,  description:"Apos o Ult, Konan cria um campo de papel por 2 turnos — todo aliado que atacar ganha +15% DMG nesse turno e regenera 5 de energia extra." },
+      { name:"600 Bilhoes Refinado",      type:"ult_up",   value:22, description:"Ult +22%. Passa a ter 3 hits — o 3 aplica Spectral adicional com duração renovada." },
+      { name:"Konan — Deusa do Papel",    type:"ult_up",   value:0,  description:"Apos o Ult, Konan cria um campo de papel por 2 turnos — todo aliado que atacar ganha +15% DMG nesse turno e regenera 5 de energia extra." },
     ],
   },
 
@@ -8050,7 +8050,9 @@ function renderInvWeapons() {
       <div style="font-size:.72rem;color:var(--txt3);margin:6px 0 4px">
         ${curAtk?`<span style="color:var(--gold)">ATK Lv${wLvl}: ${curAtk}</span>`:""} ${subStr?`<span style="color:#88aaff">• ${subStr}</span>`:""}
       </div>
-      ${w.passive&&w.passive.name?`<div style="font-size:.68rem;color:#88aaff;margin-bottom:4px">✨ ${w.passive.name}</div>`:""}
+      ${/* FIX: busca passiva no WEAPON_PRESETS se não estiver inline na arma */
+        (() => { const _wpInv = (window.WEAPON_PRESETS||{})[w.presetKey||w.presetId||'']; const _pInv = _wpInv?.passive || w.passive; return _pInv?.name ? `<div style="font-size:.68rem;color:#88aaff;margin-bottom:4px">✨ ${_pInv.name}</div>` : ''; })()
+      }
       ${equippedBy
         ? `<div style="font-size:.68rem;background:rgba(212,168,67,.12);border:1px solid rgba(212,168,67,.3);border-radius:6px;padding:3px 7px;margin-bottom:5px;color:var(--gold2);display:flex;align-items:center;gap:5px">
              ${equippedBy.imageUrl?`<img src="${equippedBy.imageUrl}" style="width:16px;height:16px;border-radius:3px;object-fit:cover" onerror="this.style.display='none'">`:``}
@@ -8100,10 +8102,15 @@ async function equipWeapon(charId, weapId) {
     const weapons = await getAdminData("weapons_catalog");
     const weap = (weapons||[]).find(w=>w.id===weapId);
     if (weap?.passive?.passiveCondition && weap?.passive?.passiveConditionName) {
-      const charPresetId = ch?.presetId || ch?.preset || ch?.name?.toLowerCase().replace(/\s/g,"_") || "";
+      // FIX: normaliza presetKey do personagem para comparar com passiveCondition
+      const _rawEq  = ch?.presetKey || ch?.presetId || ch?.preset || ch?.name?.toLowerCase().replace(/\s/g,"_") || "";
+      const _noTsEq = _rawEq.replace(/_\d+$/, '');
+      const _limEq  = {'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5','goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5','yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5','kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5','alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5','shinji_t5l':'shinji_t5','kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5'};
+      const charPresetId = _limEq[_noTsEq] || _noTsEq;
       const condOk = !weap.passive.passiveCondition ||
         charPresetId === weap.passive.passiveCondition ||
-        (weap.charAffinity && charPresetId === weap.charAffinity);
+        _rawEq === weap.passive.passiveCondition ||
+        (weap.charAffinity && (charPresetId === weap.charAffinity || _rawEq === weap.charAffinity));
       if (!condOk) {
         toast(`⚠ Arma equipada! Passiva INATIVA — requer: ${weap.passive.passiveConditionName}`, "warn");
       } else {
@@ -8234,7 +8241,7 @@ const ART_SUB_CAPS = {
   "Effect RES%":    { flat:false, tiers:[2.16,2.70,3.24], weight:5, maxRolls:5 },
   "Break Effect%":  { flat:false, tiers:[3.24,4.05,4.86], weight:5, maxRolls:5 },
   "SPD":            { flat:true,  tiers:[1,   2,   3  ], weight:4, maxRolls:5 },
-  "Elem. Mastery":  { flat:true,  tiers:[2,   3,   4  ], weight:4, maxRolls:5 },
+  "Elem. Mastery":  { flat:true,  tiers:[16,  20,  24 ], weight:6, maxRolls:5 },
 };
 
 // Pool de substats com pesos para seleção weighted (igual HSR)
@@ -8702,41 +8709,101 @@ function buildFighter(ch, profile) {
   };
 
   // Constelações desbloqueadas — aplica TODOS os tipos de efeito
-  const cons = ch.constellations || [];
+  // FIX: se ch.constellations não existe (personagens adicionados via gacha não carregam o array),
+  // busca as constellations diretamente do CHAR_PRESETS usando presetKey ou nome do personagem.
+  const _cpKey = ch.presetKey || ch.presetId || ch.id || '';
+  const _cpNorm = _cpKey.replace(/_\d+$/, ''); // remove sufixo de timestamp
+  const _limitedMapC = {
+    'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5',
+    'goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5',
+    'yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5',
+    'kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5',
+    'alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5','shinji_t5l':'shinji_t5',
+    'kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5',
+  };
+  const _cpResolved = _limitedMapC[_cpNorm] || _cpNorm;
+  const _cpPreset = window.CHAR_PRESETS?.[_cpResolved] ||
+    window.CHAR_PRESETS?.[_cpKey] ||
+    Object.values(window.CHAR_PRESETS || {}).find(p => p.label && ch.name && p.label.includes(ch.name.split(' ')[0])) || {};
+  // Usa constellations do objeto salvo se existirem e tiverem dados; senão cai para o preset
+  const cons = (ch.constellations && ch.constellations.some(c => c && c.type))
+    ? ch.constellations
+    : (_cpPreset.constellations || []);
   const uc   = ch.unlockedConstellations || 0;
   cons.slice(0, uc).forEach(con => {
     if (!con || !con.type) return;
     const v = con.value || 0;
-    // Stats base
+
+    // ── Stats base ──────────────────────────────────────────────
     if (con.type === 'atk_up')    scaledBase.atk      = Math.round(scaledBase.atk * (1 + v/100));
     if (con.type === 'hp_up')     scaledBase.hp       = Math.round(scaledBase.hp  * (1 + v/100));
     if (con.type === 'def_up')    scaledBase.def      = Math.round(scaledBase.def * (1 + v/100));
     if (con.type === 'cr_up')     scaledBase.critRate = Math.min(100, scaledBase.critRate + v);
     if (con.type === 'cd_up')     scaledBase.critDmg  += v;
     if (con.type === 'spd_up')    scaledBase.spd      += v;
-    if (con.type === 'be_up')     scaledBase.breakEffect += v;
-    if (con.type === 'er_up')     scaledBase.energyRecharge += v;
+    if (con.type === 'er_up')     scaledBase.energyRecharge   += v;
     if (con.type === 'em_up')     scaledBase.elementalMastery += v;
-    // DOT
-    if (con.type === 'dot_dmg')       scaledBase._dotDmgBonus  = (scaledBase._dotDmgBonus  || 0) + v;
-    if (con.type === 'dot_duration')  scaledBase._dotDurBonus  = (scaledBase._dotDurBonus  || 0) + v;
-    // Skill/Ult multiplier bonus
-    if (con.type === 'skill_up')  scaledBase._skillMult  = (scaledBase._skillMult  || 0) + v;
-    if (con.type === 'ult_up')    scaledBase._ultMult    = (scaledBase._ultMult    || 0) + v;
-    if (con.type === 'basic_up')  scaledBase._basicMult  = (scaledBase._basicMult  || 0) + v;
-    // Heal bonus
-    if (con.type === 'heal_up')   scaledBase._healBonus  = (scaledBase._healBonus  || 0) + v;
-    // Shield bonus
-    if (con.type === 'shield_up') scaledBase._shieldBonus = (scaledBase._shieldBonus || 0) + v;
+    // break_up e be_up são sinônimos — ambos adicionam Break Effect
+    if (con.type === 'be_up' || con.type === 'break_up') scaledBase.breakEffect += v;
     // Flat stats
     if (con.type === 'flat_atk')  scaledBase.atk += v;
     if (con.type === 'flat_hp')   scaledBase.hp  += v;
     if (con.type === 'flat_def')  scaledBase.def += v;
-    // Element bonus
-    if (con.type === 'elem_dmg' && con.element) {
-      scaledBase.elementBonus = scaledBase.elementBonus || {};
-      scaledBase.elementBonus[con.element] = (scaledBase.elementBonus[con.element] || 0) + v;
+
+    // ── Bônus de dano elemental ─────────────────────────────────
+    // elem_dmg: usa o elemento explícito da constelação (ou do personagem se vazio)
+    if (con.type === 'elem_dmg') {
+      const el = con.element || ch.element || '';
+      if (el) {
+        scaledBase.elementBonus = scaledBase.elementBonus || {};
+        scaledBase.elementBonus[el] = (scaledBase.elementBonus[el] || 0) + v;
+      }
     }
+    // elemental_up: usa dotTarget como nome do elemento (formato legado dos presets)
+    if (con.type === 'elemental_up' && con.dotTarget) {
+      scaledBase.elementBonus = scaledBase.elementBonus || {};
+      scaledBase.elementBonus[con.dotTarget] = (scaledBase.elementBonus[con.dotTarget] || 0) + v;
+    }
+    // Tipos de elemento fixo (do CHAR_PRESETS legados)
+    if (con.type === 'ice_dmg_up')   { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['ice']   = (scaledBase.elementBonus['ice']  ||0)+v; }
+    if (con.type === 'fire_dmg_up')    { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['fire']     = (scaledBase.elementBonus['fire']    ||0)+v; }
+    if (con.type === 'water_dmg_up')   { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['water']    = (scaledBase.elementBonus['water']   ||0)+v; }
+    if (con.type === 'wind_dmg_up')    { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['wind']     = (scaledBase.elementBonus['wind']    ||0)+v; }
+    if (con.type === 'earth_dmg_up')   { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['earth']    = (scaledBase.elementBonus['earth']   ||0)+v; }
+    if (con.type === 'nature_dmg_up')  { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['nature']   = (scaledBase.elementBonus['nature']  ||0)+v; }
+    if (con.type === 'holy_dmg_up')    { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['holy']     = (scaledBase.elementBonus['holy']    ||0)+v; }
+    if (con.type === 'quantum_dmg_up') { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['quantum']  = (scaledBase.elementBonus['quantum'] ||0)+v; }
+    if (con.type === 'dark_dmg_up')    { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['dark']     = (scaledBase.elementBonus['dark']    ||0)+v; }
+    if (con.type === 'chaos_dmg_up')   { scaledBase.elementBonus = scaledBase.elementBonus||{}; scaledBase.elementBonus['chaos']    = (scaledBase.elementBonus['chaos']   ||0)+v; }
+    // crit_dmg_up é sinônimo de cd_up (usado em alguns presets legados)
+    if (con.type === 'crit_dmg_up')  scaledBase.critDmg += v;
+    // Bônus de dano geral (+% em todos os ataques) — guardado separado para aplicar no calcDmg
+    if (con.type === 'dmg_up')       scaledBase._dmgBonus = (scaledBase._dmgBonus || 0) + v;
+
+    // ── DOT ────────────────────────────────────────────────────
+    // dot_dmg: se tem dotTarget, é bônus seletivo (só aquele DOT); sem dotTarget, é bônus global
+    if (con.type === 'dot_dmg') {
+      if (con.dotTarget) {
+        // Bônus seletivo: armazena num mapa { dotKey: bonus% }
+        scaledBase._dotDmgByType = scaledBase._dotDmgByType || {};
+        scaledBase._dotDmgByType[con.dotTarget] = (scaledBase._dotDmgByType[con.dotTarget] || 0) + v;
+      } else {
+        // Bônus global para todos os DOTs
+        scaledBase._dotDmgBonus = (scaledBase._dotDmgBonus || 0) + v;
+      }
+    }
+    if (con.type === 'dot_duration') scaledBase._dotDurBonus = (scaledBase._dotDurBonus || 0) + v;
+
+    // ── Multiplicadores de skill/ult/basic ──────────────────────
+    if (con.type === 'skill_up')  scaledBase._skillMult  = (scaledBase._skillMult  || 0) + v;
+    if (con.type === 'ult_up')    scaledBase._ultMult    = (scaledBase._ultMult    || 0) + v;
+    if (con.type === 'basic_up')  scaledBase._basicMult  = (scaledBase._basicMult  || 0) + v;
+    // energy_reduce: reduz custo do Ult (guardado para uso no motor de combate)
+    if (con.type === 'energy_reduce') scaledBase._energyReduce = (scaledBase._energyReduce || 0) + v;
+
+    // ── Cura / Escudo ───────────────────────────────────────────
+    if (con.type === 'heal_up')   scaledBase._healBonus   = (scaledBase._healBonus   || 0) + v;
+    if (con.type === 'shield_up') scaledBase._shieldBonus = (scaledBase._shieldBonus || 0) + v;
   });
 
   // Arma equipada — stats + passiva (igual startStoryBattle)
@@ -8799,7 +8866,7 @@ function buildFighter(ch, profile) {
   }
 
   // computeEffective aplica weapon stats + artifact substats
-  const eff = computeEffective(scaledBase, weap, arts);
+  const eff = computeEffective(scaledBase, weap, arts, passiveOk);
 
   // Role penalty (igual story battle — healers não atacam com dano cheio)
   const ROLE_PENALTY = { healer:0.18, support:0.30, tank:0.50, flex:0.85, sub_dps:0.92, main_dps:1.0 };
@@ -8877,6 +8944,9 @@ function buildFighter(ch, profile) {
     be:  eff.be  || 0,
     elementBonus: _mergedElem,
     dotDmgBonus:  scaledBase._dotDmgBonus || 0,
+    dotDmgByType: scaledBase._dotDmgByType || {},  // bônus seletivo por tipo de DOT
+    dmgBonus:     scaledBase._dmgBonus     || 0,   // bônus de dano geral das constelações
+    energyReduce: scaledBase._energyReduce || 0,   // redução de custo do Ult
     healBonus:    (eff.healBonus || 0) + (scaledBase._healBonus || 0),
     baseHealBonus:(eff.healBonus || 0) + (scaledBase._healBonus || 0),
     shieldBonus:  scaledBase._shieldBonus || 0,
@@ -8958,7 +9028,9 @@ function calcDmg(attacker, defender, skillMult, isCrit) {
   const undeadMod = undead    ? 1.10 : 1.0;
   // Variance (0.92~1.08)
   const variance = 0.92 + Math.random() * 0.16;
-  return Math.max(1, Math.round(rawAtk * defMod * elemMod * critMult * elemBonus * undeadMod * variance));
+  // dmgBonus: bônus de dano geral das constelações (tipo dmg_up)
+  const dmgBonusMult = 1 + ((attacker.dmgBonus || 0) + (getBuff(attacker, 'dmgBonus') || 0)) / 100;
+  return Math.max(1, Math.round(rawAtk * defMod * elemMod * critMult * elemBonus * undeadMod * dmgBonusMult * variance));
 }
 
 function rollCrit(fighter) {
@@ -8966,11 +9038,10 @@ function rollCrit(fighter) {
 }
 
 // ── APLICA DOT AO ALVO ────────────────────────────────────────────────────────
-function applyDot(target, dotKey, duration, sourceAtk, dotDmgBonus) {
+function applyDot(target, dotKey, duration, sourceAtk, dotDmgBonus, dotDmgByType) {
   if (!dotKey) return null;
   const def = DOT_EFFECTS[dotKey];
   if (!def) return null;
-  // Stackable dots: poison, corruption — others reset
   const isStackable = (dotKey === "poison" || dotKey === "corruption" || dotKey === "chain_lightning");
   if (isStackable) {
     const existing = target.dots.find(d => d.key === dotKey);
@@ -8978,7 +9049,11 @@ function applyDot(target, dotKey, duration, sourceAtk, dotDmgBonus) {
   } else {
     target.dots = target.dots.filter(d => d.key !== dotKey);
   }
-  target.dots.push({ key: dotKey, duration, sourceAtk, stacks: 1, sourceDotDmgBonus: dotDmgBonus || 0 });
+  target.dots.push({
+    key: dotKey, duration, sourceAtk, stacks: 1,
+    sourceDotDmgBonus:  dotDmgBonus  || 0,
+    sourceDotDmgByType: dotDmgByType || {},  // bônus seletivo por tipo de DOT
+  });
   return def;
 }
 
@@ -8990,7 +9065,10 @@ function processDots(target, log) {
     if (!def) { dot.duration--; if (dot.duration <= 0) expired.push(dot); continue; }
     let dmg = 0;
     if (def.type === "dot") {
-      const dotBonus = 1 + (dot.sourceDotDmgBonus || 0) / 100; // constellation bonus
+      // Bônus global de DOT (constelações sem dotTarget) + bônus seletivo para este tipo
+      const globalBonus  = dot.sourceDotDmgBonus || 0;
+      const selectiveBonus = (dot.sourceDotDmgByType || {})[dot.key] || 0;
+      const dotBonus = 1 + (globalBonus + selectiveBonus) / 100;
       if (dot.key === "burn")       dmg = Math.round(dot.sourceAtk * 0.30 * dotBonus);
       if (dot.key === "electrify")  dmg = Math.round(dot.sourceAtk * 0.25 * dotBonus);
       if (dot.key === "bleed")      dmg = Math.round((target.maxHp || target.hp) * 0.05 * dotBonus);
@@ -9003,7 +9081,6 @@ function processDots(target, log) {
       if (dmg > 0) {
         target.hp = Math.max(0, target.hp - dmg);
         log(`${def.icon} <b>${target.name}</b> sofreu <span class="dmg-dot">${fmtNum(dmg)}</span> de <span style="color:${def.color}">${def.name}</span>!`);
-        // Efeito visual de DOT
         if (typeof dotFlashEffect === 'function') dotFlashEffect(dot.key);
         if (typeof getCombatCenter === 'function' && typeof showDamageFloat === 'function') {
           const _c = getCombatCenter();
@@ -9053,9 +9130,9 @@ function openCombatModal(boss, fighters) {
     return s + '</div>';
   }
 
-  var BUFF_ICONS  = {atkPct:'⚔',critRate:'🎯',critDmg:'💥',spd:'💨',em:'🌿',er:'⚡',be:'💔',dmgBonus:'✨',dotDmg:'☠',dmgReduce:'🛡',healBonus:'💚',flatAtk:'⚔',defPct:'🛡',er:'⚡'};
-  var BUFF_LABELS = {atkPct:'ATK',critRate:'CR',critDmg:'CDMG',spd:'SPD',em:'EM',er:'ER',be:'BE',dmgBonus:'DMG',dotDmg:'DOT',dmgReduce:'RES',healBonus:'HEAL',flatAtk:'ATK+',defPct:'DEF'};
-  var BUFF_COLORS = {atkPct:'#ffaa44',critRate:'#ff6644',critDmg:'#ff8844',spd:'#44ffcc',em:'#88ff44',er:'#cc88ff',be:'#ff6666',dmgBonus:'#ffdd00',dotDmg:'#ff44aa',dmgReduce:'#44aaff',healBonus:'#44ff88',flatAtk:'#ffaa44',defPct:'#44aaff'};
+  var BUFF_ICONS  = {atkPct:'⚔',critRate:'🎯',critDmg:'💥',spd:'💨',em:'🌿',er:'⚡',be:'💔',dmgBonus:'✨',dotDmg:'☠',dmgReduce:'🛡',healBonus:'💚',flatAtk:'⚔',defPct:'🛡',darkDmg:'🌑',iceDmg:'❄',fireDmg:'🔥',waterDmg:'💧',lightningDmg:'⚡',chaosDmg:'💀',windDmg:'🌪',earthDmg:'🪨',elemDmg:'🌟',dotDuration:'⏱',shield:'🛡',energyBonus:'🔋'};
+  var BUFF_LABELS = {atkPct:'ATK',critRate:'CR',critDmg:'CDMG',spd:'SPD',em:'EM',er:'ER',be:'BE',dmgBonus:'DMG',dotDmg:'DOT',dmgReduce:'RES',healBonus:'HEAL',flatAtk:'ATK+',defPct:'DEF',darkDmg:'DARK',iceDmg:'ICE',fireDmg:'FIRE',waterDmg:'WATER',lightningDmg:'BOLT',chaosDmg:'CAOS',windDmg:'WIND',earthDmg:'TERRA',elemDmg:'ELEM',dotDuration:'DOT+T',shield:'ESC',energyBonus:'ENE'};
+  var BUFF_COLORS = {atkPct:'#ffaa44',critRate:'#ff6644',critDmg:'#ff8844',spd:'#44ffcc',em:'#88ff44',er:'#cc88ff',be:'#ff6666',dmgBonus:'#ffdd00',dotDmg:'#ff44aa',dmgReduce:'#44aaff',healBonus:'#44ff88',flatAtk:'#ffaa44',defPct:'#44aaff',darkDmg:'#cc88ff',iceDmg:'#88ddff',fireDmg:'#ff6622',waterDmg:'#44aaff',lightningDmg:'#ffee44',chaosDmg:'#ff4488',windDmg:'#88ffdd',earthDmg:'#ddbb88',elemDmg:'#aaffaa',dotDuration:'#ff88cc',shield:'#44ccff',energyBonus:'#cc66ff'};
   function buffBadges(fighter) {
     var buffs = fighter._buffs || {};
     var keys = Object.keys(buffs).filter(function(k){ return buffs[k] && buffs[k].turns > 0; });
@@ -9262,7 +9339,7 @@ function openCombatModal(boss, fighters) {
     if (!cs) return '';
     var f = cs.fighters[cs.activeIdx];
     if (!f || !f.alive) return '<div style="color:var(--txt3);font-size:.8rem;text-align:center;padding:10px">⏳ Aguardando...</div>';
-    var canUlt     = (f.energy||0) >= (f.maxEnergy||100);
+    var canUlt     = (f.energy||0) >= Math.max(1, (f.maxEnergy||100) - (f.energyReduce||0));
     var canCharged = cs.sp >= 1;
     var skB  = (f.skills&&f.skills.basic)  || {name:'Básico'};
     var skCh = (f.skills&&f.skills.charged)|| {name:'Skill'};
@@ -9439,7 +9516,7 @@ window.combatAction = async function(type) {
     await combatLog('❌ SP insuficiente para Skill Carregada!', 0);
     cs.busy = false; window._refreshCombatUI(); return;
   }
-  if (type === 'ult' && (f.energy || 0) < (f.maxEnergy || 100)) {
+  if (type === 'ult' && (f.energy || 0) < Math.max(1, (f.maxEnergy || 100) - (f.energyReduce || 0))) {
     await combatLog('❌ Energia insuficiente para Ultimate!', 0);
     cs.busy = false; window._refreshCombatUI(); return;
   }
@@ -9715,17 +9792,23 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   // ── MOCHILEIRO ───────────────────────────────────────────────────────────
   if (pk === 'mochileiro_t5') {
     if (isCrit) { f._mochiInstinct = Math.min(4, (f._mochiInstinct||0)+1); f._mochiInstTurns = 2; }
-    if (type === 'basic' && cLevel(f) >= 2 && Math.random() < 0.20) { applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus); await combatLog('🩸 <b>Mochileiro</b> C2 — Bleed!', 80); }
+    if (type === 'basic' && cLevel(f) >= 2 && Math.random() < 0.20) { applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType); await combatLog('🩸 <b>Mochileiro</b> C2 — Bleed!', 80); }
     if (boss.broken && cLevel(f) >= 5 && !f._mochiShatterUsed) {
       f._mochiShatterUsed = true;
       const sd = Math.round(f.atk * 0.8); boss.hp = Math.max(0,boss.hp-sd);
       await combatLog('💥 <b>Mochileiro</b> C5 — Shatter grátis! <span style="color:#ffcc00">'+fmtNum(sd)+' DMG</span>', 120);
     }
-    if (type === 'ult' && cLevel(f) >= 6) { for(let i=0;i<3;i++) applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus); await combatLog('🩸 <b>Mochileiro</b> C6 — 3× Bleed!', 80); }
+    if (type === 'ult' && cLevel(f) >= 6) { for(let i=0;i<3;i++) applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType); await combatLog('🩸 <b>Mochileiro</b> C6 — 3× Bleed!', 80); }
   }
 
   // ── SAKURA ────────────────────────────────────────────────────────────────
   if (pk === 'sakura_t5') {
+    if (type === 'basic') {
+      // Basic cura o alvo selecionado (ou menor HP se auto)
+      const t = resolveHealTarget(cs);
+      const h = healFighter(t, Math.round(f.maxHp * 0.12), f);
+      await combatLog('🌸 <b>Sakura</b> → <b>'+t.name+'</b> +<span style="color:#88ff88">'+fmtNum(h)+' HP</span>', 80);
+    }
     if (type === 'ult') {
       const ha = Math.round(f.maxHp * 0.40), crb = cLevel(f)>=4?25:15, crt = cLevel(f)>=4?3:2;
       for (const t of cs.fighters.filter(x=>x.alive)) {
@@ -9748,8 +9831,14 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   if (pk === 'shoko_t5') {
     if (cs.fighters.some(x=>x.alive&&x.hp<x.maxHp*0.5)) f.healBonus=(f.baseHealBonus||0)+20;
     if (type==='basic') {
-      const tgts=cLevel(f)>=1?cs.fighters.filter(x=>x.alive).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp)).slice(0,2):[lowestHpFighter(cs)];
-      for(const t of tgts){const h=healFighter(t,Math.round(f.maxHp*1.40),f);await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +'+fmtNum(h)+' HP',80);}
+      // FIX: respeita o alvo selecionado; C1+ cura também o 2º com menos HP
+      const t = resolveHealTarget(cs);
+      const h = healFighter(t, Math.round(f.maxHp*1.40), f);
+      await combatLog('💚 <b>Shoko</b>→<b>'+t.name+'</b> +'+fmtNum(h)+' HP', 80);
+      if (cLevel(f)>=1) {
+        const others = cs.fighters.filter(x=>x.alive&&x!==t).sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp));
+        if (others.length) { const h2=healFighter(others[0],Math.round(f.maxHp*0.70),f); await combatLog('💚 C1 <b>Shoko</b>→<b>'+others[0].name+'</b> +'+fmtNum(h2)+' HP',80); }
+      }
     }
     if (type==='charged'){const t=resolveHealTarget(cs);const h=healFighter(t,Math.round(f.maxHp*2.20),f);if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão — <b>'+t.name+'</b> +'+fmtNum(h)+' HP + DOT limpo',120);if(cLevel(f)>=3){const tk=cs.fighters.filter(x=>x.alive).reduce((a,b)=>a.def>b.def?a:b);if(tk!==t){const h2=healFighter(tk,Math.round(f.maxHp*0.12),f);await combatLog('💚 C3 → <b>'+tk.name+'</b> +'+fmtNum(h2),80);}}}
     if (type==='ult'){for(const t of cs.fighters.filter(x=>x.alive)){const h=healFighter(t,Math.round(f.maxHp*1.80),f);if(cLevel(f)>=5)t.dots=[];else if(t.dots?.length)t.dots.splice(0,1);await combatLog('💚 <b>Shoko</b> Inversão Absoluta — <b>'+t.name+'</b> +'+fmtNum(h)+' HP',80);}addShield(f,Math.round(f.maxHp*0.25));await combatLog('🛡 <b>Shoko</b> — Escudo 25% HP!',120);if(cLevel(f)>=2){f.energy=Math.min(f.maxEnergy,f.energy+25);await combatLog('⚡ C2 — +25E!',80);}}
@@ -9759,7 +9848,7 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   if (pk === 'kusakabe_t5') {
     if (type==='charged') f._kusakabeVeiledNext=true;
     if (type==='basic'&&f._kusakabeVeiledNext){f._kusakabeVeiledNext=false;await combatLog('🗡 <b>Kusakabe</b> — Espada Velada!',80);}
-    if (type==='ult'){const ab=cLevel(f)>=4?22:15,at=cLevel(f)>=5?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'atkPct',ab,at));await combatLog('🔥 <b>Kusakabe</b> — Time +'+ab+'% ATK!',120);applyDot(boss,'burn',2,f.atk,f.dotDmgBonus);}
+    if (type==='ult'){const ab=cLevel(f)>=4?22:15,at=cLevel(f)>=5?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'atkPct',ab,at));await combatLog('🔥 <b>Kusakabe</b> — Time +'+ab+'% ATK!',120);applyDot(boss,'burn',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
     if (isCrit&&cLevel(f)>=2) addBuff(f,'critDmg',10,2);
   }
 
@@ -9771,15 +9860,15 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   // ── GREYMON ───────────────────────────────────────────────────────────────
   if (pk === 'greymon_t4') {
     if (type==='basic'){const tt=cLevel(f)>=4?2:1;addDebuff(boss,'taunt',1,tt);await combatLog('🦕 <b>Greymon</b> provoca o boss por '+tt+'t!',100);}
-    if (type==='charged'){const sa=Math.round(f.maxHp*(cLevel(f)>=1?0.20:0.15));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sa));applyDot(boss,'burn',cLevel(f)>=3?3:2,f.atk,f.dotDmgBonus);await combatLog('🦕 <b>Greymon</b> Nova Flame! Escudo+Burn!',120);}
+    if (type==='charged'){const sa=Math.round(f.maxHp*(cLevel(f)>=1?0.20:0.15));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sa));applyDot(boss,'burn',cLevel(f)>=3?3:2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🦕 <b>Greymon</b> Nova Flame! Escudo+Burn!',120);}
     if (type==='ult'){f._greymonImmune=true;addShield(f,Math.round(f.maxHp*0.15));if(cLevel(f)>=5){cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dmgReduce',30,1));await combatLog('🦕 C5 — -30% dano ao time!',80);}await combatLog('🦕 <b>Greymon</b> — IMUNE por 1t!',120);if(cLevel(f)>=6){const d=Math.round(f.maxHp*0.35);boss.hp=Math.max(0,boss.hp-d);const r=healFighter(f,Math.round(f.maxHp*0.30),f);await combatLog('🦕 C6 MetalGreymon! '+fmtNum(d)+' DMG + +'+fmtNum(r)+' HP',150);}}
   }
 
   // ── SANJI ─────────────────────────────────────────────────────────────────
   if (pk === 'sanji_t4') {
     if (boss.dots?.some(d=>d.key==='burn')) f.energy=Math.min(f.maxEnergy,f.energy+8);
-    if (type==='charged') applyDot(boss,'burn',cLevel(f)>=1?3:2,f.atk,f.dotDmgBonus);
-    if (type==='ult'){const eb=cLevel(f)>=4?25:15,et=cLevel(f)>=4?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',eb,et));applyDot(boss,'burn',3,f.atk,f.dotDmgBonus);await combatLog('🍽 <b>Sanji</b> Ifrit Jambe — Burn+EM!',120);}
+    if (type==='charged') applyDot(boss,'burn',cLevel(f)>=1?3:2,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='ult'){const eb=cLevel(f)>=4?25:15,et=cLevel(f)>=4?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',eb,et));applyDot(boss,'burn',3,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🍽 <b>Sanji</b> Ifrit Jambe — Burn+EM!',120);}
     if (isCrit&&cLevel(f)>=2) addBuff(f,'critDmg',10,2);
   }
 
@@ -9791,56 +9880,56 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
 
   // ── TANJIRO ───────────────────────────────────────────────────────────────
   if (pk === 'tanjiro_t4') {
-    if (type==='charged'){const dc=cLevel(f)>=4?0.60:0.30;if(Math.random()<dc)applyDot(boss,'drown',2,f.atk,f.dotDmgBonus);}
-    if (type==='ult'){const eb=cLevel(f)>=2?30:20,et=cLevel(f)>=2?3:2;applyDot(boss,'drown',3,f.atk,f.dotDmgBonus);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',eb,et));await combatLog('💧 <b>Tanjiro</b> — Drown+EM!',120);}
+    if (type==='charged'){const dc=cLevel(f)>=4?0.60:0.30;if(Math.random()<dc)applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='ult'){const eb=cLevel(f)>=2?30:20,et=cLevel(f)>=2?3:2;applyDot(boss,'drown',3,f.atk,f.dotDmgBonus,f.dotDmgByType);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',eb,et));await combatLog('💧 <b>Tanjiro</b> — Drown+EM!',120);}
     f._tanjiroDrowBonus=boss.dots?.some(d=>d.key==='drown')?15:0;
   }
 
   // ── LANCER ────────────────────────────────────────────────────────────────
   if (pk === 'lancer_t4') {
-    if (type==='ult'){addBuff(f,'atkPct',12,2);await combatLog('🔴 <b>Lancer</b> Herói do Ulster! +12% ATK',100);if(cLevel(f)>=1){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);}if(cLevel(f)>=6&&!f._lancerC6Used){f._lancerC6Used=true;for(let i=0;i<2;i++){const ed=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-ed);await combatLog('🔴 C6 Extra: '+fmtNum(ed)+' DMG',80);}}}
+    if (type==='ult'){addBuff(f,'atkPct',12,2);await combatLog('🔴 <b>Lancer</b> Herói do Ulster! +12% ATK',100);if(cLevel(f)>=1){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}if(cLevel(f)>=6&&!f._lancerC6Used){f._lancerC6Used=true;for(let i=0;i<2;i++){const ed=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-ed);await combatLog('🔴 C6 Extra: '+fmtNum(ed)+' DMG',80);}}}
     if((f.be||0)>=50&&!f._lancerPassiveCR){f._lancerPassiveCR=true;f.cr=Math.min(100,f.cr+10);}
   }
 
   // ── ZENITSU ───────────────────────────────────────────────────────────────
   if (pk === 'zenitsu_t4') {
-    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus);const dc=cLevel(f)>=6?1.0:cLevel(f)>=2?0.75:(isCrit?1.0:0);if(Math.random()<dc){f._zenitsuHalfCost=true;await combatLog('⚡ <b>Zenitsu</b> — TURNO DUPLO!',150);const d2=Math.round(calcDmg(f,boss,f.skills.ult.mult*(cLevel(f)>=6?1.30:1.0),rollCrit(f)));boss.hp=Math.max(0,boss.hp-d2);await combatLog('⚡ 2º Thunderclap! <span style="color:#ffcc00">'+fmtNum(d2)+' DMG</span>',120);}}
+    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const dc=cLevel(f)>=6?1.0:cLevel(f)>=2?0.75:(isCrit?1.0:0);if(Math.random()<dc){f._zenitsuHalfCost=true;await combatLog('⚡ <b>Zenitsu</b> — TURNO DUPLO!',150);const d2=Math.round(calcDmg(f,boss,f.skills.ult.mult*(cLevel(f)>=6?1.30:1.0),rollCrit(f)));boss.hp=Math.max(0,boss.hp-d2);await combatLog('⚡ 2º Thunderclap! <span style="color:#ffcc00">'+fmtNum(d2)+' DMG</span>',120);}}
   }
 
   // ── ALPHAMON ──────────────────────────────────────────────────────────────
   if (pk === 'alphamon_t5') {
-    if (type==='ult'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);if(cLevel(f)>=4){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);await combatLog('👑 <b>Alphamon</b> C4 — Shatter!',80);}if(cLevel(f)>=6){const r=healFighter(f,Math.round(dmg*0.20),f);await combatLog('👑 C6 — +'+fmtNum(r)+' HP',80);}}
-    if (type==='charged') applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);
+    if (type==='ult'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(cLevel(f)>=4){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('👑 <b>Alphamon</b> C4 — Shatter!',80);}if(cLevel(f)>=6){const r=healFighter(f,Math.round(dmg*0.20),f);await combatLog('👑 C6 — +'+fmtNum(r)+' HP',80);}}
+    if (type==='charged') applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
   }
 
   // ── SUKUNA ────────────────────────────────────────────────────────────────
   if (pk === 'sukuna_t5') {
-    if (type==='basic'&&Math.random()<0.40) applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);
-    if (type==='charged') applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);
-    if (type==='ult'){applyDot(boss,'curse',3,f.atk,f.dotDmgBonus);const h=healFighter(f,Math.round(f.maxHp*0.10),f);f._sukunaGuaranteedCrits=2;await combatLog('🩸 <b>Sukuna</b> Malevolent Shrine! +'+fmtNum(h)+' HP',150);}
+    if (type==='basic'&&Math.random()<0.40) applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='charged') applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='ult'){applyDot(boss,'curse',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const h=healFighter(f,Math.round(f.maxHp*0.10),f);f._sukunaGuaranteedCrits=2;await combatLog('🩸 <b>Sukuna</b> Malevolent Shrine! +'+fmtNum(h)+' HP',150);}
     if (boss.dots?.some(d=>d.key==='curse')) addDebuff(boss,'dmgReceived',20,2);
     if (boss.dots?.some(d=>d.key==='curse')&&cLevel(f)>=2){const s=Math.min(3,(f._sukunaChaosStacks||0)+1);f._sukunaChaosStacks=s;addBuff(f,'dmgBonus',s*5,2);}
   }
 
   // ── RUKIA ─────────────────────────────────────────────────────────────────
   if (pk === 'rukia_t5') {
-    if (type==='basic'&&Math.random()<0.30) applyDot(boss,'freeze',1,f.atk,f.dotDmgBonus);
-    if (type==='charged'){applyDot(boss,'freeze',cLevel(f)>=2?2:1,f.atk,f.dotDmgBonus);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',10,2));await combatLog('❄️ <b>Rukia</b> — Freeze + EM!',120);}
-    if (type==='ult'){applyDot(boss,'freeze',2,f.atk,f.dotDmgBonus);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',25,3));f._rukiaImmune=cLevel(f)>=5?2:1;await combatLog('❄️ <b>Rukia</b> Hakka no Togame! Freeze+EM+Imune!',150);if(cLevel(f)>=6&&boss.dots?.some(d=>d.key==='freeze')){const cd=Math.round(f.em*0.20*10);boss.hp=Math.max(0,boss.hp-cd);await combatLog('❄️ C6 — '+fmtNum(cd)+' DMG (EM)!',120);}}
+    if (type==='basic'&&Math.random()<0.30) applyDot(boss,'freeze',1,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='charged'){applyDot(boss,'freeze',cLevel(f)>=2?2:1,f.atk,f.dotDmgBonus,f.dotDmgByType);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',10,2));await combatLog('❄️ <b>Rukia</b> — Freeze + EM!',120);}
+    if (type==='ult'){applyDot(boss,'freeze',2,f.atk,f.dotDmgBonus,f.dotDmgByType);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',25,3));f._rukiaImmune=cLevel(f)>=5?2:1;await combatLog('❄️ <b>Rukia</b> Hakka no Togame! Freeze+EM+Imune!',150);if(cLevel(f)>=6&&boss.dots?.some(d=>d.key==='freeze')){const cd=Math.round(f.em*0.20*10);boss.hp=Math.max(0,boss.hp-cd);await combatLog('❄️ C6 — '+fmtNum(cd)+' DMG (EM)!',120);}}
     if (boss.dots?.some(d=>d.key==='freeze')) addDebuff(boss,'iceDmgReceived',cLevel(f)>=4?30:20,1);
     if ((type==='charged'||type==='ult')&&!f._rukiaEmCapped){const cap=cLevel(f)>=1?40:25;f._rukiaEmStack=Math.min(cap,(f._rukiaEmStack||0)+(cLevel(f)>=1?8:5));f.em=(f.em||0)+(cLevel(f)>=1?8:5);if((f._rukiaEmStack||0)>=cap)f._rukiaEmCapped=true;}
   }
 
   // ── GOKU SSJ ──────────────────────────────────────────────────────────────
   if (pk === 'goku_ssj_t5') {
-    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus);const sb=cLevel(f)>=1?40:30,ab=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'spd',sb,2);addBuff(t,'atkPct',ab,2);});await combatLog('🟡 <b>Goku</b> SSJ — +'+sb+'% SPD, +'+ab+'% ATK!',150);}
+    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const sb=cLevel(f)>=1?40:30,ab=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'spd',sb,2);addBuff(t,'atkPct',ab,2);});await combatLog('🟡 <b>Goku</b> SSJ — +'+sb+'% SPD, +'+ab+'% ATK!',150);}
     if (f._gokuKiReady){f._gokuKiReady=false;await combatLog('🟡 <b>Goku</b> — Ki Acumulado! +20% dano!',80);}
     f._gokuEnergyTick=false;
   }
 
   // ── KASHIMO ───────────────────────────────────────────────────────────────
   if (pk === 'kashimo_t5') {
-    if (type==='ult'){applyDot(boss,'electrify',3,f.atk,f.dotDmgBonus);const eb=cLevel(f)>=5?30:20;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'er',eb,2));await combatLog('⚡ <b>Kashimo</b> Raio Primitivo! Electro+ER!',150);if(cLevel(f)>=6){const bd=Math.round(calcDmg(f,boss,f.skills.charged.mult*0.80,rollCrit(f)));boss.hp=Math.max(0,boss.hp-bd);await combatLog('⚡ C6 — '+fmtNum(bd)+' DMG extra!',80);}}
+    if (type==='ult'){applyDot(boss,'electrify',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const eb=cLevel(f)>=5?30:20;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'er',eb,2));await combatLog('⚡ <b>Kashimo</b> Raio Primitivo! Electro+ER!',150);if(cLevel(f)>=6){const bd=Math.round(calcDmg(f,boss,f.skills.charged.mult*0.80,rollCrit(f)));boss.hp=Math.max(0,boss.hp-bd);await combatLog('⚡ C6 — '+fmtNum(bd)+' DMG extra!',80);}}
     if (type==='charged'){const eb=Math.round((f.er||100)*0.5*(cLevel(f)>=3?1.5:1.0));boss.hp=Math.max(0,boss.hp-eb);await combatLog('⚡ <b>Kashimo</b> Corpo Arma! +'+fmtNum(eb)+' (ER)',100);}
   }
 
@@ -9850,7 +9939,7 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t._uraumeAtkBonus=af;});
     if (type==='basic'){const dd=Math.round(f.def*0.12);boss.hp=Math.max(0,boss.hp-dd);await combatLog('❄ <b>Uraume</b> — Espinhos de Gelo! '+fmtNum(dd)+' (DEF)',100);}
     if (type==='charged'){const t=lowestHpFighter(cs);addShield(t,Math.round(f.def*0.20));cs.fighters.filter(x=>x.alive).forEach(tt=>addBuff(tt,'defPct',10,2));await combatLog('❄ <b>Uraume</b> — Barreira Glacial! Escudo+DEF',120);}
-    if (type==='ult'){const ud=Math.round(f.def*0.15);boss.hp=Math.max(0,boss.hp-ud);applyDot(boss,'freeze',cLevel(f)>=3?2:1,f.atk,f.dotDmgBonus);const ac=Math.round(f.def*(cLevel(f)>=5?0.50:cLevel(f)>=1?0.45:0.35));cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'flatAtk',ac,2));await combatLog('❄ <b>Uraume</b> — Chuva Congelada! Freeze+ATK!',150);if(isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su)addBuff(su,'critRate',15,3);f.energy=Math.min(f.maxEnergy,f.energy+30);await combatLog('❄ Lealdade! Sukuna +15% CR',80);}if(cLevel(f)>=6&&isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su){addBuff(su,'atkPct',25,3);addBuff(su,'critDmg',15,3);}await combatLog('❄ C6 — Sukuna: +25% ATK, +15% CD!',80);}}
+    if (type==='ult'){const ud=Math.round(f.def*0.15);boss.hp=Math.max(0,boss.hp-ud);applyDot(boss,'freeze',cLevel(f)>=3?2:1,f.atk,f.dotDmgBonus,f.dotDmgByType);const ac=Math.round(f.def*(cLevel(f)>=5?0.50:cLevel(f)>=1?0.45:0.35));cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'flatAtk',ac,2));await combatLog('❄ <b>Uraume</b> — Chuva Congelada! Freeze+ATK!',150);if(isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su)addBuff(su,'critRate',15,3);f.energy=Math.min(f.maxEnergy,f.energy+30);await combatLog('❄ Lealdade! Sukuna +15% CR',80);}if(cLevel(f)>=6&&isInTeam(cs,'sukuna_t5')){const su=cs.fighters.find(x=>x.alive&&fighterPresetKey(x)==='sukuna_t5');if(su){addBuff(su,'atkPct',25,3);addBuff(su,'critDmg',15,3);}await combatLog('❄ C6 — Sukuna: +25% ATK, +15% CD!',80);}}
   }
 
   // ── LILY ──────────────────────────────────────────────────────────────────
@@ -9858,51 +9947,51 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
     const rc=cLevel(f)>=1?0.25:0.15,hits=type==='basic'?3:type==='charged'?(cLevel(f)>=2?6:5):(cLevel(f)>=5?10:8);
     let reacts=0;for(let i=0;i<hits;i++)if(Math.random()<rc)reacts++;
     if(reacts>0){const rd=Math.round(f.em*0.08*reacts);boss.hp=Math.max(0,boss.hp-rd);await combatLog('👁 <b>Lily</b> — '+reacts+'× Caos! +'+fmtNum(rd)+' DMG',100);}
-    if(type==='ult'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',25,3));await combatLog('👁 <b>Lily</b> O Olho! Darkness+Curse+EM!',150);if(cLevel(f)>=6)f._lilyChaosAura=true;}
-    if(type==='charged'){if(Math.random()<0.40)applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);if(Math.random()<0.20)applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);}
+    if(type==='ult'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'em',25,3));await combatLog('👁 <b>Lily</b> O Olho! Darkness+Curse+EM!',150);if(cLevel(f)>=6)f._lilyChaosAura=true;}
+    if(type==='charged'){if(Math.random()<0.40)applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(Math.random()<0.20)applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
   }
 
   // ── POCHITA ───────────────────────────────────────────────────────────────
   if (pk === 'pochita_t5') {
     if (boss.dots?.some(d=>d.key==='bleed')) addBuff(f,'critDmg',15,2);
-    if (type==='ult'){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);if(cLevel(f)>=2){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);await combatLog('🔴 C2 — 3× Bleed!',80);}await combatLog('🔴 <b>Pochita</b> Forma Plena! Bleed+Shatter!',150);if(cLevel(f)>=6){addBuff(f,'critDmg',40,2);f._pochitaFrenzy=2;await combatLog('🔴 C6 Frenesi! +40% CD!',150);}}
-    if (type==='charged'&&Math.random()<0.50) applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);
+    if (type==='ult'){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(cLevel(f)>=2){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🔴 C2 — 3× Bleed!',80);}await combatLog('🔴 <b>Pochita</b> Forma Plena! Bleed+Shatter!',150);if(cLevel(f)>=6){addBuff(f,'critDmg',40,2);f._pochitaFrenzy=2;await combatLog('🔴 C6 Frenesi! +40% CD!',150);}}
+    if (type==='charged'&&Math.random()<0.50) applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
   }
 
   // ── SHINJI ────────────────────────────────────────────────────────────────
   if (pk === 'shinji_t5') {
-    if (type==='basic'&&Math.random()<0.30) applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);
-    if (type==='charged'){const mp=cLevel(f)>=3?25:15,mt=cLevel(f)>=3?3:2;addDebuff(boss,'missChance',mp,mt);if(Math.random()<0.25)applyDot(boss,'void',2,f.atk,f.dotDmgBonus);if(cLevel(f)>=2)addBuff(f,'critRate',20,2);await combatLog('🎭 <b>Shinji</b> — Boss -'+mp+'% precisão!',120);}
-    if (type==='ult'){const mp=cLevel(f)>=5?40:25,ad=cLevel(f)>=5?35:20;addDebuff(boss,'missChance',mp,2);addDebuff(boss,'atkDebuff',ad,2);applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);applyDot(boss,'void',2,f.atk,f.dotDmgBonus);await combatLog('🎭 <b>Shinji</b> Bankai! -'+mp+'% precisão, -'+ad+'% ATK!',150);if(cLevel(f)>=6){f._shinjiReflect=2;await combatLog('🎭 C6 — Reflexo 30% dano!',120);}}
+    if (type==='basic'&&Math.random()<0.30) applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='charged'){const mp=cLevel(f)>=3?25:15,mt=cLevel(f)>=3?3:2;addDebuff(boss,'missChance',mp,mt);if(Math.random()<0.25)applyDot(boss,'void',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(cLevel(f)>=2)addBuff(f,'critRate',20,2);await combatLog('🎭 <b>Shinji</b> — Boss -'+mp+'% precisão!',120);}
+    if (type==='ult'){const mp=cLevel(f)>=5?40:25,ad=cLevel(f)>=5?35:20;addDebuff(boss,'missChance',mp,2);addDebuff(boss,'atkDebuff',ad,2);applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'void',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🎭 <b>Shinji</b> Bankai! -'+mp+'% precisão, -'+ad+'% ATK!',150);if(cLevel(f)>=6){f._shinjiReflect=2;await combatLog('🎭 C6 — Reflexo 30% dano!',120);}}
     if (getDebuff(boss,'missChance')>0) addDebuff(boss,'dmgReceived',cLevel(f)>=1?30:20,1);
   }
 
   // ── ZORO ──────────────────────────────────────────────────────────────────
   if (pk === 'zoro_t5') {
-    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);if(cLevel(f)>=1){f.hp=Math.max(1,f.hp-Math.round(f.maxHp*0.02));addBuff(f,'atkPct',8,2);}if(f._zoroWadoBonus){f._zoroWadoBonus=false;await combatLog('⚔️ <b>Zoro</b> — Wado! +100% dano!',100);}}
-    if (type==='charged'&&Math.random()<0.40) applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);
-    if (type==='ult'){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);addBuff(f,'critDmg',20,2);if(cLevel(f)>=2)f._zoroWadoReady=true;await combatLog('⚔️ <b>Zoro</b> — Asura! Bleed+Shatter+CD!',150);}
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(cLevel(f)>=1){f.hp=Math.max(1,f.hp-Math.round(f.maxHp*0.02));addBuff(f,'atkPct',8,2);}if(f._zoroWadoBonus){f._zoroWadoBonus=false;await combatLog('⚔️ <b>Zoro</b> — Wado! +100% dano!',100);}}
+    if (type==='charged'&&Math.random()<0.40) applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='ult'){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addBuff(f,'critDmg',20,2);if(cLevel(f)>=2)f._zoroWadoReady=true;await combatLog('⚔️ <b>Zoro</b> — Asura! Bleed+Shatter+CD!',150);}
     if (isCrit&&cLevel(f)>=3&&Math.random()<0.20){const ed=Math.round(calcDmg(f,boss,f.skills.basic.mult*0.5,false));boss.hp=Math.max(0,boss.hp-ed);await combatLog('⚔️ C3 — Hit extra! '+fmtNum(ed)+' DMG',80);}
   }
 
   // ── LUFFY G5 ──────────────────────────────────────────────────────────────
   if (pk === 'luffy_g5_t5') {
     if (type==='ult'){const sb=cLevel(f)>=1?45:30,ab=cLevel(f)>=2?30:20,dur=cLevel(f)>=2?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'spd',sb,dur);addBuff(t,'atkPct',ab,dur);});addDebuff(boss,'critRate',25,2);await combatLog('🌊 <b>Luffy</b> Gear 5! +'+sb+'% SPD, +'+ab+'% ATK! Boss -25% CR!',150);if(cLevel(f)>=6){const bd=Math.round(calcDmg(f,boss,f.skills.basic.mult*0.60,rollCrit(f)));boss.hp=Math.max(0,boss.hp-bd);await combatLog('🌊 C6 bônus: '+fmtNum(bd)+' DMG',120);}}
-    if (type==='charged'){addBuff(f,'spd',20,1);if(cLevel(f)>=4)applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus);}
+    if (type==='charged'){addBuff(f,'spd',20,1);if(cLevel(f)>=4)applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
   }
 
   // ── YUJI ──────────────────────────────────────────────────────────────────
   if (pk === 'yuji_t5') {
-    if (type==='ult'){applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);const ab=cLevel(f)>=5?25:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'atkPct',ab,cLevel(f)>=5?2:1));await combatLog('👊 <b>Yuji</b> Black Flash! Curse+ATK!',150);}
-    if (type==='charged'&&Math.random()<0.35) applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);
+    if (type==='ult'){applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const ab=cLevel(f)>=5?25:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'atkPct',ab,cLevel(f)>=5?2:1));await combatLog('👊 <b>Yuji</b> Black Flash! Curse+ATK!',150);}
+    if (type==='charged'&&Math.random()<0.35) applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);
     if (f._blackFlashReady){f._blackFlashReady=false;const bfd=Math.round(dmg*0.80);boss.hp=Math.max(0,boss.hp-bfd);await combatLog('✊ <span style="color:#ff8844">BLACK FLASH! +'+fmtNum(bfd)+' DMG!</span>',200);}
   }
 
   // ── MUZAN ─────────────────────────────────────────────────────────────────
   if (pk === 'muzan_t5') {
-    if (type==='basic'&&Math.random()<0.35) applyDot(boss,'poison',3,f.atk,f.dotDmgBonus);
-    if (type==='charged'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus);applyDot(boss,'curse',2,f.atk,f.dotDmgBonus);if(cLevel(f)>=3){applyDot(boss,'poison',2,f.atk,f.dotDmgBonus);applyDot(boss,'poison',2,f.atk,f.dotDmgBonus);}}
-    if (type==='ult'){applyDot(boss,'poison',3,f.atk,f.dotDmgBonus);applyDot(boss,'darkness',3,f.atk,f.dotDmgBonus);applyDot(boss,'curse',3,f.atk,f.dotDmgBonus);const db=cLevel(f)>=5?35:20,dt=cLevel(f)>=5?4:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dotDmg',db,dt));await combatLog('🌙 <b>Muzan</b> Rei dos Demônios! DOT×3+'+db+'% DMG!',200);if(cLevel(f)>=6){const dc=Math.min(3,boss.dots?.length||0),rh=healFighter(f,Math.round(f.maxHp*dc*0.05),f);await combatLog('🌙 C6 — +'+fmtNum(rh)+' HP ('+dc+' DOTs)!',120);}}
+    if (type==='basic'&&Math.random()<0.35) applyDot(boss,'poison',3,f.atk,f.dotDmgBonus,f.dotDmgByType);
+    if (type==='charged'){applyDot(boss,'darkness',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'curse',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(cLevel(f)>=3){applyDot(boss,'poison',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'poison',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}}
+    if (type==='ult'){applyDot(boss,'poison',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'darkness',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'curse',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const db=cLevel(f)>=5?35:20,dt=cLevel(f)>=5?4:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dotDmg',db,dt));await combatLog('🌙 <b>Muzan</b> Rei dos Demônios! DOT×3+'+db+'% DMG!',200);if(cLevel(f)>=6){const dc=Math.min(3,boss.dots?.length||0),rh=healFighter(f,Math.round(f.maxHp*dc*0.05),f);await combatLog('🌙 C6 — +'+fmtNum(rh)+' HP ('+dc+' DOTs)!',120);}}
     const dotCt=boss.dots?.length||0,db2=Math.min(cLevel(f)>=1?24:18,dotCt*(cLevel(f)>=1?8:6));
     if(db2>0)addBuff(f,'darkDmg',db2,1);if(dotCt>=3){if(cLevel(f)>=4)addBuff(f,'atkPct',20,2);}
   }
@@ -9910,8 +9999,151 @@ async function mechPostDamage(f, cs, type, isCrit, dmg) {
   // ── KILLUA ────────────────────────────────────────────────────────────────
   if (pk === 'char_t4_lightning') {
     if (isCrit){const s=Math.min(5,(f._killuaCrStacks||0)+1);f._killuaCrStacks=s;f.cr=Math.min(100,f.cr+3);if(s>=5&&!f._killuaBurstReady){f._killuaBurstReady=true;await combatLog('⚡ <b>Killua</b> — 5 stacks! +50% prox ataque!',100);}}
-    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus);addBuff(f,'spd',25,cLevel(f)>=3?3:2);await combatLog('⚡ <b>Killua</b> Narukami! Electro+SPD!',150);if(cLevel(f)>=6&&!f._killuaC6Used){f._killuaC6Used=true;const dd=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-dd);await combatLog('⚡ C6 God Speed! '+fmtNum(dd)+' DMG!',150);}}
+    if (type==='ult'){applyDot(boss,'electrify',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addBuff(f,'spd',25,cLevel(f)>=3?3:2);await combatLog('⚡ <b>Killua</b> Narukami! Electro+SPD!',150);if(cLevel(f)>=6&&!f._killuaC6Used){f._killuaC6Used=true;const dd=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-dd);await combatLog('⚡ C6 God Speed! '+fmtNum(dd)+' DMG!',150);}}
     if (f._killuaBurstReady&&type!=='ult'){f._killuaBurstReady=false;f._killuaCrStacks=0;const bd=Math.round(dmg*0.50);boss.hp=Math.max(0,boss.hp-bd);await combatLog('⚡ <b>Killua</b> Nen Burst! +'+fmtNum(bd)+' DMG!',150);}
+  }
+
+  // ── ESDEATH ───────────────────────────────────────────────────────────────
+  if (pk === 'esdeath_t5') {
+    if (boss.dots?.some(d=>d.key==='freeze')) addBuff(f,'critDmg',cLevel(f)>=4?35:25,1);
+    const fbStacks=Math.min(3,f._esdeathFrostbite||0);
+    if (fbStacks>0) addBuff(f,'dmgBonus',fbStacks*8,1);
+    if (type==='basic'){f._esdeathFrostbite=Math.min(3,(f._esdeathFrostbite||0)+1);await combatLog('❄ <b>Esdeath</b> Frostbite '+f._esdeathFrostbite+'×!',60);}
+    if (type==='charged'){applyDot(boss,'freeze',cLevel(f)>=3?2:1,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('❄ <b>Esdeath</b> Glaciar! Freeze!',120);}
+    if (type==='ult'){applyDot(boss,'freeze',cLevel(f)>=5?3:2,f.atk,f.dotDmgBonus,f.dotDmgByType);f._esdeathFrostbite=3;const ib=cLevel(f)>=5?55:40,it=cLevel(f)>=5?3:2;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'iceDmg',ib,it));addDebuff(boss,'defPct',25,3);await combatLog('❄ <b>Esdeath</b> Império do Gelo! +'+ib+'% ICE ao time! -25% DEF boss!',150);if(cLevel(f)>=6){const ex=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-ex);await combatLog('❄ C6 Turno Extra! '+fmtNum(ex)+' DMG',120);}}
+  }
+
+  // ── OMEGAMON ──────────────────────────────────────────────────────────────
+  if (pk === 'omegamon_t5') {
+    if (boss.dots?.some(d=>d.key==='holy_burn')) addBuff(f,'critDmg',cLevel(f)>=5?30:20,1);
+    if (isCrit) f.energy=Math.min(f.maxEnergy,f.energy+15);
+    if (type==='charged'){applyDot(boss,'holy_burn',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('✨ <b>Omegamon</b> Holy Beam! Holy Burn!',120);}
+    if (type==='ult'){applyDot(boss,'holy_burn',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const hb=cLevel(f)>=3?70:50,ht=cLevel(f)>=3?4:3;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'holyDmg',hb,ht));addDebuff(boss,'defPct',cLevel(f)>=5?40:30,3);await combatLog('✨ <b>Omegamon</b> All Delete! +'+hb+'% Holy ao time!',150);if(cLevel(f)>=5){const ex=Math.round(boss.maxHp*0.20);boss.hp=Math.max(0,boss.hp-ex);await combatLog('✨ C5 True DMG: '+fmtNum(ex)+'!',120);}}
+  }
+
+  // ── NATSU ────────────────────────────────────────────────────────────────
+  if (pk === 'natsu_t5') {
+    if (type==='basic'){if(Math.random()<0.25)applyDot(boss,'burn',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'burn',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addBuff(f,'atkPct',15,1);await combatLog('🔥 <b>Natsu</b> Rugido! Burn + +15% ATK!',120);}
+    if (type==='ult'){for(let i=0;i<3;i++)applyDot(boss,'burn',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const fb=cLevel(f)>=5?30:25;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'fireDmg',fb,3));if(boss.dots?.some(d=>d.key==='burn'))addBuff(f,'dmgBonus',30,1);await combatLog('🔥 <b>Natsu</b> Modo Dragão! 3×Burn + +'+fb+'% Fogo ao time!',150);if(cLevel(f)>=6){addBuff(f,'critDmg',60,2);addBuff(f,'dmgReduce',100,1);await combatLog('🔥 C6 Imune 1t + +60% CD!',120);}}
+  }
+
+  // ── KISAME ───────────────────────────────────────────────────────────────
+  if (pk === 'kisame_t4') {
+    const kisStacks=Math.min(4,Math.floor((f._kisameEnergyDrained||0)/10));
+    if (kisStacks>0) addBuff(f,'atkPct',kisStacks*8,1);
+    if (type==='basic'){boss.energy=Math.max(0,(boss.energy||0)-10);f._kisameEnergyDrained=(f._kisameEnergyDrained||0)+10;f.energy=Math.min(f.maxEnergy,f.energy+5);}
+    if (type==='charged'){applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'atkDebuff',15,2);await combatLog('🦈 <b>Kisame</b> Esfera! Drown+Manavoid!',120);}
+    if (type==='ult'){applyDot(boss,'drown',3,f.atk,f.dotDmgBonus,f.dotDmgByType);boss.energy=Math.max(0,(boss.energy||0)-25);f._kisameEnergyDrained=(f._kisameEnergyDrained||0)+25;await combatLog('🦈 <b>Kisame</b> Fusão! Drown, drena 25E boss!',150);}
+  }
+
+  // ── JUVIA ────────────────────────────────────────────────────────────────
+  if (pk === 'juvia_t4') {
+    const hasPhys=cs.fighters.some(x=>x.alive&&x!==f&&(x.element==='physical'||x.charRole==='main_dps'));
+    if (hasPhys) f.healBonus=(f.baseHealBonus||0)+20;
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){const aliveCount=cs.fighters.filter(x=>x.alive).length;const sv=Math.round(f.maxHp*(0.14+aliveCount*0.05));cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));const t2=lowestHpFighter(cs);const h2=healFighter(t2,Math.round(f.maxHp*0.10),f);await combatLog('💧 <b>Juvia</b> Armadura! Escudo+'+fmtNum(h2)+' HP',120);}
+    if (type==='ult'){cs.fighters.filter(x=>x.alive).forEach(t=>{healFighter(t,Math.round(f.maxHp*0.18),f);addShield(t,Math.round(f.maxHp*0.20));});applyDot(boss,'drown',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?22:15;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'waterDmg',wb,2));await combatLog('💧 <b>Juvia</b> Chuva Eterna! Cura+Escudo+Drown+'+wb+'% Água!',150);}
+  }
+
+  // ── TEMARI ───────────────────────────────────────────────────────────────
+  if (pk === 'temari_t5') {
+    const voidActive=boss.dots?.some(d=>d.key==='void')||(boss._debuffs?.void?.turns>0);
+    if (voidActive){addBuff(f,'critRate',cLevel(f)>=4?28:20,1);const vs=Math.min(3,f._temariVoidStacks||1);addBuff(f,'dmgBonus',vs*10,1);}
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'void',2,f.atk,f.dotDmgBonus,f.dotDmgByType);f._temariVoidStacks=Math.min(3,(f._temariVoidStacks||0)+1);}
+    if (type==='charged'){applyDot(boss,'void',2,f.atk,f.dotDmgBonus,f.dotDmgByType);f._temariVoidStacks=Math.min(3,(f._temariVoidStacks||0)+1);await combatLog('🌪 <b>Temari</b> Kamatari! Void garantido!',120);}
+    if (type==='ult'){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'void',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const wb=cLevel(f)>=5?35:30;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'windDmg',wb,3));addDebuff(boss,'defPct',cLevel(f)>=4?25:20,3);await combatLog('🌪 <b>Temari</b> Tempestade! +'+wb+'% Vento ao time!',150);}
+  }
+
+  // ── INUYASHA ─────────────────────────────────────────────────────────────
+  if (pk === 'inuyasha_t4') {
+    if (f.hp<f.maxHp*0.40){addBuff(f,'atkPct',cLevel(f)>=6?35:25,1);addBuff(f,'critDmg',15,1);}
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addBuff(f,'dmgBonus',20,1);await combatLog('⚔ <b>Inuyasha</b> Kaze no Kizu! Shatter+20% DMG!',120);}
+    if (type==='ult'){applyDot(boss,'bleed',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addBuff(f,'critDmg',cLevel(f)>=5?30:20,2);await combatLog('⚔ <b>Inuyasha</b> Bakuryuha! Bleed+Shatter+CD!',150);if(cLevel(f)>=6){const ed=Math.round(calcDmg(f,boss,f.skills.basic.mult,rollCrit(f)));boss.hp=Math.max(0,boss.hp-ed);await combatLog('⚔ C6 Tessaiga Final! '+fmtNum(ed)+' DMG!',120);}}
+  }
+
+  // ── GAARA ────────────────────────────────────────────────────────────────
+  if (pk === 'gaara_t5') {
+    addBuff(f,'dmgReduce',20,1);
+    if (boss.dots?.some(d=>d.key==='erosion')) cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'earthDmg',10,1));
+    if (type==='basic'){applyDot(boss,'erosion',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🪨 <b>Gaara</b> Areia! Erosion!',80);}
+    if (type==='charged'){const sv=Math.round(f.maxHp*0.20);addShield(f,sv);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'defPct',cLevel(f)>=4?20:12,2));await combatLog('🪨 <b>Gaara</b> Armadura! Escudo+DEF ao time!',120);}
+    if (type==='ult'){applyDot(boss,'erosion',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const eb=cLevel(f)>=5?25:18;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'earthDmg',eb,3));addDebuff(boss,'defPct',20,3);await combatLog('🪨 <b>Gaara</b> Areia do Deserto! +'+eb+'% Terra ao time!',150);}
+  }
+
+  // ── DIANE ────────────────────────────────────────────────────────────────
+  if (pk === 'diane_t4') {
+    if (f.hp>=f.maxHp*0.60) addBuff(f,'dmgReduce',22,1);
+    if (type==='basic'){addBuff(f,'atkPct',8,1);}
+    if (type==='charged'){const sv=Math.round(f.maxHp*0.18);cs.fighters.filter(x=>x.alive).forEach(t=>addShield(t,sv));applyDot(boss,'erosion',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🌍 <b>Diane</b> Gideon! Escudo ao time+Erosion!',120);}
+    if (type==='ult'){addBuff(f,'atkPct',cLevel(f)>=4?30:20,2);addBuff(f,'dmgBonus',25,2);await combatLog('🌍 <b>Diane</b> Dance! +ATK+DMG!',150);if(cLevel(f)>=6){cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'defPct',25,2));await combatLog('🌍 C6 +25% DEF ao time!',80);}}
+  }
+
+  // ── BAN ───────────────────────────────────────────────────────────────────
+  if (pk === 'ban_t5') {
+    if (boss._debuffs?.withering?.turns>0||boss.dots?.some(d=>d.key==='withering')) f.healBonus=(f.baseHealBonus||0)+50;
+    if (type==='basic'&&actualDmg>0){const h=healFighter(f,Math.round(actualDmg*0.10),f);applyDot(boss,'withering',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🍺 <b>Ban</b> Snatch! +'+fmtNum(h)+' HP',60);}
+    if (type==='charged'){applyDot(boss,'withering',2,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'bloodpact',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(actualDmg>0){const h=healFighter(f,Math.round(actualDmg*0.15),f);await combatLog('🍺 <b>Ban</b> Physical Hunt! +'+fmtNum(h)+' HP',120);}}
+    if (type==='ult'){applyDot(boss,'withering',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'bloodpact',2,f.atk,f.dotDmgBonus,f.dotDmgByType);cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'atkPct',cLevel(f)>=5?25:20,2));if(actualDmg>0){const h=healFighter(f,Math.round(actualDmg*0.40),f);await combatLog('🍺 <b>Ban</b> Banishing Kill! +ATK time + +'+fmtNum(h)+' HP Ban!',150);}}
+    if(!f._banReviveUsed&&f.hp<=1){f._banReviveUsed=true;f.hp=Math.round(f.maxHp*0.30);f.alive=true;await combatLog('🍺 <b>Ban</b> Imortal! Ressuscita 30% HP!',150);}
+  }
+
+  // ── SHINOBU ───────────────────────────────────────────────────────────────
+  if (pk === 'shinobu_t4') {
+    if (boss._debuffs?.withering?.turns>0||boss.dots?.some(d=>d.key==='withering')) addBuff(f,'critRate',cLevel(f)>=4?16:10,1);
+    const shinobuDotBonus=f.dotDmgBonus+Math.round((f.em||0)*0.08);
+    if (type==='basic'){if(Math.random()<0.35)applyDot(boss,'poison',2,f.atk,shinobuDotBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'poison',2,f.atk,shinobuDotBonus,f.dotDmgByType);if(Math.random()<0.35)applyDot(boss,'withering',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const nb=cLevel(f)>=5?25:20;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'natureDmg',nb,2));await combatLog('🦋 <b>Shinobu</b> Borboleta! Poison+'+nb+'% Natureza ao time!',120);}
+    if (type==='ult'){applyDot(boss,'poison',3,f.atk,shinobuDotBonus,f.dotDmgByType);applyDot(boss,'withering',3,f.atk,f.dotDmgBonus,f.dotDmgByType);if(boss.dots?.some(d=>d.key==='poison'))addBuff(f,'dmgBonus',30,1);await combatLog('🦋 <b>Shinobu</b> Veneno Absoluto!',150);if(cLevel(f)>=6)f._shinobuAutoPoison=3;}
+    if(f._shinobuAutoPoison>0&&type!=='ult'){f._shinobuAutoPoison--;applyDot(boss,'poison',1,f.atk,shinobuDotBonus,f.dotDmgByType);}
+  }
+
+  // ── AIZEN ────────────────────────────────────────────────────────────────
+  if (pk === 'aizen_t5') {
+    if (boss.dots?.some(d=>d.key==='spectral')||(boss._debuffs?.spectral?.turns>0)) addBuff(f,'critDmg',cLevel(f)>=4?30:20,1);
+    if (type==='basic'){if(Math.random()<0.25)applyDot(boss,'timerot',1,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'spectral',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'missChance',40,2);await combatLog('🌀 <b>Aizen</b> Kyoka Suigetsu! Spectral+-40% precisão!',120);}
+    if (type==='ult'){applyDot(boss,'timerot',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'spectral',3,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'atkDebuff',cLevel(f)>=5?35:25,3);const cb=cLevel(f)>=3?35:25;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'chaosDmg',cb,cLevel(f)>=3?4:3));await combatLog('🌀 <b>Aizen</b> Transcendência! Timerot+Spectral+'+cb+'% Caos!',150);if(cLevel(f)>=6){cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'dmgBonus',50,1));await combatLog('🌀 C6 Time dobra dano próx turno!',150);}}
+  }
+
+  // ── MIRIO ────────────────────────────────────────────────────────────────
+  if (pk === 'mirio_t5') {
+    cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'critDmg',cLevel(f)>=6?16:8,1));
+    if (type==='charged'){const topAtk=cs.fighters.filter(x=>x.alive&&x!==f).sort((a,b)=>b.atk-a.atk);const tgts=cLevel(f)>=3?topAtk.slice(0,2):topAtk.slice(0,1);const cr=cLevel(f)>=1?25:18,cd=cLevel(f)>=2?42:32;tgts.forEach(t=>{addBuff(t,'critRate',cr,2);addBuff(t,'critDmg',cd,2);});await combatLog('✨ <b>Mirio</b> Bênção! +'+cr+'% CR, +'+cd+'% CD!',120);}
+    if (type==='ult'){const cr=cLevel(f)>=2?35:25,cd=cLevel(f)>=2?65:50;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'critRate',cr,3);addBuff(t,'critDmg',cd,3);t.energy=Math.min(t.maxEnergy,t.energy+20);});await combatLog('✨ <b>Mirio</b> EU SALVAREI TODOS! +'+cr+'% CR, +'+cd+'% CD ao time!',150);if(cLevel(f)>=4){cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t._nextAttackCrit=true;});await combatLog('✨ C4 Próx ataque de todos: crítico!',120);}}
+  }
+
+  // ── MEREOLEONA ───────────────────────────────────────────────────────────
+  if (pk === 'mereoleona_t4') {
+    cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'spd',cLevel(f)>=5?9:6,1));
+    if (type==='charged'){const topAtk=cs.fighters.filter(x=>x.alive&&x!==f).sort((a,b)=>b.atk-a.atk);const tgts=cLevel(f)>=2?topAtk.slice(0,2):topAtk.slice(0,1);const ab=cLevel(f)>=1?36:28;tgts.forEach(t=>{addBuff(t,'atkPct',ab,2);addBuff(t,'spd',20,2);});await combatLog('🔥 <b>Mereoleona</b> Mana Zone! +'+ab+'% ATK+SPD!',120);}
+    if (type==='ult'){const ab=cLevel(f)>=3?45:35,sb=25,dur=cLevel(f)>=3?4:3;cs.fighters.filter(x=>x.alive).forEach(t=>{addBuff(t,'atkPct',ab,dur);addBuff(t,'spd',sb,dur);});addDebuff(boss,'defPct',20,3);const topF=cs.fighters.filter(x=>x.alive&&x!==f).sort((a,b)=>b.atk-a.atk)[0];if(topF){addBuff(topF,'dmgBonus',cLevel(f)>=4?30:18,dur);await combatLog('🔥 Bônus extra → '+topF.name+'!',80);}await combatLog('🔥 <b>Mereoleona</b> Purgatório! +'+ab+'% ATK, +'+sb+'% SPD ao time!',150);}
+  }
+
+  // ── REM ───────────────────────────────────────────────────────────────────
+  if (pk === 'rem_t5') {
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'shatter',1,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'shatter',2,f.atk,f.dotDmgBonus,f.dotDmgByType);if(Math.random()<(cLevel(f)>=3?1.0:0.30))applyDot(boss,'bloodpact',2,f.atk,f.dotDmgBonus,f.dotDmgByType);await combatLog('🔮 <b>Rem</b> Modo Oni! Shatter+Bloodpact!',120);}
+    if (type==='ult'){for(let i=0;i<(cLevel(f)>=5?5:4);i++)applyDot(boss,'shatter',1,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'bloodpact',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const qb=cLevel(f)>=4?50:35;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'quantumDmg',qb,3));await combatLog('🔮 <b>Rem</b> Oni Liberto! Shatter×4+Bloodpact+'+qb+'% Quantum!',150);if(cLevel(f)>=6){addBuff(f,'critDmg',70,2);addBuff(f,'dmgReduce',100,1);await combatLog('🔮 C6 Imune 1t + +70% CD!',120);}}
+    if(!f._remReviveUsed&&f.hp<=1){f._remReviveUsed=true;f.hp=1;f.alive=true;await combatLog('🔮 <b>Rem</b> Amor Absoluto! Sobreviveu!',100);}
+  }
+
+  // ── ALUCARD ───────────────────────────────────────────────────────────────
+  if (pk === 'alucard_t5') {
+    if (boss.dots?.some(d=>d.key==='bloodpact')&&actualDmg>0){const h=healFighter(f,Math.round(actualDmg*(cLevel(f)>=1?0.12:0.08)),f);if(h>0)await combatLog('🔮 <b>Alucard</b> Drenagem! +'+fmtNum(h)+' HP',60);}
+    if (type==='basic'){if(Math.random()<0.30)applyDot(boss,'bloodpact',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'spectral',2,f.atk,f.dotDmgBonus,f.dotDmgByType);addDebuff(boss,'missChance',cLevel(f)>=2?55:40,2);await combatLog('🔮 <b>Alucard</b> Mar de Almas! Spectral+-miss!',120);}
+    if (type==='ult'){applyDot(boss,'bloodpact',3,f.atk,f.dotDmgBonus,f.dotDmgByType);applyDot(boss,'spectral',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const drain=Math.round(boss.hp*(cLevel(f)>=3?0.28:0.20));boss.hp=Math.max(1,boss.hp-drain);healFighter(f,drain,f);const qb=cLevel(f)>=6?60:25;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'quantumDmg',qb,cLevel(f)>=6?3:2));await combatLog('🔮 <b>Alucard</b> Modo Zero! Drain '+fmtNum(drain)+'+'+qb+'% Quantum!',150);}
+    if(!f._alucardRevived&&f.hp<=0){f._alucardRevived=true;f.hp=Math.round(f.maxHp*(cLevel(f)>=4?0.55:0.40));f.alive=true;await combatLog('🔮 <b>Alucard</b> Ressurreição!',150);}
+  }
+
+  // ── KONAN ────────────────────────────────────────────────────────────────
+  if (pk === 'konan_t4') {
+    cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>addBuff(t,'critRate',cLevel(f)>=4?8:6,1));
+    if (type==='basic'){if(Math.random()<0.20)applyDot(boss,'spectral',2,f.atk,f.dotDmgBonus,f.dotDmgByType);}
+    if (type==='charged'){applyDot(boss,'spectral',2,f.atk,f.dotDmgBonus,f.dotDmgByType);const er=cLevel(f)>=1?22:15;cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t.energy=Math.min(t.maxEnergy,t.energy+er);});await combatLog('📄 <b>Konan</b> Mar de Papel! Spectral++'+er+' E ao time!',120);}
+    if (type==='ult'){applyDot(boss,'spectral',3,f.atk,f.dotDmgBonus,f.dotDmgByType);const er=cLevel(f)>=3?30:22;cs.fighters.filter(x=>x.alive&&x!==f).forEach(t=>{t.energy=Math.min(t.maxEnergy,t.energy+er);});const qb=cLevel(f)>=2?22:20;cs.fighters.filter(x=>x.alive).forEach(t=>addBuff(t,'quantumDmg',qb,cLevel(f)>=2?3:2));await combatLog('📄 <b>Konan</b> 600 Bilhões! Spectral+'+qb+'% Quantum+'+er+' E!',150);if(f.av!==undefined)f.av=0;}
   }
 
   tickBuffs(f);
@@ -10013,10 +10245,24 @@ function applyActiveBonuses(f, cs) {
   // Dano recebido pelo boss (debuffs)
   const bossDmgMult = 1.0
     + getDebuff(boss,'dmgReceived') / 100
-    + getDebuff(boss,'iceDmgReceived') / 100;
+    + getDebuff(boss,'iceDmgReceived') / 100
+    + getDebuff(boss,'defPct') / 100;
 
-  // Bônus de dano direto do fighter (buff)
-  const fighterDmgBonus = 1.0 + getBuff(f,'dmgBonus') / 100;
+  // Bônus de dano direto do fighter (buf geral + todos os elementais via addBuff)
+  // Cada elemental buff key é lido aqui e somado ao dmgBonus se o personagem usa aquele elemento
+  const el = f.element || '';
+  const elemBuffMap = {
+    ice:'iceDmg', fire:'fireDmg', water:'waterDmg', wind:'windDmg',
+    earth:'earthDmg', nature:'natureDmg', holy:'holyDmg',
+    chaos:'chaosDmg', quantum:'quantumDmg', lightning:'lightningDmg',
+    dark:'darkDmg', physical:'physicalDmg',
+  };
+  const elemBuffKey = elemBuffMap[el] || '';
+  // Soma bônus de dano geral + bônus elemental específico do elemento do personagem
+  const fighterDmgBonus = 1.0
+    + getBuff(f,'dmgBonus') / 100
+    + (elemBuffKey ? getBuff(f, elemBuffKey) / 100 : 0);
+
   const gokuBonus    = f._gokuKiReady ? 1.20 : 1.0;
   const tanjiroBonus = (f._tanjiroDrowBonus && boss.dots?.some(d => d.key === 'drown')) ? 1.15 : 1.0;
 
@@ -10211,7 +10457,7 @@ async function doPlayerAction(f, cs, type) {
 
   // ── DOT padrão do skill ───────────────────────────────────────────────────
   if (skill.dotApply && !immune && Math.random() < 0.65) {
-    const def = applyDot(boss, skill.dotApply, skill.dotDuration || 2, f.atk, f.dotDmgBonus || 0);
+    const def = applyDot(boss, skill.dotApply, skill.dotDuration || 2, f.atk, f.dotDmgBonus || 0, f.dotDmgByType || {});
     if (def) await combatLog(def.icon+' <b>'+boss.name+'</b> sofreu <span style="color:'+def.color+'">'+def.name+'</span>!', 150);
   }
 
@@ -10581,6 +10827,8 @@ async function runDungeon(did, diff) {
         { stat:"HP%",val:mainScale(rarity,43.2,32.4,21.6) },{ stat:"ATK%",val:mainScale(rarity,43.2,32.4,21.6) },
         { stat:"DEF%",val:mainScale(rarity,54.0,40.5,27.0) },{ stat:"Energy Recharge%",val:mainScale(rarity,51.8,38.9,26.0) },
         { stat:"Break Effect%",val:mainScale(rarity,52.2,39.1,26.1) },
+        // Elem. Mastery como main stat da Ampulheta (igual HSR) — fundamental para personagens de EM
+        { stat:"Elem. Mastery",val:mainScale(rarity,187,140,93), isFlat:true },
       ],
       "Cálice": [
         { stat:"HP%",val:mainScale(rarity,43.2,32.4,21.6) },{ stat:"ATK%",val:mainScale(rarity,43.2,32.4,21.6) },
@@ -11813,19 +12061,45 @@ function admOpenCharForm(existing={}) {
           <div class="field"><label>Nome</label><input id="ac-con-${ci}-name" value="${con.name||''}"></div>
           <div class="field"><label>Tipo de Buff</label><select id="ac-con-${ci}-type">
             <option value="">— Nenhum —</option>
-            <option value="dmg_up"       ${con.type==="dmg_up"?"selected":""}>⚔ +% Dano Geral</option>
-            <option value="dot_dmg"      ${con.type==="dot_dmg"?"selected":""}>☠ +% Dano DOT</option>
-            <option value="dot_duration" ${con.type==="dot_duration"?"selected":""}>⏱ +Turnos DOT</option>
-            <option value="dot_unlock"   ${con.type==="dot_unlock"?"selected":""}>🔓 Desbloqueia DOT</option>
-            <option value="cr_up"        ${con.type==="cr_up"?"selected":""}>🎯 +% Crit Rate</option>
-            <option value="cd_up"        ${con.type==="cd_up"?"selected":""}>💥 +% Crit DMG</option>
-            <option value="atk_up"       ${con.type==="atk_up"?"selected":""}>⚔ +% ATK</option>
-            <option value="hp_up"        ${con.type==="hp_up"?"selected":""}>❤ +% HP</option>
-            <option value="buff_elemental"${con.type==="buff_elemental"?"selected":""}>🌟 +% DMG Elemental</option>
-            <option value="skill_enhance"${con.type==="skill_enhance"?"selected":""}>⚡ Melhora Skill</option>
-            <option value="extra_hit"    ${con.type==="extra_hit"?"selected":""}>🎯 Hit Extra na Skill</option>
-            <option value="energy_reduce"${con.type==="energy_reduce"?"selected":""}>🔋 Reduz custo energia</option>
-            <option value="passive_new"  ${con.type==="passive_new"?"selected":""}>✨ Nova Passiva</option>
+            <optgroup label="── Stats Base ──">
+            <option value="atk_up"        ${con.type==="atk_up"?"selected":""}>⚔ +% ATK</option>
+            <option value="hp_up"         ${con.type==="hp_up"?"selected":""}>❤ +% HP</option>
+            <option value="def_up"        ${con.type==="def_up"?"selected":""}>🛡 +% DEF</option>
+            <option value="spd_up"        ${con.type==="spd_up"?"selected":""}>💨 + SPD (flat)</option>
+            <option value="cr_up"         ${con.type==="cr_up"?"selected":""}>🎯 +% Crit Rate</option>
+            <option value="cd_up"         ${con.type==="cd_up"?"selected":""}>💥 +% Crit DMG</option>
+            <option value="er_up"         ${con.type==="er_up"?"selected":""}>⚡ +% Energy Recharge</option>
+            <option value="em_up"         ${con.type==="em_up"?"selected":""}>🌿 + Maestria Elem (flat)</option>
+            <option value="be_up"         ${con.type==="be_up"?"selected":""}>💔 +% Break Effect</option>
+            <option value="flat_atk"      ${con.type==="flat_atk"?"selected":""}>⚔ + ATK flat</option>
+            <option value="flat_hp"       ${con.type==="flat_hp"?"selected":""}>❤ + HP flat</option>
+            </optgroup>
+            <optgroup label="── Dano ──">
+            <option value="dmg_up"        ${con.type==="dmg_up"?"selected":""}>⚔ +% Dano Geral</option>
+            <option value="elem_dmg"      ${con.type==="elem_dmg"?"selected":""}>🌟 +% DMG Elemental (elem. do char)</option>
+            <option value="elemental_up"  ${con.type==="elemental_up"?"selected":""}>🌟 +% DMG Elemental (DOT Alvo = elem)</option>
+            <option value="ice_dmg_up"    ${con.type==="ice_dmg_up"?"selected":""}>❄ +% DMG Gelo</option>
+            <option value="fire_dmg_up"   ${con.type==="fire_dmg_up"?"selected":""}>🔥 +% DMG Fogo</option>
+            <option value="water_dmg_up"  ${con.type==="water_dmg_up"?"selected":""}>💧 +% DMG Água</option>
+            <option value="dark_dmg_up"   ${con.type==="dark_dmg_up"?"selected":""}>🌑 +% DMG Escuridão</option>
+            <option value="chaos_dmg_up"  ${con.type==="chaos_dmg_up"?"selected":""}>💀 +% DMG Caos</option>
+            <option value="heal_up"       ${con.type==="heal_up"?"selected":""}>💚 +% Bônus de Cura</option>
+            </optgroup>
+            <optgroup label="── DOT ──">
+            <option value="dot_dmg"       ${con.type==="dot_dmg"?"selected":""}>☠ +% Dano DOT (DOT Alvo = tipo específico ou vazio = todos)</option>
+            <option value="dot_duration"  ${con.type==="dot_duration"?"selected":""}>⏱ +Turnos de DOT</option>
+            <option value="dot_unlock"    ${con.type==="dot_unlock"?"selected":""}>🔓 Desbloqueia DOT extra</option>
+            <option value="break_up"      ${con.type==="break_up"?"selected":""}>💔 +% Break Effect</option>
+            </optgroup>
+            <optgroup label="── Skill ──">
+            <option value="skill_up"      ${con.type==="skill_up"?"selected":""}>⚡ +% Dano Skill Carregada</option>
+            <option value="ult_up"        ${con.type==="ult_up"?"selected":""}>💥 +% Dano Ultimate</option>
+            <option value="basic_up"      ${con.type==="basic_up"?"selected":""}>⚔ +% Dano Básico</option>
+            <option value="skill_enhance" ${con.type==="skill_enhance"?"selected":""}>✨ Melhora Skill (descritiva)</option>
+            <option value="extra_hit"     ${con.type==="extra_hit"?"selected":""}>🎯 Hit Extra (descritivo)</option>
+            <option value="energy_reduce" ${con.type==="energy_reduce"?"selected":""}>🔋 Reduz Custo Energia Ult</option>
+            </optgroup>
+            <option value="passive_new"   ${con.type==="passive_new"?"selected":""}>✨ Nova Passiva (descritiva)</option>
           </select></div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
@@ -15836,7 +16110,6 @@ window.renderEndgame = function() {
       selectorDiv.innerHTML += `
         <button class="btn btn-ghost btn-sm" id="eg-tab-elite"   onclick="egSwitch('elite')"   style="min-width:160px">🎯 Caça de Elite</button>
         <button class="btn btn-ghost btn-sm" id="eg-tab-leaderboard" onclick="renderGlobalLeaderboard()" style="min-width:160px">🏆 Leaderboard Global</button>
-        <button class="btn btn-ghost btn-sm" id="eg-tab-exchange" onclick="renderFateExchangePanel()" style="min-width:160px">🔄 Troca do Destino</button>
         <button class="btn btn-ghost btn-sm" id="eg-tab-daily"   onclick="renderDailyMissionsPanel()" style="min-width:160px">📋 Missões Diárias</button>
       `;
     }
@@ -16342,7 +16615,19 @@ async function openEquipWeaponPanel(cid) {
   ${allWeapons.map(w => {
     const isEquipped = w.id === equippedId;
     const isCompatible = !ch.weaponType || w.weaponType === ch.weaponType || !w.weaponType;
-    const passiveOk = !w.passive?.passiveCondition || w.passive?.passiveCondition === (ch.presetId||ch.id);
+    // FIX: normaliza presetKey do personagem para verificar passiva da arma
+    const _rawEqW  = ch.presetKey || ch.presetId || ch.id || '';
+    const _noTsEqW = _rawEqW.replace(/_\d+$/, '');
+    const _limEqW  = {'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5','goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5','yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5','kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5','alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5','shinji_t5l':'shinji_t5','kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5'};
+    const _normEqW = _limEqW[_noTsEqW] || _noTsEqW;
+    // Busca passiva também no WEAPON_PRESETS (armas do gacha podem não ter passive inline)
+    const _wpEqW = window.WEAPON_PRESETS?.[w.presetKey] || {};
+    const _wPassEqW = _wpEqW.passive || w.passive || null;
+    const passiveOk = !_wPassEqW?.passiveCondition ||
+      _normEqW === _wPassEqW.passiveCondition ||
+      _rawEqW  === _wPassEqW.passiveCondition ||
+      _normEqW === _wpEqW.charAffinity ||
+      _rawEqW  === _wpEqW.charAffinity;
     const passiveLabel = w.passive?.passiveCondition 
       ? (passiveOk ? `<span style="color:#6ddc82;font-size:.65rem">🔓 Passiva ativa</span>` : `<span style="color:#ffbb44;font-size:.65rem">🔒 Passiva inativa (requer ${w.passive.passiveConditionName})</span>`)
       : `<span style="color:#aaa;font-size:.65rem">✅ Passiva universal</span>`;
@@ -16597,8 +16882,12 @@ window.syncPassiveCondition = syncPassiveCondition;
 // ══════════════════════════════════════════════════════════════
 //  computeEffective — calcula stats finais com arma + artefatos
 //  Chamado sempre que abre a ficha do personagem
+//  FIX: aceita parâmetro opcional passiveOk para não aplicar
+//  passiva de arma quando a condição não é atendida.
 // ══════════════════════════════════════════════════════════════
-function computeEffective(base, weap, arts) {
+function computeEffective(base, weap, arts, passiveOk) {
+  // Se passiveOk não for passado, assume true (comportamento legado)
+  if (passiveOk === undefined) passiveOk = true;
   let hp  = base.hp  || 0;
   let atk = base.atk || 0;
   let def = base.def || 0;
@@ -16682,7 +16971,8 @@ function computeEffective(base, weap, arts) {
     }
 
     // ── PASSIVA DA ARMA: bônus fixos da passiva (não escala com nível) ────────
-    const pa = weap.passive || _wpreset.passive || {};
+    // FIX: só aplica se passiveOk=true (condição de personagem atendida)
+    const pa = passiveOk ? (weap.passive || _wpreset.passive || {}) : {};
     if (pa.atkPct)            atkPct += pa.atkPct;
     if (pa.critRate)          cr     += pa.critRate;
     if (pa.critDmg)           cd     += pa.critDmg;
@@ -16854,7 +17144,15 @@ function _renderCharModal(cid) {
   const level     = ch.level || 1;
   const xp        = ch.xp   || 0;
   const rarity    = ch.rarity || 3;
-  const cons      = ch.constellations || [{},{},{},{},{},{}];
+  // FIX: busca constellations do CHAR_PRESETS se não existirem no objeto salvo
+  const _mCpKey  = ch.presetKey || ch.presetId || ch.id || '';
+  const _mCpNorm = _mCpKey.replace(/_\d+$/, '');
+  const _mCpLim  = {'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5','goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5','yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5','kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5','alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5','shinji_t5l':'shinji_t5','kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5'};
+  const _mCpRes  = _mCpLim[_mCpNorm] || _mCpNorm;
+  const _mCpPrs  = window.CHAR_PRESETS?.[_mCpRes] || window.CHAR_PRESETS?.[_mCpKey] ||
+    Object.values(window.CHAR_PRESETS||{}).find(p=>p.label&&ch.name&&p.label.includes(ch.name.split(' ')[0]))||{};
+  const cons      = (ch.constellations && ch.constellations.some(c=>c&&c.type))
+    ? ch.constellations : (_mCpPrs.constellations || [{},{},{},{},{},{}]);
   const unlockedC = ch.unlockedConstellations || 0;
   const skills    = ch.skills   || {};
   const skillLevels = ch.skillLevels || {basic:1,charged:1,ult:1,passive:1};
@@ -16874,22 +17172,38 @@ function _renderCharModal(cid) {
     elementBonus: base.elementBonus||{},
   };
 
-  // Apply constellation stat buffs
+  // Apply constellation stat buffs — espelho exato do buildFighter
   cons.slice(0, unlockedC).forEach(con => {
     if (!con||!con.type) return;
     const v = con.value||0;
-    if (con.type==="atk_up")   scaledBase.atk = Math.round(scaledBase.atk*(1+v/100));
-    if (con.type==="hp_up")    scaledBase.hp  = Math.round(scaledBase.hp*(1+v/100));
-    if (con.type==="def_up")   scaledBase.def = Math.round(scaledBase.def*(1+v/100));
-    if (con.type==="cr_up")    scaledBase.critRate = Math.min(100, scaledBase.critRate+v);
-    if (con.type==="cd_up")    scaledBase.critDmg  += v;
-    if (con.type==="spd_up")   scaledBase.spd              += v;
-    if (con.type==="be_up")    scaledBase.breakEffect      += v;
-    if (con.type==="er_up")    scaledBase.energyRecharge   += v;
-    if (con.type==="em_up")    scaledBase.elementalMastery += v;
-    if (con.type==="flat_atk") scaledBase.atk += v;
-    if (con.type==="flat_hp")  scaledBase.hp  += v;
-    if (con.type==="elem_dmg") { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus[con.element||ch.element] = (scaledBase.elementBonus[con.element||ch.element]||0)+v; }
+    if (con.type==="atk_up")    scaledBase.atk = Math.round(scaledBase.atk*(1+v/100));
+    if (con.type==="hp_up")     scaledBase.hp  = Math.round(scaledBase.hp*(1+v/100));
+    if (con.type==="def_up")    scaledBase.def = Math.round(scaledBase.def*(1+v/100));
+    if (con.type==="cr_up")     scaledBase.critRate = Math.min(100, scaledBase.critRate+v);
+    if (con.type==="cd_up" || con.type==="crit_dmg_up") scaledBase.critDmg += v;
+    if (con.type==="spd_up")    scaledBase.spd              += v;
+    if (con.type==="be_up" || con.type==="break_up") scaledBase.breakEffect += v;
+    if (con.type==="er_up")     scaledBase.energyRecharge   += v;
+    if (con.type==="em_up")     scaledBase.elementalMastery += v;
+    if (con.type==="flat_atk")  scaledBase.atk += v;
+    if (con.type==="flat_hp")   scaledBase.hp  += v;
+    if (con.type==="flat_def")  scaledBase.def += v;
+    // Bônus elementais — todos os formatos
+    if (con.type==="elem_dmg") {
+      const el = con.element || ch.element || '';
+      if (el) { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus[el]=(scaledBase.elementBonus[el]||0)+v; }
+    }
+    if (con.type==="elemental_up" && con.dotTarget) { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus[con.dotTarget]=(scaledBase.elementBonus[con.dotTarget]||0)+v; }
+    if (con.type==="ice_dmg_up")   { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['ice']  =(scaledBase.elementBonus['ice']  ||0)+v; }
+    if (con.type==="fire_dmg_up")    { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['fire']    =(scaledBase.elementBonus['fire']   ||0)+v; }
+    if (con.type==="water_dmg_up")   { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['water']   =(scaledBase.elementBonus['water']  ||0)+v; }
+    if (con.type==="wind_dmg_up")    { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['wind']    =(scaledBase.elementBonus['wind']   ||0)+v; }
+    if (con.type==="earth_dmg_up")   { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['earth']   =(scaledBase.elementBonus['earth']  ||0)+v; }
+    if (con.type==="nature_dmg_up")  { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['nature']  =(scaledBase.elementBonus['nature'] ||0)+v; }
+    if (con.type==="holy_dmg_up")    { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['holy']    =(scaledBase.elementBonus['holy']   ||0)+v; }
+    if (con.type==="quantum_dmg_up") { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['quantum'] =(scaledBase.elementBonus['quantum']||0)+v; }
+    if (con.type==="dark_dmg_up")    { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['dark']    =(scaledBase.elementBonus['dark']   ||0)+v; }
+    if (con.type==="chaos_dmg_up")   { if (!scaledBase.elementBonus) scaledBase.elementBonus={}; scaledBase.elementBonus['chaos']   =(scaledBase.elementBonus['chaos']  ||0)+v; }
   });
 
   // Find equipped weapon + artifacts
@@ -16898,7 +17212,30 @@ function _renderCharModal(cid) {
   const equippedArts   = Object.values(equippedArtIds)
     .map(id=>(STATE.profile.artifacts||[]).find(a=>a.id===id)).filter(Boolean);
 
-  const eff = computeEffective(scaledBase, weap, equippedArts);
+  // Weapon passive ok? — calculado ANTES do computeEffective para repassar como parâmetro
+  // FIX: normaliza o presetKey igual ao buildFighter (remove timestamp, mapeia _t5l→_t5)
+  const _modalRawPId = ch.presetKey || ch.presetId || ch.id || '';
+  const _modalNoTs   = _modalRawPId.replace(/_\d+$/, '');
+  const _modalLimMap = {
+    'shoko_t5l':'shoko_t5','sakura_t5l':'sakura_t5','naruto_t5l':'naruto_t5',
+    'goku_t5l':'goku_ssj_t5','sukuna_t5l':'sukuna_t5','rukia_t5l':'rukia_t5',
+    'yuji_t5l':'yuji_t5','luffy_t5l':'luffy_g5_t5','zoro_t5l':'zoro_t5',
+    'kashimo_t5l':'kashimo_t5','muzan_t5l':'muzan_t5','pochita_t5l':'pochita_t5',
+    'alphamon_t5l':'alphamon_t5','lily_t5l':'lily_t5','shinji_t5l':'shinji_t5',
+    'kusakabe_t5l':'kusakabe_t5','mochileiro_t5l':'mochileiro_t5',
+  };
+  const _modalCharPId = _modalLimMap[_modalNoTs] || _modalNoTs;
+  const _modalWp = weap ? (window.WEAPON_PRESETS?.[weap.presetKey] || {}) : {};
+  const _modalWPassive = _modalWp.passive || weap?.passive || null;
+  const passiveOk = !_modalWPassive?.passiveCondition ||
+    _modalCharPId === _modalWPassive.passiveCondition ||
+    _modalCharPId === _modalWp.charAffinity ||
+    _modalRawPId  === _modalWPassive.passiveCondition ||
+    _modalRawPId  === _modalWp.charAffinity;
+
+  // passiveOk é passado para computeEffective para que a passiva não seja somada
+  // quando o personagem não atende a condição da arma equipada.
+  const eff = computeEffective(scaledBase, weap, equippedArts, passiveOk);
 
   // XP info
   const xpNeeded   = level < MAX_LEVEL ? LEVEL_XP_TABLE[level] : 0;
@@ -16906,11 +17243,6 @@ function _renderCharModal(cid) {
   const xpInLevel  = xp - xpPrev;
   const xpLevelNd  = xpNeeded - xpPrev;
   const xpPct      = level >= MAX_LEVEL ? 100 : Math.round(xpInLevel/xpLevelNd*100);
-
-  // Weapon passive ok?
-  const passiveOk  = !weap?.passive?.passiveCondition ||
-    (ch.presetId||"") === weap.passive.passiveCondition ||
-    (ch.id||"").includes(weap.passive.passiveCondition);
 
   openModal(`👤 ${ch.name}`, `
   <!-- TAB BAR -->
@@ -16973,15 +17305,20 @@ function _renderCharModal(cid) {
     <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-bottom:8px">
       <div style="font-size:.72rem;color:var(--txt3);margin-bottom:4px">⚔ Arma Equipada</div>
       ${weap
-        ? `<div style="display:flex;align-items:center;gap:8px">
+        ? (() => {
+            // FIX: busca passiva no WEAPON_PRESETS se não estiver inline na arma salva
+            const _wpDisp = window.WEAPON_PRESETS?.[weap.presetKey] || {};
+            const _wPassDisp = _wpDisp.passive || weap.passive || null;
+            return `<div style="display:flex;align-items:center;gap:8px">
              ${weap.imageUrl?`<img src="${weap.imageUrl}" style="width:36px;height:36px;object-fit:cover;border-radius:6px" onerror="this.style.display='none'">`:`<span style="font-size:1.6rem">⚔</span>`}
              <div style="flex:1">
                <div style="font-size:.82rem;color:var(--gold)">${"★".repeat(weap.rarity||3)} ${weap.name}</div>
-               ${weap.passive?.name?`<div style="font-size:.68rem;color:${passiveOk?"#6ddc82":"#ffbb44"}">
-                 ${passiveOk?"✅":"🔒"} ${weap.passive.name}
+               ${_wPassDisp?.name?`<div style="font-size:.68rem;color:${passiveOk?"#6ddc82":"#ffbb44"}">
+                 ${passiveOk?"✅":"🔒"} ${_wPassDisp.name}
                </div>`:""}
              </div>
-           </div>`
+           </div>`;
+          })()
         : `<div style="font-size:.78rem;color:var(--txt3)">Nenhuma — clique em "Equipar" para equipar</div>`
       }
     </div>
